@@ -23,11 +23,9 @@ const drawPoster = await DrawPoster.build("#canvas")
 #### 2. 设置画布尺寸
 
 ~~~js
-// 获取rpx单位
-const rpx = drawPoster.rpx
-// 设置长高为100rpx的矩形宽高
-drawPoster.node.width = 100*rpx
-drawPoster.node.height = 100*rpx
+// 设置长高为100px的矩形宽高
+drawPoster.node.width = 100
+drawPoster.node.height = 100
 ~~~
 
 #### 3. 绘制任意内容
@@ -63,15 +61,15 @@ console.log("draw绘制状况:", result); // draw绘制状况: [true]
 
 #### 5. 生成图片本地地址
 
-在生产开发中，海报往往需要有保存功能。如需要用到保存功能时，可以使用`drawPoster.createImgUrl` 进行创建图片地址，在由微信`api`进行保存。
+在生产开发中，海报往往需要有保存功能。如需要用到保存功能时，可以使用`drawPoster.createImagePath` 进行创建图片地址，在由微信`api`进行保存。
 ~~~js
 // 等待创建地址
 const posterImgUrl = await drawPoster.createImagePath();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
-你也可以不使用`drawPoster.awaitCreate`方法，当调用`drawPoster.createImgUrl`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
+你也可以不使用`drawPoster.awaitCreate`方法，当调用`drawPoster.createImagePath`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
 
-如果使用的是`type=2d`的方式，`createImgUrl` 会根据 `node.width` 与 `node.height` 进行创建图片。如果需要使用[旧API](#h2--api-)，或自定义参数，`awaitCreate` 方法可以接受一个配置对象。
+如果使用的是`type=2d`的方式，`createImagePath` 会根据 `node.width` 与 `node.height` 进行创建图片。如果需要使用[旧API](## 旧 API 的兼容)，或自定义参数，`awaitCreate` 方法可以接受一个配置对象。
 
 ~~~js
 drawPoster.createImagePath({
@@ -87,10 +85,10 @@ drawPoster.createImagePath({
 #### 使用解析赋值更加便捷的使用
 
 ~~~js
-const { node, draw, awaitCreate, createImgUrl } = await DrawPoster.build("#canvas");
+const { canvas, draw, awaitCreate, createImagePath } = await DrawPoster.build("#canvas");
 // 设置尺寸
-node.width = 100;
-node.height = 100;
+canvas.width = 100;
+canvas.height = 100;
 // 进行绘制
 draw(async ctx=>{
     // ...
@@ -111,7 +109,7 @@ console.log("绘制生成本地地址:", posterImgUrl); // 制生成本地地址
 
 #### 绘制图片
 
-`drawPoster`绘制图片与原生小程序绘制不相同，`ctx.loadDrawImage`内部已经内置了`uini.downloadFile`，只需要传入网络地址即可
+`drawPoster`绘制图片与原生小程序绘制不相同，`ctx.drawLoadImage`内部已经内置了`uni.downloadFile`，只需要传入网络地址即可
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
@@ -163,7 +161,7 @@ drawPoster.draw(async (ctx)=>{
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
- /** ctx.roundRect(x, y, w, h, r)
+ /** ctx的圆角矩形方法
    * @param {number} x x坐标轴(必须)
    * @param {number} y y坐标轴(必须)
    * @param {number} w 宽度(必须)

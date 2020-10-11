@@ -1,0 +1,8 @@
+// 存放 scss 混合器
+
+/* 文字溢出处理 */
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

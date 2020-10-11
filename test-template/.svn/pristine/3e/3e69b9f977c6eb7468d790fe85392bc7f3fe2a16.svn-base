@@ -1,0 +1,230 @@
+{
+  "#ifdef": {
+    "body": [
+      "/* #ifdef ${1|APP-PLUS,MP,MP-ALIPAY,MP-BAIDU,MP-WEIXIN,MP-QQ,H5|} */",
+      "$0",
+      "/* #endif */"
+    ],
+    "prefix": "ifdef",
+    "scope": "css"
+  },
+  "#ifndef": {
+    "body": [
+      "/* #ifndef ${1|APP-PLUS,MP,MP-ALIPAY,MP-BAIDU,MP-WEIXIN,MP-QQ,H5|} */",
+      "$0",
+      "/* #endif */"
+    ],
+    "prefix": "ifndef",
+    "scope": "css"
+  },
+  "@include": {
+    "body": "@include",
+    "prefix": "@include ",
+    "scope": "scss",
+    "description": "声明使用集合"
+  },
+  "@include-text-ellipsis": {
+    "body": "@include text-ellipsis();",
+    "prefix": "@include text-ellipsis",
+    "scope": "scss",
+    "description": "集合-文字换行处理"
+  },
+  "$_color-primary": {
+    "body": "\\$uni-color-primary",
+    "prefix": "$_color-primary",
+    "scope": "scss",
+    "description": "行为-主题颜色"
+  },
+  "$_color-success": {
+    "body": "\\$uni-color-success",
+    "prefix": "$_color-success",
+    "scope": "scss",
+    "description": "行为-成功颜色"
+  },
+  "$_color-warning": {
+    "body": "\\$uni-color-warning",
+    "prefix": "$_color-warning",
+    "scope": "scss",
+    "description": "行为-警告颜色"
+  },
+  "$_color-error": {
+    "body": "\\$uni-color-error",
+    "prefix": "$_color-error",
+    "scope": "scss",
+    "description": "行为-错误颜色"
+  },
+  "$_text-color": {
+    "body": "\\$uni-text-color",
+    "prefix": "$_text-color",
+    "scope": "scss",
+    "description": "字体颜色-基本"
+  },
+  "$_text-color-inverse": {
+    "body": "\\$uni-text-color-inverse",
+    "prefix": "$_text-color-inverse",
+    "scope": "scss",
+    "description": "字体颜色-反色"
+  },
+  "$_text-color-grey": {
+    "body": "\\$uni-text-color-grey",
+    "prefix": "$_text-color-grey",
+    "scope": "scss",
+    "description": "字体颜色-辅助灰"
+  },
+  "$_text-color-placeholder": {
+    "body": "\\$uni-text-color-placeholder",
+    "prefix": "$_text-color-placeholder",
+    "scope": "scss",
+    "description": "字体颜色-占位符"
+  },
+  "$_text-color-disable": {
+    "body": "\\$uni-text-color-disable",
+    "prefix": "$_text-color-disable",
+    "scope": "scss",
+    "description": "字体颜色-禁用"
+  },
+  "$_bg-color": {
+    "body": "\\$uni-bg-color",
+    "prefix": "$_bg-color",
+    "scope": "scss",
+    "description": "背景-白色"
+  },
+  "$_bg-color-grey": {
+    "body": "\\$uni-bg-color-grey",
+    "prefix": "$_bg-color-grey",
+    "scope": "scss",
+    "description": "背景-灰色"
+  },
+  "$_bg-color-hover": {
+    "body": "\\$uni-bg-color-hover",
+    "prefix": "$_bg-color-hover",
+    "scope": "scss",
+    "description": "背景-点击状态色"
+  },
+  "$_bg-color-mask": {
+    "body": "\\$uni-bg-color-mask",
+    "prefix": "$_bg-color-mask",
+    "scope": "scss",
+    "description": "背景-遮罩色"
+  },
+  "$_font-size-sm": {
+    "body": "\\$uni-font-size-sm",
+    "prefix": "$_font-size-sm",
+    "scope": "scss",
+    "description": "字体尺寸-小"
+  },
+  "$_font-size-base": {
+    "body": "\\$uni-font-size-base",
+    "prefix": "$_font-size-base",
+    "scope": "scss",
+    "description": "字体尺寸-基本"
+  },
+  "$_font-size-lg": {
+    "body": "\\$uni-font-size-lg",
+    "prefix": "$_font-size-lg",
+    "scope": "scss",
+    "description": "字体尺寸-大"
+  },
+  "$_border-radius-sm": {
+    "body": "\\$uni-border-radius-sm",
+    "prefix": "$_border-radius-sm",
+    "scope": "scss",
+    "description": "圆角-小"
+  },
+  "$_border-radius-base": {
+    "body": "\\$uni-border-radius-base",
+    "prefix": "$_border-radius-base",
+    "scope": "scss",
+    "description": "圆角-基本"
+  },
+  "$_border-radius-lg": {
+    "body": "\\$uni-border-radius-lg",
+    "prefix": "$_border-radius-lg",
+    "scope": "scss",
+    "description": "圆角-大"
+  },
+  "$_border-radius-circle": {
+    "body": "\\$uni-border-radius-circle",
+    "prefix": "$_border-radius-circle",
+    "scope": "scss",
+    "description": "圆角-全圆"
+  },
+  "$_spacing-row-sm": {
+    "body": "\\$uni-spacing-row-sm",
+    "prefix": "$_spacing-row-sm",
+    "scope": "scss",
+    "description": "水平间距-小"
+  },
+  "$_spacing-row-base": {
+    "body": "\\$uni-spacing-row-base",
+    "prefix": "$_spacing-row-base",
+    "scope": "scss",
+    "description": "水平间距-基本"
+  },
+  "$_spacing-row-lg": {
+    "body": "\\$uni-spacing-row-lg",
+    "prefix": "$_spacing-row-lg",
+    "scope": "scss",
+    "description": "水平间距-大"
+  },
+  "$_spacing-col-sm": {
+    "body": "\\$uni-spacing-col-sm",
+    "prefix": "$_spacing-col-sm",
+    "scope": "scss",
+    "description": "垂直间距-小"
+  },
+  "$_spacing-col-base": {
+    "body": "\\$uni-spacing-col-base",
+    "prefix": "$_spacing-col-base",
+    "scope": "scss",
+    "description": "垂直间距-基本"
+  },
+  "$_spacing-col-lg": {
+    "body": "\\$uni-spacing-col-lg",
+    "prefix": "$_spacing-col-lg",
+    "scope": "scss",
+    "description": "垂直间距-大"
+  },
+  "$_opacity-disabled": {
+    "body": "\\$uni-opacity-disabled",
+    "prefix": "$_opacity-disabled",
+    "scope": "scss",
+    "description": "透明度-禁用"
+  },
+  "$_color-title": {
+    "body": "\\$uni-color-title",
+    "prefix": "$_color-title",
+    "scope": "scss",
+    "description": "字体颜色-标题"
+  },
+  "$_font-size-title": {
+    "body": "\\$uni-font-size-title",
+    "prefix": "$_font-size-title",
+    "scope": "scss",
+    "description": "字体尺寸-标题"
+  },
+  "$_color-subtitle": {
+    "body": "\\$uni-color-subtitle",
+    "prefix": "$_color-subtitle",
+    "scope": "scss",
+    "description": "字体颜色-二级标题"
+  },
+  "$_font-size-subtitle": {
+    "body": "\\$uni-font-size-subtitle",
+    "prefix": "$_font-size-subtitle",
+    "scope": "scss",
+    "description": "字体尺寸-二级标题"
+  },
+  "$_color-paragraph": {
+    "body": "\\$uni-color-paragraph",
+    "prefix": "$_color-paragraph",
+    "scope": "scss",
+    "description": "字体颜色-文章段落"
+  },
+  "$_font-size-paragraph": {
+    "body": "\\$uni-font-size-paragraph",
+    "prefix": "$_font-size-paragraph",
+    "scope": "scss",
+    "description": "字体尺寸-文章段落"
+  },
+}

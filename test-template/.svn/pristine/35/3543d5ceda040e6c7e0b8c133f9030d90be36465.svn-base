@@ -1,0 +1,428 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+  // 保存时调用 eslint 的自动修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.enable": true,
+  "eslint.validate": [
+    "javascirpt",
+    "typescript"
+  ],
+  "create-uniapp-view.style": "scss",
+  "create-uniapp-view.typescript": true,
+  // json schemas校验配置
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/*pages.json"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "entryPagePath": {
+            "type": "string",
+            "description": "小程序默认启动首页"
+          },
+          "pages": {
+            "type": "array",
+            "description": "页面路径/样式列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "页面路径"
+                },
+                "style": {
+                  "type": "object",
+                  "description": "页面局部样式",
+                  "properties": {
+                    "navigationBarTitleText": {
+                      "type": "string",
+                      "description": "导航栏标题文字内容"
+                    },
+                    "navigationBarBackgroundColor": {
+                      "type": "string",
+                      "description": "导航栏背景颜色，如 #000000"
+                    },
+                    "navigationBarTextStyle": {
+                      "type": "string",
+                      "navigationBarTextStyle": "导航栏标题颜色，仅支持 black / white"
+                    },
+                    "backgroundColor": {
+                      "type": "string",
+                      "description": "窗口的背景色"
+                    },
+                    "backgroundTextStyle": {
+                      "type": "string",
+                      "description": "下拉 loading 的样式，仅支持 dark / light"
+                    },
+                    "navigationBarShadow": {
+                      "type": "object",
+                      "properties": {
+                        "colorType": {
+                          "type": "string",
+                          "description": "阴影的颜色，支持：grey、blue、green、orange、red、yellow"
+                        }
+                      }
+                    },
+                    "navigationStyle": {
+                      "type": "string",
+                      "description": "导航栏样式，仅支持以下值：default(默认样式), custom(自定义导航栏，只保留右上角胶囊按钮)"
+                    },
+                    "disableScroll": {
+                      "type": "boolean",
+                      "description": "设置为 true 则页面整体不能上下滚动（bounce效果）"
+                    },
+                    "enablePullDownRefresh": {
+                      "type": "boolean",
+                      "description": "是否开启全局的下拉刷新。"
+                    },
+                    "onReachBottomDistance": {
+                      "type": "integer",
+                      "description": "页面上拉触底事件触发时距页面底部距离，单位为 px。"
+                    },
+                    "backgroundColorTop": {
+                      "type": "string",
+                      "description": "顶部窗口的背景色，仅 iOS 支持"
+                    },
+                    "backgroundColorBottom": {
+                      "type": "string",
+                      "description": "底部窗口的背景色，仅 iOS 支持"
+                    },
+                    "titleImage": {
+                      "type": "string",
+                      "description": "导航栏图片地址（替换当前文字标题），支付宝小程序内必须使用https的图片链接地址"
+                    },
+                    "transparentTitle": {
+                      "type": "string",
+                      "description": "导航栏整体（前景、背景）透明设置。支持 always 一直透明 / auto 滑动自适应 / none 不透明"
+                    },
+                    "titlePenetrate": {
+                      "type": "string",
+                      "description": "导航栏点击穿透"
+                    },
+                    "pageOrientation": {
+                      "type": "string",
+                      "description": "屏幕旋转设置，支持 auto / portrait / landscape"
+                    },
+                    "animationType": {
+                      "type": "string",
+                      "description": "窗口显示的动画效果"
+                    },
+                    "animationDuration": {
+                      "type": "number",
+                      "description": "窗口显示动画的持续时间，单位为 ms"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "path"
+              ]
+            },
+            "additionalItems": false
+          },
+          "globalStyle": {
+            "type": "object",
+            "description": "全局样式表现",
+            "properties": {
+              "navigationBarTextStyle": {
+                "type": "string",
+                "navigationBarTextStyle": "导航栏标题颜色，仅支持 black / white"
+              },
+              "navigationBarTitleText": {
+                "type": "string",
+                "description": "导航栏标题文字内容"
+              },
+              "navigationBarBackgroundColor": {
+                "type": "string",
+                "description": "导航栏背景颜色，如 #000000"
+              },
+              "backgroundColor": {
+                "type": "string",
+                "description": "窗口的背景色"
+              },
+              "backgroundTextStyle": {
+                "type": "string",
+                "description": "下拉 loading 的样式，仅支持 dark / light"
+              },
+              "backgroundColorTop": {
+                "type": "string",
+                "description": "顶部窗口的背景色，仅 iOS 支持"
+              },
+              "backgroundColorBottom": {
+                "type": "string",
+                "description": "底部窗口的背景色，仅 iOS 支持"
+              },
+              "enablePullDownRefresh": {
+                "type": "boolean",
+                "description": "是否开启全局的下拉刷新。"
+              },
+              "onReachBottomDistance": {
+                "type": "integer",
+                "description": "页面上拉触底事件触发时距页面底部距离，单位为 px。"
+              },
+              "pageOrientation": {
+                "type": "string",
+                "description": "屏幕旋转设置，支持 auto / portrait / landscape"
+              },
+              "navigationStyle": {
+                "type": "string",
+                "description": "导航栏样式，仅支持以下值：default(默认样式), custom(自定义导航栏，只保留右上角胶囊按钮)"
+              },
+              "disableScroll": {
+                "type": "boolean",
+                "description": "设置为 true 则页面整体不能上下滚动（bounce效果）"
+              }
+            },
+            "additionalProperties": false
+          },
+          "tabBar": {
+            "type": "object",
+            "description": "底部 tab 栏的表现",
+            "properties": {
+              "borderStyle": {
+                "type": "string",
+                "description": "tabbar 上边框的颜色， 仅支持 black / white"
+              },
+              "selectedColor": {
+                "type": "string",
+                "description": "tab 上的文字选中时的颜色，仅支持十六进制颜色"
+              },
+              "color": {
+                "type": "string",
+                "description": "tab 上的文字默认颜色，仅支持十六进制颜色"
+              },
+              "backgroundColor": {
+                "type": "string",
+                "description": "tab 的背景色，仅支持十六进制颜色"
+              },
+              "position": {
+                "type": "string",
+                "description": "tabBar 的位置，仅支持 bottom / top"
+              },
+              "custom": {
+                "type": "boolean",
+                "description": "是否开启自定义 tabBar"
+              },
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "pagePath": {
+                      "type": "string",
+                      "description": "页面路径，必须在 pages 中先定义"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "tab 上按钮文字"
+                    },
+                    "iconPath": {
+                      "type": "string",
+                      "description": "图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片。"
+                    },
+                    "selectedIconPath": {
+                      "type": "string",
+                      "description": "选中时的图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片。"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "pagePath",
+                    "text"
+                  ]
+                },
+                "additionalItems": false
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "selectedColor",
+              "color",
+              "backgroundColor",
+              "list"
+            ]
+          },
+          "debug": {
+            "type": "boolean",
+            "description": "是否开启 debug 模式，默认关闭"
+          },
+          "networkTimeout": {
+            "type": "object",
+            "description": "各类网络请求的超时时间，单位均为毫秒。",
+            "properties": {
+              "request": {
+                "type": "integer",
+                "description": "wx.request 的超时时间，单位：毫秒。"
+              },
+              "connectSocket": {
+                "type": "integer",
+                "description": "wx.connectSocket 的超时时间，单位：毫秒。"
+              },
+              "uploadFile": {
+                "type": "integer",
+                "description": "wx.uploadFile 的超时时间，单位：毫秒。"
+              },
+              "downloadFile": {
+                "type": "integer",
+                "description": "wx.downloadFile 的超时时间，单位：毫秒。"
+              }
+            },
+            "additionalProperties": false
+          },
+          "functionalPages": {
+            "type": "boolean",
+            "description": "是否启用插件功能页，默认关闭"
+          },
+          "subpackages": {
+            "type": "array",
+            "description": "分包结构配置",
+            "items": {
+              "type": "object",
+              "properties": {
+                "root": {
+                  "type": "string",
+                  "description": "分包根目录"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "分包别名，分包预下载时可以使用"
+                },
+                "pages": {
+                  "type": "array",
+                  "description": "分包页面路径，相对与分包根目录",
+                  "items": {
+                    "type": "string"
+                  },
+                  "additionalItems": false
+                },
+                "independent": {
+                  "type": "boolean",
+                  "description": "分包是否是独立分包"
+                }
+              },
+              "additionalProperties": false
+            },
+            "additionalItems": false
+          },
+          "workers": {
+            "type": "string",
+            "description": "Worker 代码放置的目录"
+          },
+          "requiredBackgroundModes": {
+            "type": "array",
+            "description": "需要在后台使用的能力，如「音乐播放」(audio)",
+            "items": {
+              "type": "string"
+            },
+            "additionalItems": false
+          },
+          "plugins": {
+            "type": "object",
+            "description": "使用到的插件",
+            "additionalProperties": false
+          },
+          "preloadRule": {
+            "type": "object",
+            "description": "分包预下载规则",
+            "additionalProperties": false
+          },
+          "resizable": {
+            "type": "boolean",
+            "description": "PC 小程序是否支持用户任意改变窗口大小（包括最大化窗口）；iPad 小程序是否支持屏幕旋转。默认关闭"
+          },
+          "usingComponents": {
+            "type": "object",
+            "description": "全局自定义组件配置",
+            "additionalProperties": false
+          },
+          "permission": {
+            "type": "object",
+            "description": "小程序接口权限相关设置",
+            "properties": {
+              "scope.userLocation": {
+                "type": "object",
+                "description": "位置相关权限声明",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "desc"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "description": "指定使用升级后的weui样式"
+          },
+          "useExtendedLib": {
+            "type": "object",
+            "description": "指定需要引用的扩展库",
+            "additionalProperties": false
+          },
+          "entranceDeclare": {
+            "type": "object",
+            "description": "微信消息用小程序打开",
+            "properties": {
+              "locationMessage": {
+                "type": "object",
+                "description": "位置信息",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "页面路径，例如pages/index/index"
+                  },
+                  "query": {
+                    "type": "string",
+                    "description": "查询参数，例如foo=bar"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "path"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "darkmode": {
+            "type": "boolean",
+            "description": "小程序支持 DarkMode"
+          },
+          "themeLocation": {
+            "type": "string",
+            "description": "指明 theme.json 的位置，darkmode为true为必填"
+          },
+          "lazyCodeLoading": {
+            "type": "string",
+            "description": "配置自定义组件代码按需注入"
+          },
+          "singlePage": {
+            "type": "object",
+            "description": "单页模式相关配置",
+            "properties": {
+              "navigationBarFit": {
+                "type": "string",
+                "description": "默认自动调整，若原页面是自定义导航栏，则为 float，否则为 squeezed"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ]
+}

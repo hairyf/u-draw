@@ -1,4 +1,3 @@
-/// <reference types="@dcloudio/types" />
 export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     createImageData: () => ImageData;
     textAlign: CanvasTextDrawingStyles["textAlign"];

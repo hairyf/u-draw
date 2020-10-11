@@ -6,7 +6,8 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import DrawPoster from 'draw-poster';
+import DrawPoster from 'uni-draw-poster';
+
 export default Vue.extend({
   // 周期函数--监听页面初次渲染完成
   async onReady() {

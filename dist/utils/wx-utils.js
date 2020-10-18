@@ -8,15 +8,18 @@ export const downloadImgUrl = (url) => new Promise((resolve, reject) => {
     });
 });
 // 获取node节点
-export const getCanvas2dContext = (selector, componentsThis) => {
+export const getCanvas2dContext = (selector, componentThis) => {
     return new Promise(resolve => {
-        const query = (componentsThis ?
-            gbl.createSelectorQuery().in(componentsThis) :
+        const query = (componentThis ?
+            gbl.createSelectorQuery().in(componentThis) :
             gbl.createSelectorQuery());
         query.select(selector)
             .fields({ node: true }, res => {
             const node = res === null || res === void 0 ? void 0 : res.node;
-            resolve(node);
+            if (!node) {
+                console.warn("注意! 当前绘制模式并非2d绘制, 直接设置canvas.width|canvas.height将没有任何效果!");
+            }
+            resolve(node || {});
         }).exec();
     });
 };

@@ -11,17 +11,20 @@ export const downloadImgUrl = (url: string): Promise<string> =>
   })
 
 // 获取node节点
-export const getCanvas2dContext = (selector: string, componentsThis?: any): Promise<Canvas | undefined> => {
+export const getCanvas2dContext = (selector: string, componentThis?: any): Promise<Canvas | {}> => {
   return new Promise(resolve => {
     const query = (
-      componentsThis ?
-        gbl.createSelectorQuery().in(componentsThis) :
+      componentThis ?
+        gbl.createSelectorQuery().in(componentThis) :
         gbl.createSelectorQuery()
     ) as WechatMiniprogram.SelectorQuery;
     query.select(selector)
       .fields({ node: true }, res => {
-        const node: Canvas | undefined = res?.node
-        resolve(node)
+        const node = res?.node as Canvas | undefined
+        if (!node) {
+          console.warn("注意! 当前绘制模式并非2d绘制, 直接设置canvas.width|canvas.height将没有任何效果!")
+        }
+        resolve(node || {})
       }).exec()
   })
 }

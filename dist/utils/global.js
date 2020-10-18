@@ -1,4 +1,4 @@
-let gbl = null;
+let gbl = undefined;
 const isUni = typeof uni !== "undefined";
 const isWx = typeof wx !== "undefined" && !isUni;
 if (isUni) {

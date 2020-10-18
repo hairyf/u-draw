@@ -1,6 +1,6 @@
 {
   "name": "uni-draw-poster",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "绘制uniapp海报工具类",
   "main": "dist/index.js",
   "files": [

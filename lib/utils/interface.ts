@@ -1,47 +1,38 @@
-// 绘制海报Ctx接口
+/** 绘制换行配置 */
+export interface FillWarpTextOpts {
+  text: string;
+  maxWidth?: number;
+  lineHeight?: number;
+  layer?: number;
+  x?: number;
+  y?: number;
+  notFillText?: boolean;
+}
+
+/** 绘制换行, 单行信息 */
+export interface FillWarpTextItemInfo { text: string; y: number; x: number; }
+
+/** 绘制画笔 */
 export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
   createImageData: () => ImageData
   textAlign: CanvasTextDrawingStyles["textAlign"],
   textBaseline: CanvasTextDrawingStyles["textBaseline"]
   transform: CanvasTransform["transform"]
   /** 等待绘制图片
- * @param  {string} url 网络图片地址(必须)
- * @param  {number} x 绘制x轴位置(必须)
- * @param  {number} y 绘制y轴位置(必须)
- * @param  {number} w 绘制图片宽度(必须)
- * @param  {number} h 绘制图片高度(必须)
- * @returns {Promise} 图片绘制成功时返回true, 需ctx.restore()绘制出实体
- */
+   * 说明文档: https://github.com/TuiMao233/uni-draw-poster#绘制图片
+   */
   drawLoadImage(url: string, x: number, y: number, w: number, h: number): Promise<boolean>;
   /** 绘制换行字体
-   * @param  {string} text 本地图片地址(必须)
-   * @param  {number} x 绘制x轴位置(必须)
-   * @param  {number} y 绘制y轴位置(必须)
-   * @param  {number} width 绘制换行字体的最大宽度(必须)
-   * @param  {number} fontHeight 字体高度(必须)
-   * @param  {number} layer 绘制层数(必须)
-   * @returns {void} 无返回值, 需ctx.restore()绘制出实体
+   * 说明文档: https://github.com/TuiMao233/uni-draw-poster#换行字体
    */
-  fillWarpText(options: {
-    text: string;
-    maxWidth?: number;
-    lineHeight?: number;
-    layer?: number;
-    x?: number;
-    y?: number;
-    notFillText?: boolean;
-  }): Array<{}>;
+  fillWarpText(options: FillWarpTextOpts): Array<FillWarpTextItemInfo>;
   /** 绘制圆角矩形
-   * @param {number} x x坐标轴(必须)
-   * @param {number} y y坐标轴(必须)
-   * @param {number} w 宽度(必须)
-   * @param {number} h 高度(必须)
-   * @param {number} r 圆角半径 默认为0
+   * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
    */
   fillRoundRect(x: number, y: number, w: number, h: number, r: number): void;
 }
 
-// 微信Canvas2d接口
+/** Canvas2d实例 */
 export interface Canvas {
   width: number;
   height: number;
@@ -60,10 +51,10 @@ export interface Canvas {
   toDataURL(type: string, encoderOptions: number): string;
 }
 
-// 绘制容器类型
+/** 绘制容器 */
 export type Execute = Array<() => Promise<boolean>>
 
-// createImagePath配置项
+/** 创建图片路径配置项 */
 export interface CreateImagePathOptions {
   x?: number;
   y?: number;

@@ -1,4 +1,4 @@
-let gbl: UniApp.Uni = null as any;
+let gbl: UniApp.Uni = undefined as any;
 
 const isUni = typeof uni !== "undefined"
 const isWx = typeof wx !== "undefined" && !isUni

@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import gbl from "./utils/global";
 import { getCanvas2dContext } from "./utils";
-import { drawCtxInit } from "./draw-function";
+import { drawCtxMount } from "./draw-function";
 class UniDrawPoster {
     constructor(canvas, ctx, canvasId) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.canvasId = canvasId;
         this.executeOnions = [];
-        /** 绘制器, 接收执行器函数, 添加到绘制器容器中 */
+        /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
         this.draw = (execute) => {
             this.executeOnions.push(() => __awaiter(this, void 0, void 0, function* () {
                 try {
@@ -56,13 +56,13 @@ class UniDrawPoster {
                 gbl.canvasToTempFilePath(options);
             });
         });
-        drawCtxInit(canvas, ctx);
+        drawCtxMount(canvas, ctx);
     }
     /** 构建绘制海报矩形方法, 传入canvas选择器字符串, 返回绘制对象 */
-    static build(selector, componentsThis) {
+    static build(selector, componentThis) {
         return __awaiter(this, void 0, void 0, function* () {
             // 获取canvas实例
-            const canvas = yield getCanvas2dContext(selector, componentsThis);
+            const canvas = yield getCanvas2dContext(selector, componentThis);
             const ctx = ((canvas === null || canvas === void 0 ? void 0 : canvas.getContext("2d")) || gbl.createCanvasContext(selector));
             return new UniDrawPoster(canvas, ctx, selector);
         });

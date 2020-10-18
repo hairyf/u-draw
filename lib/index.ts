@@ -6,26 +6,25 @@ import {
   Execute,
   CreateImagePathOptions
 } from "./utils";
-import { drawCtxInit } from "./draw-function"
+import { drawCtxMount } from "./draw-function"
 class UniDrawPoster {
   private executeOnions = [] as Execute;
   constructor(
     public canvas: Canvas,
     public ctx: DrawPosterCanvasCtx,
     public canvasId: string,
-  ) { drawCtxInit(canvas, ctx) }
+  ) { drawCtxMount(canvas, ctx) }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器字符串, 返回绘制对象 */
-  static async build(selector: string, componentsThis?: any) {
+  static async build(selector: string, componentThis?: any) {
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(selector, componentsThis) as Canvas
+    const canvas = await getCanvas2dContext(selector, componentThis) as Canvas
     const ctx = (
       canvas?.getContext("2d") || gbl.createCanvasContext(selector)
     ) as DrawPosterCanvasCtx
     return new UniDrawPoster(canvas, ctx, selector)
   }
-
-  /** 绘制器, 接收执行器函数, 添加到绘制器容器中 */
+  /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
   draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
     this.executeOnions.push(async () => {
       try {

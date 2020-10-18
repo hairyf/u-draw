@@ -1,5 +1,6 @@
 import { Canvas, downloadImgUrl, DrawPosterCanvasCtx } from './utils'
 
+/** 等待绘制图片原型方法 */
 export const drawLoadImage = async (
   canvas: Canvas | undefined,
   ctx: DrawPosterCanvasCtx,
@@ -8,7 +9,7 @@ export const drawLoadImage = async (
   w: number, h: number,
 ): Promise<boolean> => {
   const path = await downloadImgUrl(url);
-  if (!canvas) {
+  if (!canvas?.createImage) {
     ctx.drawImage(path, x, y, w, h)
     ctx.draw()
     return true
@@ -21,10 +22,12 @@ export const drawLoadImage = async (
         ctx.drawImage(path, x, y, w, h)
         resolve(true)
       }
+      image.onerror = () => resolve(false)
     })
   }
 }
 
+/** 绘制换行字体原型方法 */
 export const fillWarpText = (
   ctx: DrawPosterCanvasCtx,
   text: string,
@@ -97,6 +100,7 @@ export const fillWarpText = (
   return drawInfo;
 }
 
+/** 绘制圆角矩形原型方法 */
 export const fillRoundRect = (
   ctx: DrawPosterCanvasCtx,
   x: number, y: number,
@@ -136,7 +140,8 @@ export const fillRoundRect = (
   ctx.closePath();
 }
 
-export const drawCtxInit = (canvas: Canvas, ctx: DrawPosterCanvasCtx) => {
+/** 绘制画笔初始化挂载 */
+export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCtx) => {
   ctx.drawLoadImage = (
     url: string,
     x: number,

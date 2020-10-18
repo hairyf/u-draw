@@ -8,9 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { downloadImgUrl } from './utils';
+/** 等待绘制图片原型方法 */
 export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, void 0, void 0, function* () {
     const path = yield downloadImgUrl(url);
-    if (!canvas) {
+    if (!(canvas === null || canvas === void 0 ? void 0 : canvas.createImage)) {
         ctx.drawImage(path, x, y, w, h);
         ctx.draw();
         return true;
@@ -24,9 +25,11 @@ export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0,
                 ctx.drawImage(path, x, y, w, h);
                 resolve(true);
             };
+            image.onerror = () => resolve(false);
         });
     }
 });
+/** 绘制换行字体原型方法 */
 export const fillWarpText = (ctx, text, maxWidth = 100, layer = 2, lineHeight = Number(ctx.font.replace(/[^0-9.]/g, '')), x = 0, y = lineHeight / 1.2, notFillText) => {
     // 当字符串为空时, 抛出错误
     if (!text.length) {
@@ -88,6 +91,7 @@ export const fillWarpText = (ctx, text, maxWidth = 100, layer = 2, lineHeight = 
     });
     return drawInfo;
 };
+/** 绘制圆角矩形原型方法 */
 export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
     if (w < 2 * r) {
         r = w / 2;
@@ -117,7 +121,8 @@ export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
     // 剪裁
     ctx.closePath();
 };
-export const drawCtxInit = (canvas, ctx) => {
+/** 绘制画笔初始化挂载 */
+export const drawCtxMount = (canvas, ctx) => {
     ctx.drawLoadImage = (url, x, y, w, h) => {
         return drawLoadImage(canvas, ctx, url, x, y, w, h);
     };

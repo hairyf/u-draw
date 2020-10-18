@@ -22,11 +22,9 @@ const drawPoster = await DrawPoster.build("#canvas")
 ## 2. 设置画布尺寸
 
 ~~~js
-// 获取rpx单位
-const rpx = drawPoster.rpx
-// 设置长高为100rpx的矩形宽高
-drawPoster.node.width = 100*rpx
-drawPoster.node.height = 100*rpx
+// 设置长高为100px的矩形宽高
+drawPoster.node.width = 100
+drawPoster.node.height = 100
 ~~~
 
 ## 3. 绘制任意内容
@@ -71,7 +69,7 @@ const posterImgUrl = await drawPoster.createImagePath();
 console.log("draw绘制状况:", result);
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
-你也可以不使用`drawPoster.awaitCreate`方法，当调用`drawPoster.createImgUrl`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
+你也可以不使用`drawPoster.awaitCreate`方法，当调用`drawPoster.createImagePath`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
 
 ~~~js
 drawPoster.draw(async (ctx) => {/* ... */})
@@ -98,10 +96,10 @@ drawPoster.createImagePath({
 ## 使用解析赋值创建海报
 
 ~~~js
-const { node, draw, awaitCreate, createImgUrl } = await DrawPoster.build("#canvas");
+const { canvas, draw, awaitCreate, createImagePath } = await DrawPoster.build("#canvas");
 // 设置尺寸
-node.width = 100;
-node.height = 100;
+canvas.width = 100;
+canvas.height = 100;
 // 进行绘制
 draw(async (ctx) => {/* ... */})
 draw(async (ctx) => {/* ... */})
@@ -169,7 +167,7 @@ drawPoster.draw(async (ctx)=>{
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
- /** ctx.roundRect(x, y, w, h, r)
+ /** ctx的圆角矩形方法
    * @param {number} x x坐标轴(必须)
    * @param {number} y y坐标轴(必须)
    * @param {number} w 宽度(必须)

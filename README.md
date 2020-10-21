@@ -20,7 +20,11 @@ const drawPoster = await DrawPoster.build("#canvas")
 ~~~
 
 ## 2. 设置画布尺寸
+<<<<<<< HEAD
 注意：绘制模式并不是2d模式时，设置属性将不生效
+=======
+在2d接口中设置画布宽高，在非2d接口中设置将不生效。
+>>>>>>> 5546e96a0d4cbf574fce04c0ef3f6094b915634a
 ~~~js
 // 设置长高为100px的矩形宽高
 drawPoster.node.width = 100

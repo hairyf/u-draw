@@ -20,7 +20,7 @@ const drawPoster = await DrawPoster.build("#canvas")
 ~~~
 
 ## 2. 设置画布尺寸
-
+注意：绘制模式并不是2d模式时，设置属性将不生效
 ~~~js
 // 设置长高为100px的矩形宽高
 drawPoster.node.width = 100
@@ -121,7 +121,7 @@ console.log("绘制生成本地地址:", posterImgUrl); // 制生成本地地址
 drawPoster.draw(async (ctx)=>{
     const headImgUrl = "https://pshangcheng.wsandos.com/pic/15946033604872"
  /** ctx的等待绘制图片方法
-   * @param  {string} url 网络图片地址(必须)
+   * @param  {string} url 本地/图片地址(必须)
    * @param  {number} x 绘制x轴位置(必须)
    * @param  {number} y 绘制y轴位置(必须)
    * @param  {number} w 绘制图片宽度(必须)
@@ -139,12 +139,12 @@ drawPoster.draw(async (ctx)=>{
 ~~~
 [^注意]:需要添加域名才能绘制成功！
 
-## 绘制换行字体
+## 换行字体
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
  /** ctx的绘制换行字体方法
-   * @param  {string} text 本地图片地址(必须)
+   * @param  {string} text 绘制内容(必须)
    * @param  {number} maxWidth 绘制换行字体的最大宽度(必须)
    * @param  {number} fontHeight 字体高度(必须)
    * @param  {number} layer 绘制层数(必须)
@@ -163,7 +163,7 @@ drawPoster.draw(async (ctx)=>{
 })
 ~~~
 
-## 绘制圆角矩形
+## 圆角矩形
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
@@ -172,11 +172,28 @@ drawPoster.draw(async (ctx)=>{
    * @param {number} y y坐标轴(必须)
    * @param {number} w 宽度(必须)
    * @param {number} h 高度(必须)
-   * @param {number} r 圆角半径 默认为0
+   * @param {number} r 圆角半径 默认为15
    */
    // 设置矩形颜色
    ctx.fillStyle = "#fff";
    // 进行绘制
    ctx.fillRoundRect(15, 179, 345, 365.5, 10);
 })
+~~~
+
+## 圆角图片
+
+~~~js
+drawPoster.draw(async (ctx) => {
+  const headImgUrl = "https://pshangcheng.wsandos.com/pic/15946033604872"
+  /** ctx的圆角矩形方法
+   * @param {string} url 本地/网络地址
+   * @param {number} x x坐标轴(必须)
+   * @param {number} y y坐标轴(必须)
+   * @param {number} w 宽度(必须)
+   * @param {number} h 高度(必须)
+   * @param {number} r 圆角半径 默认为15
+   */
+  await ctx.drawRoundImage(headImgUrl, 0, 0, 100, 100, 50);
+});
 ~~~

@@ -7,7 +7,7 @@ import {
   CreateImagePathOptions
 } from "./utils";
 import { drawCtxMount } from "./draw-function"
-class UniDrawPoster {
+class DrawPoster {
   private executeOnions = [] as Execute;
   constructor(
     public canvas: Canvas,
@@ -20,9 +20,9 @@ class UniDrawPoster {
     // 获取canvas实例
     const canvas = await getCanvas2dContext(selector, componentThis) as Canvas
     const ctx = (
-      canvas?.getContext("2d") || gbl.createCanvasContext(selector)
+      canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector)
     ) as DrawPosterCanvasCtx
-    return new UniDrawPoster(canvas, ctx, selector)
+    return new DrawPoster(canvas, ctx, selector)
   }
   /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
   draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
@@ -47,6 +47,13 @@ class UniDrawPoster {
       result.push(await execute())
     }
     this.executeOnions = []
+    if (!!this.ctx.draw){
+      return await new Promise((resolve)=> {
+        setTimeout(()=> {
+          this.ctx.draw(true, ()=> resolve(result))
+        })
+      })
+    }
     return result
   }
 
@@ -65,14 +72,14 @@ class UniDrawPoster {
         fail: (err) => reject(err),
         ...baseOptions
       };
-      if (canvas) {
-        options.canvas = canvas
-      } else {
+      if (!canvas.createImage) {
         options.canvasId = canvasId
+      } else {
+        options.canvas = canvas
       }
-      gbl.canvasToTempFilePath(options as any);
+      gbl.canvasToTempFilePath(options as any)
     })
   }
 }
 
-export default UniDrawPoster;
+export default DrawPoster;

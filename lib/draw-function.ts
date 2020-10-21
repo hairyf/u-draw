@@ -8,14 +8,14 @@ export const drawLoadImage = async (
   x: number, y: number,
   w: number, h: number,
 ): Promise<boolean> => {
-  const path = await downloadImgUrl(url);
+  const path = await downloadImgUrl(url)
+  let result = false
   if (!canvas?.createImage) {
     ctx.drawImage(path, x, y, w, h)
-    ctx.draw()
-    return true
+    result = true
   } else {
     // canvas2d 绘制图片
-    return new Promise(resolve => {
+    result = await new Promise(resolve => {
       const image = canvas.createImage()
       image.src = path
       image.onload = () => {
@@ -25,6 +25,7 @@ export const drawLoadImage = async (
       image.onerror = () => resolve(false)
     })
   }
+  return result
 }
 
 /** 绘制换行字体原型方法 */
@@ -115,7 +116,6 @@ export const fillRoundRect = (
   }
   // 开始绘制
   ctx.beginPath();
-
   ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5);
   // 移动复制
   ctx.moveTo(x + r, y);
@@ -140,16 +140,23 @@ export const fillRoundRect = (
   ctx.closePath();
 }
 
+/** 绘制圆角图片原型方法 */
+export const drawRoundImage = async (
+  ctx: DrawPosterCanvasCtx,
+  url: string,
+  x: number, y: number,
+  w: number, h: number,
+  r = 15
+) => {
+  ctx.setFillStyle?.('transparent')
+  ctx.fillStyle = 'transparent'
+  ctx.fillRoundRect(x, y, w, h, r)
+  ctx.clip()
+  return await ctx.drawLoadImage(url, x, y, w, h)
+}
+
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCtx) => {
-  ctx.drawLoadImage = (
-    url: string,
-    x: number,
-    y: number,
-    w: number,
-    h: number) => {
-    return drawLoadImage(canvas, ctx, url, x, y, w, h)
-  }
   ctx.fillWarpText = (options) => fillWarpText(
     ctx,
     options.text,
@@ -160,5 +167,14 @@ export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCt
     options.y,
     options.notFillText
   )
+  ctx.drawLoadImage = (
+    url: string,
+    x: number,
+    y: number,
+    w: number,
+    h: number) => {
+    return drawLoadImage(canvas, ctx, url, x, y, w, h)
+  }
   ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r)
+  ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r)
 }

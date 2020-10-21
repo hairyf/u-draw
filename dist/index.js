@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import gbl from "./utils/global";
 import { getCanvas2dContext } from "./utils";
 import { drawCtxMount } from "./draw-function";
-class UniDrawPoster {
+class DrawPoster {
     constructor(canvas, ctx, canvasId) {
         this.canvas = canvas;
         this.ctx = ctx;
@@ -64,8 +64,8 @@ class UniDrawPoster {
             // 获取canvas实例
             const canvas = yield getCanvas2dContext(selector, componentThis);
             const ctx = ((canvas === null || canvas === void 0 ? void 0 : canvas.getContext("2d")) || gbl.createCanvasContext(selector));
-            return new UniDrawPoster(canvas, ctx, selector);
+            return new DrawPoster(canvas, ctx, selector);
         });
     }
 }
-export default UniDrawPoster;
+export default DrawPoster;

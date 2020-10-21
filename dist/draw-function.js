@@ -11,14 +11,15 @@ import { downloadImgUrl } from './utils';
 /** 等待绘制图片原型方法 */
 export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, void 0, void 0, function* () {
     const path = yield downloadImgUrl(url);
+    let result = false;
     if (!(canvas === null || canvas === void 0 ? void 0 : canvas.createImage)) {
         ctx.drawImage(path, x, y, w, h);
         ctx.draw();
-        return true;
+        result = true;
     }
     else {
         // canvas2d 绘制图片
-        return new Promise(resolve => {
+        result = yield new Promise(resolve => {
             const image = canvas.createImage();
             image.src = path;
             image.onload = () => {
@@ -28,6 +29,7 @@ export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0,
             image.onerror = () => resolve(false);
         });
     }
+    return result;
 });
 /** 绘制换行字体原型方法 */
 export const fillWarpText = (ctx, text, maxWidth = 100, layer = 2, lineHeight = Number(ctx.font.replace(/[^0-9.]/g, '')), x = 0, y = lineHeight / 1.2, notFillText) => {
@@ -121,11 +123,16 @@ export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
     // 剪裁
     ctx.closePath();
 };
+/** 绘制圆角图片方法 */
+export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => {
+    ctx.fillRoundRect(x, y, w, h, r);
+    ctx.drawLoadImage(url, x, y, w, h);
+};
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas, ctx) => {
+    ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
     ctx.drawLoadImage = (url, x, y, w, h) => {
         return drawLoadImage(canvas, ctx, url, x, y, w, h);
     };
-    ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
     ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r);
 };

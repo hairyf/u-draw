@@ -1,7 +1,11 @@
 <template>
   <div class="index">
     <div>canvas2d:</div>
-    <canvas type="2d" id="canvas" style="width: 200px; height: 200px"></canvas>
+    <canvas
+      canvas-id="canvas"
+      id="canvas"
+      style="width: 200px; height: 200px"
+    ></canvas>
   </div>
 </template>
 <script lang="ts">
@@ -11,16 +15,35 @@ import DrawPoster from 'uni-draw-poster';
 export default Vue.extend({
   // 周期函数--监听页面初次渲染完成
   async onReady() {
-    const drawPoster = await DrawPoster.build('#canvas');
+    const drawPoster = await DrawPoster.build('canvas');
     drawPoster.canvas.width = 200;
     drawPoster.canvas.height = 200;
     drawPoster.draw((ctx) => {
-      ctx.fillStyle = 'grey'; // 填充颜色
-      ctx.fillRect(0, 0, 200, 200);
-      ctx.restore();
-      ctx.fillWarpText({
-        text: 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
+      ctx.setStrokeStyle('#00ff00');
+      ctx.setLineWidth(5);
+      ctx.rect(0, 0, 200, 200);
+      ctx.stroke();
+      ctx.setStrokeStyle('#ff0000');
+      ctx.setLineWidth(2);
+      ctx.moveTo(160, 100);
+      ctx.arc(100, 100, 60, 0, 2 * Math.PI, true);
+      ctx.moveTo(140, 100);
+      ctx.arc(100, 100, 40, 0, Math.PI, false);
+      ctx.moveTo(85, 80);
+      ctx.arc(80, 80, 5, 0, 2 * Math.PI, true);
+      ctx.moveTo(125, 80);
+      ctx.arc(120, 80, 5, 0, 2 * Math.PI, true);
+      ctx.stroke();
+    });
+    drawPoster.draw(async (ctx) => {
+      const url: string = await new Promise((resolve) => {
+        uni.chooseImage({
+          success(res) {
+            resolve(res.tempFilePaths[0]);
+          },
+        });
       });
+      await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
     });
     console.log('绘制结果: ', await drawPoster.awaitCreate());
     console.log('创建路径: ', await drawPoster.createImagePath());

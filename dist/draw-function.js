@@ -9,12 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { downloadImgUrl } from './utils';
 /** 等待绘制图片原型方法 */
-export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, void 0, void 0, function* () {
+export const drawImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, void 0, void 0, function* () {
     const path = yield downloadImgUrl(url);
     let result = false;
     if (!(canvas === null || canvas === void 0 ? void 0 : canvas.createImage)) {
-        ctx.drawImage(path, x, y, w, h);
-        ctx.draw();
+        ctx.oldDrawImage(path, x, y, w, h);
         result = true;
     }
     else {
@@ -23,7 +22,7 @@ export const drawLoadImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0,
             const image = canvas.createImage();
             image.src = path;
             image.onload = () => {
-                ctx.drawImage(path, x, y, w, h);
+                ctx.oldDrawImage(path, x, y, w, h);
                 resolve(true);
             };
             image.onerror = () => resolve(false);
@@ -123,16 +122,22 @@ export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
     // 剪裁
     ctx.closePath();
 };
-/** 绘制圆角图片方法 */
-export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => {
+/** 绘制圆角图片原型方法 */
+export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    (_a = ctx.setFillStyle) === null || _a === void 0 ? void 0 : _a.call(ctx, 'transparent');
+    ctx.fillStyle = 'transparent';
     ctx.fillRoundRect(x, y, w, h, r);
-    ctx.drawLoadImage(url, x, y, w, h);
-};
+    ctx.clip();
+    return yield ctx.drawImage(url, x, y, w, h);
+});
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas, ctx) => {
     ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
-    ctx.drawLoadImage = (url, x, y, w, h) => {
-        return drawLoadImage(canvas, ctx, url, x, y, w, h);
+    ctx.oldDrawImage = ctx.drawImage;
+    ctx.drawImage = (url, x, y, w, h) => {
+        return drawImage(canvas, ctx, url, x, y, w, h);
     };
     ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r);
+    ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r);
 };

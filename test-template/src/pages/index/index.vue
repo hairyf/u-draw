@@ -13,6 +13,7 @@ import Vue from 'vue';
 import DrawPoster from 'uni-draw-poster';
 
 export default Vue.extend({
+  data: () => ({}),
   // 周期函数--监听页面初次渲染完成
   async onReady() {
     const drawPoster = await DrawPoster.build('canvas');
@@ -36,14 +37,8 @@ export default Vue.extend({
       ctx.stroke();
     });
     drawPoster.draw(async (ctx) => {
-      const url: string = await new Promise((resolve) => {
-        uni.chooseImage({
-          success(res) {
-            resolve(res.tempFilePaths[0]);
-          },
-        });
-      });
-      await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
+      await ctx.drawRoundImage('static/logo.png', 0, 0, 100, 100, 50);
+      // await ctx.drawImage('static/logo.png', 0, 0, 100, 100);
     });
     console.log('绘制结果: ', await drawPoster.awaitCreate());
     console.log('创建路径: ', await drawPoster.createImagePath());

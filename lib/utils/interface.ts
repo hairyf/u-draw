@@ -18,10 +18,11 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
   textAlign: CanvasTextDrawingStyles["textAlign"],
   textBaseline: CanvasTextDrawingStyles["textBaseline"]
   transform: CanvasTransform["transform"]
+  oldDrawImage: UniApp.CanvasContext['drawImage']
   /** 等待绘制图片
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#绘制图片
    */
-  drawLoadImage(url: string, x: number, y: number, w: number, h: number): Promise<boolean>;
+  drawImage(url: string, x: number, y: number, w: number, h: number): Promise<boolean>;
   /** 绘制换行字体
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#换行字体
    */

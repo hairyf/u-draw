@@ -28,7 +28,6 @@ drawPoster.node.height = 100
 ~~~
 
 ## 3. 绘制任意内容
-
 `drawPoster.draw(async callback(ctx))`
 
 ~~~js
@@ -44,11 +43,18 @@ drawPoster.draw(async (ctx) => {
     ctx.fillText('周先生', drawPoster.node.width/2, 38.5);
 })
 ~~~
-
+值得注意的是, draw方法会自动的执行ctx.save/ctx.restore, 不需要人为操纵绘画栈.
+~~~js
+drawPoster.draw(async (ctx) => {/* ... */})
+// 相当于
+ctx.save()
+/* ... */
+ctx.restore()
+~~~
 ## 4. 进行绘制
 
-需要注意的是，`drawPoster.draw`并不会马上绘制，只是将该任务添加到了任务栈，需要使用`drawPoster.awaitCreate`函数进行绘制，该函数在绘制完毕后将弹出所有任务。
-
+`drawPoster.draw`并不会马上绘制，只是将该任务添加到了任务栈，需要使用`drawPoster.awaitCreate`函数进行绘制，该函数在绘制完毕后将弹出所有任务。
+`drawPoster.awaitCreate`在非2d绘画中，执行绘画任务完毕后，将自动执行ctx.draw方法，并在draw绘画才算异步结束。
 ~~~js
 drawPoster.draw(async (ctx) => {/* ... */})
 // 由于每个任务都有可能会有异步的绘制任务, 所以得需要使用await等待绘制
@@ -111,15 +117,16 @@ console.log("绘制生成本地地址:", posterImgUrl); // 制生成本地地址
 
 # ctx 扩展方法
 
-`drawPoster`在创建时，会自动的向`ctx(画笔)`添加扩展方法，以便构建海报矩形。
+`drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
 
 ## 绘制图片
 
-`drawPoster`绘制图片与原生绘制不相同，`ctx.loadDrawImage`内部已经内置了`downloadFile`，只需要传入网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。
+`drawPoster`绘制图片与原生绘制不相同，`ctx.drawImage`内部已经内置了`downloadFile`，只需要传入本地/网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。
 
 ~~~js
 drawPoster.draw(async (ctx)=>{
-    const headImgUrl = "https://pshangcheng.wsandos.com/pic/15946033604872"
+    const url = "static/logo.png"
+    // const url = "https://...."
  /** ctx的等待绘制图片方法
    * @param  {string} url 本地/图片地址(必须)
    * @param  {number} x 绘制x轴位置(必须)
@@ -128,13 +135,7 @@ drawPoster.draw(async (ctx)=>{
    * @param  {number} h 绘制图片高度(必须)
    * @returns {Promise} 图片绘制成功时返回true, 需要在draw函数中调用
    */
-    await ctx.drawLoadImage(
-      headImgUrl,
-      88,
-      174.94,
-      198.98, 
-      36
-    );
+    await ctx.drawImage(url, 88, 174.94, 198.98, 36);
 })
 ~~~
 [^注意]:需要添加域名才能绘制成功！
@@ -185,7 +186,8 @@ drawPoster.draw(async (ctx)=>{
 
 ~~~js
 drawPoster.draw(async (ctx) => {
-  const headImgUrl = "https://pshangcheng.wsandos.com/pic/15946033604872"
+  const url = "static/logo.png"
+  // const url = "https://...."
   /** ctx的圆角矩形方法
    * @param {string} url 本地/网络地址
    * @param {number} x x坐标轴(必须)
@@ -194,6 +196,6 @@ drawPoster.draw(async (ctx) => {
    * @param {number} h 高度(必须)
    * @param {number} r 圆角半径 默认为15
    */
-  await ctx.drawRoundImage(headImgUrl, 0, 0, 100, 100, 50);
+  await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
 });
 ~~~

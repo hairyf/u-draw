@@ -1,7 +1,7 @@
 import { Canvas, downloadImgUrl, DrawPosterCanvasCtx } from './utils'
 
 /** 等待绘制图片原型方法 */
-export const drawLoadImage = async (
+export const drawImage = async (
   canvas: Canvas | undefined,
   ctx: DrawPosterCanvasCtx,
   url: string,
@@ -11,7 +11,7 @@ export const drawLoadImage = async (
   const path = await downloadImgUrl(url)
   let result = false
   if (!canvas?.createImage) {
-    ctx.drawImage(path, x, y, w, h)
+    ctx.oldDrawImage(path, x, y, w, h)
     result = true
   } else {
     // canvas2d 绘制图片
@@ -19,7 +19,7 @@ export const drawLoadImage = async (
       const image = canvas.createImage()
       image.src = path
       image.onload = () => {
-        ctx.drawImage(path, x, y, w, h)
+        ctx.oldDrawImage(path, x, y, w, h)
         resolve(true)
       }
       image.onerror = () => resolve(false)
@@ -152,7 +152,7 @@ export const drawRoundImage = async (
   ctx.fillStyle = 'transparent'
   ctx.fillRoundRect(x, y, w, h, r)
   ctx.clip()
-  return await ctx.drawLoadImage(url, x, y, w, h)
+  return await ctx.drawImage(url, x, y, w, h)
 }
 
 /** 绘制画笔初始化挂载 */
@@ -167,13 +167,14 @@ export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCt
     options.y,
     options.notFillText
   )
-  ctx.drawLoadImage = (
+  ctx.oldDrawImage = ctx.drawImage
+  ctx.drawImage = (
     url: string,
     x: number,
     y: number,
     w: number,
     h: number) => {
-    return drawLoadImage(canvas, ctx, url, x, y, w, h)
+    return drawImage(canvas, ctx, url, x, y, w, h)
   }
   ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r)
   ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r)

@@ -1,47 +1,56 @@
 <template>
   <div class="index">
-    <div>canvas2d:</div>
     <canvas
       canvas-id="canvas"
       id="canvas"
-      style="width: 200px; height: 200px"
+      style="width: 400px; height: 400px"
     ></canvas>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import DrawPoster from 'uni-draw-poster';
+import { DrawAnimation } from 'uni-draw-poster';
 
 export default Vue.extend({
   data: () => ({}),
   // 周期函数--监听页面初次渲染完成
   async onReady() {
-    const drawPoster = await DrawPoster.build('canvas');
-    drawPoster.canvas.width = 200;
-    drawPoster.canvas.height = 200;
-    drawPoster.draw((ctx) => {
-      ctx.setStrokeStyle('#00ff00');
-      ctx.setLineWidth(5);
-      ctx.rect(0, 0, 200, 200);
-      ctx.stroke();
-      ctx.setStrokeStyle('#ff0000');
-      ctx.setLineWidth(2);
-      ctx.moveTo(160, 100);
-      ctx.arc(100, 100, 60, 0, 2 * Math.PI, true);
-      ctx.moveTo(140, 100);
-      ctx.arc(100, 100, 40, 0, Math.PI, false);
-      ctx.moveTo(85, 80);
-      ctx.arc(80, 80, 5, 0, 2 * Math.PI, true);
-      ctx.moveTo(125, 80);
-      ctx.arc(120, 80, 5, 0, 2 * Math.PI, true);
-      ctx.stroke();
+    const drawAnim = await DrawAnimation.build('canvas');
+    drawAnim.canvas.width = 400;
+    drawAnim.canvas.height = 400;
+    const draw = drawAnim.anim({
+      // 注入器
+      inject: () => ({
+        alp: 1, // 初始透明度
+        r: 0, // 初始半径
+        x: Math.floor(Math.random() * drawAnim.canvas.width), // x坐标轴随机
+        y: Math.floor(Math.random() * drawAnim.canvas.height), // y坐标轴随机
+        red: Math.round(Math.random() * 255), // 红
+        green: Math.round(Math.random() * 255), // 黄
+        blue: Math.round(Math.random() * 255), // 蓝
+      }),
+      // 变化器
+      changer: (item, index, array) => {
+        // 清除器：当圆透明度为负数时 清除数组的第i位
+        if (item.alp <= 0) {
+          array.splice(index, 1);
+        }
+        item.r++;
+        item.alp -= 0.01;
+      },
+      // 绘制器循环前初始化
+      plotterInit: (ctx) => {
+        ctx.clearRect(0, 0, drawAnim.canvas.width, drawAnim.canvas.height);
+      },
+      // 绘制器
+      plotter: (ctx, item) => {
+        ctx.fillStyle = `rgba(${item.red},${item.green},${item.blue},${item.alp})`;
+        ctx.beginPath(); // 清空路径
+        ctx.arc(item.x, item.y, item.r, 0, 2 * Math.PI); // 创建圆弧路径
+        ctx.fill(); // 进行绘制
+      },
     });
-    drawPoster.draw(async (ctx) => {
-      await ctx.drawRoundImage('static/logo.png', 0, 0, 100, 100, 50);
-      // await ctx.drawImage('static/logo.png', 0, 0, 100, 100);
-    });
-    console.log('绘制结果: ', await drawPoster.awaitCreate());
-    console.log('创建路径: ', await drawPoster.createImagePath());
+    draw.play();
   },
   // 周期函数--监听页面显示
   onShow() {},
@@ -60,4 +69,14 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+page,
+.index {
+  height: 100%;
+}
+.index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

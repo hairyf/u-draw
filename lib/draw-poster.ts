@@ -24,6 +24,7 @@ class DrawPoster {
     ) as DrawPosterCanvasCtx
     return new DrawPoster(canvas, ctx, selector)
   }
+
   /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
   draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
     this.executeOnions.push(async () => {

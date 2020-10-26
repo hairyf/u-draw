@@ -1,4 +1,4 @@
-![](docs/logo.png)
+![](docs/logoo.png)
 
 # uni-draw-poster 绘制海报工具
 

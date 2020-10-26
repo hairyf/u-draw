@@ -1,4 +1,4 @@
-<img src="docs/logo.png" style="zoom: 67%;" />
+<img src="docs/logo.png" style="zoom: 67%;" style="margin: 0 auto; display: block" />
 
 # uni-draw-poster 绘制海报工具
 

@@ -157,6 +157,15 @@ export const drawRoundImage = async (
 
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCtx) => {
+  ctx.oldDrawImage = ctx.drawImage
+  ctx.drawImage = (
+    url: string,
+    x: number,
+    y: number,
+    w: number,
+    h: number) => {
+    return drawImage(canvas, ctx, url, x, y, w, h)
+  }
   ctx.fillWarpText = (options) => fillWarpText(
     ctx,
     options.text,
@@ -167,15 +176,6 @@ export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCt
     options.y,
     options.notFillText
   )
-  ctx.oldDrawImage = ctx.drawImage
-  ctx.drawImage = (
-    url: string,
-    x: number,
-    y: number,
-    w: number,
-    h: number) => {
-    return drawImage(canvas, ctx, url, x, y, w, h)
-  }
   ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r)
   ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r)
 }

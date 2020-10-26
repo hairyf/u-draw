@@ -1,5 +1,5 @@
 module.exports = {
-  transpileDependencies: ['luch-request'],
+  transpileDependencies: ['luch-request', 'uni-draw-poster'],
   // 资源基本路径
   publicPath: './',
   // 配置 webpack-dev-server 行为。

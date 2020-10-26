@@ -44,8 +44,11 @@ export function calcul(status: string | number, ...args: [string]) {
   return typeof findRes !== 'undefined';
 }
 // 地址参数计算
-export const paramsAnaly = (url: string, params: Record<string, any>) => {
-  const queryStr = Object.keys(params).map((key) => `${key}=${params[key]}`);
+export const paramsAnaly = (url: string, params?: Record<string, any>) => {
+  params = params || {};
+  const queryStr = Object.keys(params).map(
+    (key) => `${key}=${(params as any)[key]}`
+  );
   if (queryStr.length > 0) {
     url += '?' + queryStr.join('&');
   }

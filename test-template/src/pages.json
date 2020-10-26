@@ -5,6 +5,30 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path": "pages/baseAnim/baseAnim",
+			"style": {
+				"navigationBarTitleText": "baseAnim"
+			}
+		},
+		{
+			"path": "pages/baseDp/baseDp",
+			"style": {
+				"navigationBarTitleText": "baseDp"
+			}
+		},
+		{
+			"path": "pages/imageDp/imageDp",
+			"style": {
+				"navigationBarTitleText": "imageDp"
+			}
+		},
+		{
+			"path": "pages/warpTextDp/warpTextDp",
+			"style": {
+				"navigationBarTitleText": "warpTextDp"
+			}
 		}
 	],
 	"globalStyle": {

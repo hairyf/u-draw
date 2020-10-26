@@ -60,7 +60,7 @@
     "form-strategy": "^1.1.5",
     "luch-request": "^3.0.4",
     "regenerator-runtime": "^0.12.1",
-    "uni-draw-poster": "^1.0.2",
+    "uni-draw-poster": "^1.0.48",
     "vue": "^2.6.11",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^8.0.0",

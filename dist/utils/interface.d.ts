@@ -1,4 +1,13 @@
 /// <reference types="@dcloudio/types" />
+/** 构建器配置 */
+export interface DrawPosterBuildOpts {
+    /** 查询选择器; 注意不需要加# */
+    selector: string;
+    /** 选取组件范围 */
+    componentThis?: any;
+    /** 绘制类型为2d绘制, 默认开启, 在微信小程序的时候动态加载 */
+    type2d?: boolean;
+}
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {
     text: string;

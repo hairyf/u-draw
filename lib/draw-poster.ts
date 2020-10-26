@@ -4,9 +4,11 @@ import {
   DrawPosterCanvasCtx,
   getCanvas2dContext,
   Execute,
-  CreateImagePathOptions
+  CreateImagePathOptions,
+  DrawPosterBuildOpts
 } from "./utils";
 import { drawCtxMount } from "./draw-function"
+import { handleBuildOpts } from "./utils/utils";
 class DrawPoster {
   private executeOnions = [] as Execute;
   constructor(
@@ -15,13 +17,15 @@ class DrawPoster {
     public canvasId: string,
   ) { drawCtxMount(canvas, ctx) }
 
-  /** 构建绘制海报矩形方法, 传入canvas选择器字符串, 返回绘制对象 */
-  static async build(selector: string, componentThis?: any) {
+  /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
+  static async build(options: string | DrawPosterBuildOpts) {
+    const { selector, componentThis } = handleBuildOpts(options)
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(selector, componentThis) as Canvas
+    const canvas = await getCanvas2dContext(selector) as Canvas
     const ctx = (
-      canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector)
+      canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector, componentThis)
     ) as DrawPosterCanvasCtx
+    console.log("draw-poster构建成功: ", {canvas, ctx, selector})
     return new DrawPoster(canvas, ctx, selector)
   }
 
@@ -48,10 +52,12 @@ class DrawPoster {
       result.push(await execute())
     }
     this.executeOnions = []
-    if (!!this.ctx.draw){
-      return await new Promise((resolve)=> {
-        setTimeout(()=> {
-          this.ctx.draw(true, ()=> resolve(result))
+    if (!!this.ctx.draw) {
+      return await new Promise((resolve) => {
+        setTimeout(() => {
+          this.ctx.draw(true, () => {
+            resolve(result)
+          })
         })
       })
     }

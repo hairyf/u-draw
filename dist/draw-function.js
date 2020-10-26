@@ -133,11 +133,11 @@ export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0
 });
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas, ctx) => {
-    ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
     ctx.oldDrawImage = ctx.drawImage;
     ctx.drawImage = (url, x, y, w, h) => {
         return drawImage(canvas, ctx, url, x, y, w, h);
     };
+    ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
     ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r);
     ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r);
 };

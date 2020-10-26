@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import gbl from "./utils/global";
 import { getCanvas2dContext } from "./utils";
 import { drawCtxMount } from "./draw-function";
+import { handleBuildOpts } from "./utils/utils";
 class DrawPoster {
     constructor(canvas, ctx, canvasId) {
         this.canvas = canvas;
@@ -42,7 +43,9 @@ class DrawPoster {
             if (!!this.ctx.draw) {
                 return yield new Promise((resolve) => {
                     setTimeout(() => {
-                        this.ctx.draw(true, () => resolve(result));
+                        this.ctx.draw(true, () => {
+                            resolve(result);
+                        });
                     });
                 });
             }
@@ -65,12 +68,14 @@ class DrawPoster {
         });
         drawCtxMount(canvas, ctx);
     }
-    /** 构建绘制海报矩形方法, 传入canvas选择器字符串, 返回绘制对象 */
-    static build(selector, componentThis) {
+    /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
+    static build(options) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { selector, componentThis } = handleBuildOpts(options);
             // 获取canvas实例
-            const canvas = yield getCanvas2dContext(selector, componentThis);
-            const ctx = (canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector));
+            const canvas = yield getCanvas2dContext(selector);
+            const ctx = (canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector, componentThis));
+            console.log("draw-poster构建成功: ", { canvas, ctx, selector });
             return new DrawPoster(canvas, ctx, selector);
         });
     }

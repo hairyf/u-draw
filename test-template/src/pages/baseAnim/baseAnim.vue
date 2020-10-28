@@ -1,10 +1,15 @@
 <template>
   <div class="index">
+    <!-- #ifdef MP-WEIXIN -->
+    <canvas id="canvas" type="2d" style="width: 300rpx; height: 300rpx" />
+    <!-- #endif -->
+    <!-- #ifndef MP-WEIXIN -->
     <canvas
       canvas-id="canvas"
       id="canvas"
-      style="width: 400px; height: 400px"
-    ></canvas>
+      style="width: 300rpx; height: 300rpx"
+    />
+    <!-- #endif -->
   </div>
 </template>
 <script lang="ts">

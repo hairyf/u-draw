@@ -1,10 +1,15 @@
 <template>
   <div class="index">
+    <!-- #ifdef MP-WEIXIN -->
+    <canvas id="canvas" type="2d" style="width: 300rpx; height: 300rpx" />
+    <!-- #endif -->
+    <!-- #ifndef MP-WEIXIN -->
     <canvas
-      id="canvas"
       canvas-id="canvas"
-      style="width: 300px; height: 300px"
-    ></canvas>
+      id="canvas"
+      style="width: 300rpx; height: 300rpx"
+    />
+    <!-- #endif -->
   </div>
 </template>
 <script lang="ts">
@@ -21,8 +26,9 @@ export default Vue.extend({
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, 300, 300);
       ctx.fillStyle = '#000';
-      ctx.setFontSize(30);
+      ctx.font = '30px sans-serif';
       ctx.fillWarpText({
+        x: 3,
         text: new Array(1000).fill('x').join(''),
         maxWidth: dp.canvas.width - 13,
         layer: 10,

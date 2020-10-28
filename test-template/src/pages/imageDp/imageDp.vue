@@ -1,10 +1,15 @@
 <template>
   <div class="index">
+    <!-- #ifdef MP-WEIXIN -->
+    <canvas id="canvas" type="2d" style="width: 300rpx; height: 300rpx" />
+    <!-- #endif -->
+    <!-- #ifndef MP-WEIXIN -->
     <canvas
-      id="canvas"
       canvas-id="canvas"
-      style="width: 300px; height: 300px"
-    ></canvas>
+      id="canvas"
+      style="width: 300rpx; height: 300rpx"
+    />
+    <!-- #endif -->
   </div>
 </template>
 <script lang="ts">
@@ -23,8 +28,8 @@ export default Vue.extend({
     });
     // 绘制图片
     dp.draw(async (ctx) => {
-      await ctx.drawImage('static/logo.png', 0, 0, 150, 150);
-      await ctx.drawRoundImage('static/logo.png', 150, 0, 150, 150, 100);
+      await ctx.drawImage('/static/logo.png', 0, 0, 150, 150);
+      await ctx.drawRoundImage('/static/logo.png', 150, 0, 150, 150, 100);
     });
     // 创建本地地址
     console.log('创建本地地址: ', await dp.createImagePath());

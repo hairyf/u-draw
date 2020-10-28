@@ -8,6 +8,10 @@ export const isBaseUrl = (str: string) => {
 export const isTmpUrl = (str: string) => {
   return /http:\/\/temp\/wx/.test(str)
 }
+/** 是否是网络地址 */
+export const isNetworkUrl = (str: string) => {
+  return /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/.test(str)
+} 
 /** 处理构建配置 */
 export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
   let newOpts = {

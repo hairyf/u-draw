@@ -22,10 +22,16 @@ module.exports = {
 ## 1. 创建生成海报绘制工具
 
 ~~~html
-<canvas id="canvas" style="width:100rpx;height:100rpx" type="2d" />
+<!-- #ifdef MP-WEIXIN -->
+<canvas id="canvas" type="2d" style="width:100rpx; height:100rpx" />
+<!-- #endif -->
+<!-- #ifndef MP-WEIXIN -->
+<canvas canvas-id="canvas" id="canvas" style="width:100rpx; height:100rpx" />
+<!-- #endif -->
 ~~~
 
 ~~~js
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/uni-draw-poster'
 import DrawPoster from 'uni-draw-poster'
 async onReady() {
  // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制

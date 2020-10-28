@@ -19,7 +19,7 @@ export const drawImage = async (
       const image = canvas.createImage()
       image.src = path
       image.onload = () => {
-        ctx.oldDrawImage(path, x, y, w, h)
+        ctx.oldDrawImage(image as any, x, y, w, h)
         resolve(true)
       }
       image.onerror = () => resolve(false)

@@ -6,6 +6,10 @@ export const isBaseUrl = (str) => {
 export const isTmpUrl = (str) => {
     return /http:\/\/temp\/wx/.test(str);
 };
+/** 是否是网络地址 */
+export const isNetworkUrl = (str) => {
+    return /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/.test(str);
+};
 /** 处理构建配置 */
 export const handleBuildOpts = (options) => {
     let newOpts = {

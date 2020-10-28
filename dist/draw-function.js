@@ -22,7 +22,7 @@ export const drawImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, voi
             const image = canvas.createImage();
             image.src = path;
             image.onload = () => {
-                ctx.oldDrawImage(path, x, y, w, h);
+                ctx.oldDrawImage(image, x, y, w, h);
                 resolve(true);
             };
             image.onerror = () => resolve(false);

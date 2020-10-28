@@ -1,8 +1,8 @@
 import gbl from "./global";
-import { isBaseUrl, isTmpUrl } from './utils';
+import { isBaseUrl, isNetworkUrl, isTmpUrl } from './utils';
 // 下载图片方法
 export const downloadImgUrl = (url) => new Promise((resolve, reject) => {
-    if (isBaseUrl(url) || isTmpUrl(url)) {
+    if (isBaseUrl(url) || isTmpUrl(url) || !isNetworkUrl(url)) {
         resolve(url);
         return;
     }

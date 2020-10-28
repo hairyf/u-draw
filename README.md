@@ -102,55 +102,46 @@ const posterImgUrl = await dp.createImagePath();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
 
-# 全局 API
+# 全局实例 API
 
 ## 绘画构建(DrawPoster.build | Function)
 
 `DrawPoster.build(string|object)`
 
-初始化构建绘制工具，传入查询字符串与配置对象，当配置对象时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项
+初始化构建绘制工具，传入查询字符串与配置对象，当配置对象时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
 
-~~~typescript
+~~~js
+/** DrawPoster.build 构建配置 */
 interface DrawPosterBuildOpts {
     // 查询字符串
     selector: string;
     // 选取组件范围
     componentThis?: any;
     // 类型为2d绘制, 默认开启, 在微信小程序的时候动态加载
-    type2d: boolean;
+    type2d?: boolean;
+    // 是否在绘制的过程中, 显示加载框, 默认关闭
+    loading?: boolean,
+    // 当存在绘制图片时, 等待绘画完毕的时间（秒），仅在App中生效
+    drawImageTime?: 100
 }
 ~~~
 
-## 绘制节点(dp.canvas | object)
+## 绘制节点(dp.canvas | Object)
 
 `dp.canvas | dp.canvas.width | dp.canvas.height | ...`
 
 `dp.canvas`为全局的绘制根节点，在微信小程序中拥有独享`API`。在其他端将作为全局宽高容器使用。当`dp.createImagePath`未传入参数时，默认使用 `dp.canvas.width | dp.canvas.height` 创建图片，以下是`dp.canvas`对象中存在的`api`与属性。
 
-~~~typescript
+~~~js
 interface Canvas {
   width: number;
   height: number;
-  // 以下为微信小程序独享API
-  // #ifdef MP-WEIXIN
-  getContext(contextType: "2d" | "webgl"): DrawPosterCanvasCtx | WebGLRenderingContext;
-  createImage(): {
-    src: string;
-    width: number;
-    height: number;
-    onload: () => void;
-    onerror: () => void;
-  };
-  requestAnimationFrame(callback: Function): number;
-  cancelAnimationFrame(requestID: number): void;
-  createImageData(): ImageData;
-  createPath2D(path: Path2D): Path2D;
-  toDataURL(type: string, encoderOptions: number): string;
-  // #endif
+  // 剩余参数为微信小程序独享API，只有微信小程序才拥有的API
+  // 具体参考微信小程序文档：https://developers.weixin.qq.com/miniprogram/dev/api/canvas/Canvas.html
 }
 ~~~
 
-## 创建绘制(drawPoster.draw | Function)
+## 创建绘制(dp.draw | Function)
 
 `drawPoster.draw(async callback(ctx))`
 
@@ -164,9 +155,11 @@ interface Canvas {
 
 ## 创建图片(dp.createImagePath | Function)
 
-创建当前`canvas`绘制后的本地图片地址，如绘制器堆栈未清空时，会自动调用`dp.awaitCreate()`清空堆栈。`createImagePath` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。如果你想自定义参数，`awaitCreate` 方法可以接受一个配置对象，以下为可配置项。
+`dp.createImagePath(options)`
 
-~~~typescript
+创建当前`canvas`绘制后的本地图片地址，如绘制器堆栈未清空时，会自动调用`dp.awaitCreate()`清空堆栈。`createImagePath` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。如果你想自定义参数，`awaitCreate` 方法可以接受一个配置对象，返回图片地址，以下为可配置项。
+
+~~~js
 interface CreateImagePathOptions {
   x?: number;
   y?: number;
@@ -177,66 +170,76 @@ interface CreateImagePathOptions {
 }
 ~~~
 
-# ctx 扩展方法
+# 绘制扩展 API
 
 `drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
+~~~js
+dp.draw(async (ctx) => {
+  // ctx.drawImage | ctx.drawRoundImage | ctx.fillWarpText | ....
+})
+~~~
 
-## 绘制图片(ctx.drawImage)
+## 绘制图片(ctx.drawImage | DrawFunction)
 
-`drawPoster`绘制图片与原生绘制不相同，`ctx.drawImage`内部已经内置了`downloadFile`，只需要传入本地/网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。
+`ctx.drawImage(url, x, y, w, h)`
+
+`drawPoster`绘制图片与原生绘制不相同，`ctx.drawImage`内部已经内置了`downloadFile`，只需要传入本地/网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。需要await等待绘制。
 
 ~~~js
 dp.draw(async (ctx)=>{
-    const url = "static/logo.png"
+    const url = "/static/logo.png"
     // const url = "https://...."
- /** ctx的等待绘制图片方法
-   * @param  {string} url 本地/图片地址(必须)
-   * @param  {number} x 绘制x轴位置(必须)
-   * @param  {number} y 绘制y轴位置(必须)
-   * @param  {number} w 绘制图片宽度(必须)
-   * @param  {number} h 绘制图片高度(必须)
-   * @returns {Promise} 图片绘制成功时返回true, 需要在draw函数中调用
-   */
     await ctx.drawImage(url, 88, 174.94, 198.98, 36);
 })
 ~~~
 [^注意]:小程序端需要添加域名才能绘制成功！
 
-## 换行字体(ctx.fillWarpText)
+| 参数          | 描述                                      |
+| :------------ | :---------------------------------------- |
+| url           | 网络图片地址，或本地`/static`中图片路径。 |
+| x，y          | 图片的左上角的坐标。                      |
+| width，height | 图片的大小。                              |
+
+## 换行字体(ctx.fillWarpText | DrawFunction)
+
+`ctx.fillWarpText(options)`
+
+传入配置对象，绘制换行字体，以下为可配置项。
 
 ~~~js
-drawPoster.draw(async (ctx)=>{
- /** ctx的绘制换行字体方法
-   * @param  {string} text 绘制内容(必须)
-   * @param  {number} maxWidth 绘制换行字体的最大宽度(必须)
-   * @param  {number} fontHeight 字体高度(必须)
-   * @param  {number} layer 绘制层数(必须)
-   * @param  {number} x 绘制x轴位置(必须)
-   * @param  {number} y 绘制y轴位置(必须)
-   * @returns {null} 无返回值, 需要在draw函数中调用
-   */
-   ctx.fillWarpText({
-      text: `您好，我是李先生，我负责xxx合作，如果您在xxx商务合作需求，请直接咨询我。`,
-      maxWidth: 300.97,
-      fontHeight: 20,
-      layer: 3,
-      x: 37,
-      y: 241.21
-    });
-})
+interface FillWarpTextOpts {
+  // 绘制字符串, 必传项
+  text: string;
+  // 绘制最长高度, 默认100px
+  maxWidth?: number;
+  // 绘制行高, 默认取当前字体的默认宽度
+  lineHeight?: number;
+  // 绘制行数量, 默认限制为2层
+  layer?: number;
+  // 绘制x轴, 默认0
+  x?: number;
+  // 绘制y轴, 默认0
+  y?: number;
+  // 设置换行字符, 默认为空, 如设置, maxWidth|layer 将会失效
+  splitText?: string;
+  // 是否不马上进行绘制
+  notFillText?: boolean;
+}
+// 当 `notFillText` 为 `true` 时，则不进行绘制，该函数将返回一个绘制信息队列
+// 用于代表每行字体所对应的绘制信息, 以下是返回的结构信息，你可以用于计算该
+// 换行字体的宽度，也你可以使用array.forEach与ctx.fillText进行绘制。
+[
+  { text: string, y: number, x: number}
+  // ....
+]
 ~~~
 
-## 圆角矩形(ctx.fillRoundRect)
+## 圆角矩形(ctx.fillRoundRect | DrawFunction)
+
+`ctx.fillWarpText(x, y, w, h, r)`
 
 ~~~js
 dp.draw(async (ctx)=>{
- /** ctx的圆角矩形方法
-   * @param {number} x x坐标轴(必须)
-   * @param {number} y y坐标轴(必须)
-   * @param {number} w 宽度(必须)
-   * @param {number} h 高度(必须)
-   * @param {number} r 圆角半径 默认为15
-   */
    // 设置矩形颜色
    ctx.fillStyle = "#fff";
    // 进行绘制
@@ -244,20 +247,27 @@ dp.draw(async (ctx)=>{
 })
 ~~~
 
-## 圆角图片(ctx.drawRoundImage)
+| 参数          | 描述                 |
+| :------------ | :------------------- |
+| x，y          | 矩形的左上角的坐标。 |
+| width，height | 矩形的大小。         |
+| r             | 矩形的弧度半径。     |
+
+## 圆角图片(ctx.drawRoundImage | DrawFunction)
+
+`ctx.drawRoundImage(url, x, y, w, h, r)`
 
 ~~~js
 dp.draw(async (ctx) => {
   const url = "static/logo.png"
   // const url = "https://...."
-  /** ctx的圆角矩形方法
-   * @param {string} url 本地/网络地址
-   * @param {number} x x坐标轴(必须)
-   * @param {number} y y坐标轴(必须)
-   * @param {number} w 宽度(必须)
-   * @param {number} h 高度(必须)
-   * @param {number} r 圆角半径 默认为15
-   */
   await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
 });
 ~~~
+
+| 参数          | 描述                                      |
+| :------------ | :---------------------------------------- |
+| url           | 网络图片地址，或本地`/static`中图片路径。 |
+| x，y          | 图片的左上角的坐标。                      |
+| width，height | 图片的大小。                              |
+| r             | 图片的弧度半径。                          |

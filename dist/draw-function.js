@@ -11,6 +11,7 @@ import { downloadImgUrl } from './utils';
 /** 等待绘制图片原型方法 */
 export const drawImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, void 0, void 0, function* () {
     const path = yield downloadImgUrl(url);
+    ctx.existDrawImage = true;
     let result = false;
     if (!(canvas === null || canvas === void 0 ? void 0 : canvas.createImage)) {
         ctx.oldDrawImage(path, x, y, w, h);
@@ -31,49 +32,60 @@ export const drawImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, voi
     return result;
 });
 /** 绘制换行字体原型方法 */
-export const fillWarpText = (ctx, text, maxWidth = 100, layer = 2, lineHeight = Number(ctx.font.replace(/[^0-9.]/g, '')), x = 0, y = lineHeight / 1.2, notFillText) => {
+export const fillWarpText = (ctx, config) => {
+    const newConfig = config = Object.assign({ maxWidth: 100, layer: 2, lineHeight: Number(ctx.font.replace(/[^0-9.]/g, '')), x: 0, y: Number(ctx.font.replace(/[^0-9.]/g, '')) / 1.2, splitText: '', notFillText: false }, config);
+    const { text, splitText, maxWidth, layer, lineHeight, notFillText, x, y } = newConfig;
     // 当字符串为空时, 抛出错误
-    if (!text.length) {
+    if (!text) {
         throw Error('warpFillText Error: text is empty string');
     }
     // 分割所有单个字符串
-    const chr = text.split('');
+    const chr = text.split(splitText);
     // 存入的每行字体的容器
     let row = [];
     // 判断字符串
     let timp = '';
-    // 遍历所有字符串, 填充行容器
-    for (let i = 0; i < chr.length; i++) {
-        if (ctx.measureText(timp).width < maxWidth) {
-            // 如果超出长度, 添加进row数组
-            timp += chr[i];
-        }
-        else {
-            // 如超出一行长度, 则换行, 并清除容器
-            i--;
-            row.push(timp);
-            timp = '';
-        }
+    if (splitText) {
+        row = chr;
     }
-    // 如有剩下字体, 则在最后时添加一行
-    if (timp) {
-        row.push(timp);
-    }
-    // 如果数组长度大于指定行数
-    if (row.length > layer) {
-        row = row.slice(0, layer);
-        // 结束的索引
-        const end = layer - 1;
-        for (let i = 0; i < end; i++) {
-            const currentWidth = ctx.measureText(`${row[end]}...`).width;
-            if (currentWidth > maxWidth) {
-                // 加上... 当前宽度大于最大宽度时, 去除一位字符串
-                const strEnd = row[end].length - 1;
-                row[end] = row[end].slice(0, strEnd);
+    else {
+        // 遍历所有字符串, 填充行容器
+        for (let i = 0; i < chr.length; i++) {
+            // 当超出行列时, 停止执行遍历, 节省计算时间
+            if (row.length >= layer) {
+                break;
+            }
+            if (ctx.measureText(timp).width < maxWidth) {
+                // 如果超出长度, 添加进row数组
+                timp += chr[i];
             }
             else {
-                row[end] += '...';
-                break;
+                // 如超出一行长度, 则换行, 并清除容器
+                i--;
+                row.push(timp);
+                timp = '';
+            }
+        }
+        // 如有剩下字体, 则在最后时添加一行
+        if (timp) {
+            row.push(timp);
+        }
+        // 如果数组长度大于指定行数
+        if (row.length >= layer) {
+            row = row.slice(0, layer);
+            // 结束的索引
+            const end = layer - 1;
+            for (let i = 0; i < row[end].length; i++) {
+                const currentWidth = ctx.measureText(`${row[end]}...`).width;
+                if (currentWidth > maxWidth) {
+                    // 加上... 当前宽度大于最大宽度时, 去除一位字符串
+                    const strEnd = row[end].length - 1;
+                    row[end] = row[end].slice(0, strEnd);
+                }
+                else {
+                    row[end] += '...';
+                    break;
+                }
             }
         }
     }
@@ -125,11 +137,14 @@ export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
 /** 绘制圆角图片原型方法 */
 export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    ctx.save();
     (_a = ctx.setFillStyle) === null || _a === void 0 ? void 0 : _a.call(ctx, 'transparent');
     ctx.fillStyle = 'transparent';
     ctx.fillRoundRect(x, y, w, h, r);
     ctx.clip();
-    return yield ctx.drawImage(url, x, y, w, h);
+    const result = yield ctx.drawImage(url, x, y, w, h);
+    ctx.restore();
+    return result;
 });
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas, ctx) => {
@@ -137,7 +152,7 @@ export const drawCtxMount = (canvas, ctx) => {
     ctx.drawImage = (url, x, y, w, h) => {
         return drawImage(canvas, ctx, url, x, y, w, h);
     };
-    ctx.fillWarpText = (options) => fillWarpText(ctx, options.text, options.maxWidth, options.layer, options.lineHeight, options.x, options.y, options.notFillText);
+    ctx.fillWarpText = (options) => fillWarpText(ctx, options);
     ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r);
     ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r);
 };

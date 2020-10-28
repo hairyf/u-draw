@@ -3,8 +3,10 @@ declare class DrawPoster {
     canvas: Canvas;
     ctx: DrawPosterCanvasCtx;
     canvasId: string;
+    loading: boolean;
+    drawImageTime: number;
     private executeOnions;
-    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string);
+    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, drawImageTime: number);
     /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
     static build(options: string | DrawPosterBuildOpts): Promise<DrawPoster>;
     /** 绘制器, 接收执行器函数, 添加到绘制容器中 */

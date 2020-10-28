@@ -12,10 +12,12 @@ import { getCanvas2dContext } from "./utils";
 import { drawCtxMount } from "./draw-function";
 import { handleBuildOpts } from "./utils/utils";
 class DrawPoster {
-    constructor(canvas, ctx, canvasId) {
+    constructor(canvas, ctx, canvasId, loading, drawImageTime) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.canvasId = canvasId;
+        this.loading = loading;
+        this.drawImageTime = drawImageTime;
         this.executeOnions = [];
         /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
         this.draw = (execute) => {
@@ -34,6 +36,7 @@ class DrawPoster {
         };
         /** 等待创建绘画, 成功后清空绘制器容器 */
         this.awaitCreate = () => __awaiter(this, void 0, void 0, function* () {
+            this.loading && uni.showLoading({ title: '绘制海报中...' });
             const result = [];
             for (let i = 0; i < this.executeOnions.length; i++) {
                 const execute = this.executeOnions[i];
@@ -42,21 +45,39 @@ class DrawPoster {
             this.executeOnions = [];
             if (!!this.ctx.draw) {
                 return yield new Promise((resolve) => {
-                    setTimeout(() => {
-                        this.ctx.draw(true, () => {
-                            resolve(result);
-                        });
+                    this.ctx.draw(true, () => {
+                        resolve(result);
+                        this.loading && uni.hideLoading();
                     });
+                    // #ifdef APP-PLUS
+                    let time = 0;
+                    if (this.ctx.existDrawImage) {
+                        time = 100;
+                        this.ctx.existDrawImage = false;
+                    }
+                    setTimeout(() => {
+                        resolve(result);
+                        this.loading && uni.hideLoading();
+                    }, time);
+                    // #endif
                 });
             }
+            uni.hideLoading();
             return result;
         });
         /** 创建canvas本地地址 @returns {string} 本地地址 */
         this.createImagePath = (baseOptions = {}) => __awaiter(this, void 0, void 0, function* () {
             const { canvas, canvasId, executeOnions, awaitCreate } = this;
             executeOnions.length && (yield awaitCreate());
+            this.loading && uni.showLoading({ title: '生成图片中...' });
             return new Promise((resolve, reject) => {
-                const options = Object.assign({ x: 0, y: 0, width: canvas && canvas.width, height: canvas && canvas.height, destWidth: canvas && canvas.width, destHeight: canvas && canvas.height, success: (res) => resolve(res.tempFilePath), fail: (err) => reject(err) }, baseOptions);
+                const options = Object.assign({ x: 0, y: 0, width: canvas.width, height: canvas.height, destWidth: canvas.width * 2, destHeight: canvas.height * 2, success: (res) => {
+                        resolve(res.tempFilePath);
+                        this.loading && uni.hideLoading();
+                    }, fail: (err) => {
+                        this.loading && uni.hideLoading();
+                        reject(err);
+                    } }, baseOptions);
                 if (!canvas.createImage) {
                     options.canvasId = canvasId;
                 }
@@ -66,17 +87,20 @@ class DrawPoster {
                 gbl.canvasToTempFilePath(options);
             });
         });
+        if (!canvas || !ctx || !canvasId) {
+            throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects");
+        }
         drawCtxMount(canvas, ctx);
     }
     /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
     static build(options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { selector, componentThis } = handleBuildOpts(options);
+            const { selector, componentThis, loading, drawImageTime } = handleBuildOpts(options);
             // 获取canvas实例
             const canvas = yield getCanvas2dContext(selector);
             const ctx = (canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector, componentThis));
-            console.log("draw-poster构建成功: ", { canvas, ctx, selector });
-            return new DrawPoster(canvas, ctx, selector);
+            console.log("draw-poster 构建成功 ", { canvas, ctx, selector });
+            return new DrawPoster(canvas, ctx, selector, loading, drawImageTime);
         });
     }
 }

@@ -17,7 +17,9 @@ export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
   let newOpts = {
     selector: '',
     componentThis: undefined,
-    type2d: true
+    type2d: true,
+    loading: false,
+    drawImageTime: 100
   }
   if (typeof options === "string") {
     newOpts.selector = options

@@ -1,8 +1,8 @@
-import { Canvas, DrawPosterCanvasCtx } from './utils';
+import { Canvas, DrawPosterCanvasCtx, FillWarpTextOpts } from './utils';
 /** 等待绘制图片原型方法 */
 export declare const drawImage: (canvas: Canvas | undefined, ctx: DrawPosterCanvasCtx, url: string, x: number, y: number, w: number, h: number) => Promise<boolean>;
 /** 绘制换行字体原型方法 */
-export declare const fillWarpText: (ctx: DrawPosterCanvasCtx, text: string, maxWidth?: number, layer?: number, lineHeight?: number, x?: number, y?: number, notFillText?: boolean | undefined) => {
+export declare const fillWarpText: (ctx: DrawPosterCanvasCtx, config: FillWarpTextOpts) => {
     text: string;
     y: number;
     x: number;

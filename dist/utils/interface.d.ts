@@ -7,6 +7,12 @@ export interface DrawPosterBuildOpts {
     componentThis?: any;
     /** 绘制类型为2d绘制, 默认开启, 在微信小程序的时候动态加载 */
     type2d?: boolean;
+    /** 是否在绘制时进行加载提示 */
+    loading?: boolean;
+    /** 当存在绘制图片时, 等待绘画完毕的时间（秒）
+     *  仅App中生效, 具体查看文档说明：https://github.com/TuiMao233/uni-draw-poster
+     */
+    drawImageTime?: number;
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {
@@ -16,6 +22,7 @@ export interface FillWarpTextOpts {
     layer?: number;
     x?: number;
     y?: number;
+    splitText?: string;
     notFillText?: boolean;
 }
 /** 绘制换行, 单行信息 */
@@ -31,6 +38,8 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     textBaseline: CanvasTextDrawingStyles["textBaseline"];
     transform: CanvasTransform["transform"];
     oldDrawImage: UniApp.CanvasContext['drawImage'];
+    /** 该次绘画是否存在绘制图片 */
+    existDrawImage: boolean;
     /** 等待绘制图片
      * 说明文档: https://github.com/TuiMao233/uni-draw-poster#绘制图片
      */

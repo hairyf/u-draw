@@ -1,13 +1,14 @@
 <template>
   <div class="index">
+    <image :src="imgUrl" style="width: 100px; height: 100px" />
     <!-- #ifdef MP-WEIXIN -->
-    <canvas id="canvas" type="2d" style="width: 300rpx; height: 300rpx" />
+    <canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
     <!-- #endif -->
     <!-- #ifndef MP-WEIXIN -->
     <canvas
       canvas-id="canvas"
       id="canvas"
-      style="width: 300rpx; height: 300rpx"
+      style="width: 300px; height: 300px"
     />
     <!-- #endif -->
   </div>
@@ -16,6 +17,9 @@
 import Vue from 'vue';
 import DrawPoster from 'uni-draw-poster';
 export default Vue.extend({
+  data: () => ({
+    imgUrl: '',
+  }),
   async onReady() {
     // 创建绘制工具
     const dp = await DrawPoster.build('canvas');
@@ -25,16 +29,12 @@ export default Vue.extend({
     dp.draw((ctx) => {
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, 300, 300);
-      ctx.fillWarpText({
-        text: new Array(1000).fill('x').join(''),
-        maxWidth: dp.canvas.width - 13,
-        layer: 10,
-      });
     });
     // 执行绘制任务
     console.log('绘制情况: ', await dp.awaitCreate());
     // 创建本地图片
-    console.log('创建地址: ', await dp.createImagePath());
+    this.imgUrl = await dp.createImagePath();
+    console.log('创建地址: ', this.imgUrl);
   },
 });
 </script>
@@ -46,7 +46,11 @@ page,
 }
 .index {
   position: relative;
+  text-align: center;
   background: rgba($color: grey, $alpha: 0.2);
+}
+image {
+  margin-top: 30rpx;
 }
 canvas {
   position: absolute;

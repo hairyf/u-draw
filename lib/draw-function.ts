@@ -1,4 +1,4 @@
-import { Canvas, downloadImgUrl, DrawPosterCanvasCtx } from './utils'
+import { Canvas, downloadImgUrl, DrawPosterCanvasCtx, FillWarpTextOpts } from './utils'
 
 /** 等待绘制图片原型方法 */
 export const drawImage = async (
@@ -9,6 +9,7 @@ export const drawImage = async (
   w: number, h: number,
 ): Promise<boolean> => {
   const path = await downloadImgUrl(url)
+  ctx.existDrawImage = true
   let result = false
   if (!canvas?.createImage) {
     ctx.oldDrawImage(path, x, y, w, h)
@@ -27,64 +28,73 @@ export const drawImage = async (
   }
   return result
 }
-
 /** 绘制换行字体原型方法 */
 export const fillWarpText = (
   ctx: DrawPosterCanvasCtx,
-  text: string,
-  maxWidth = 100,
-  layer = 2,
-  lineHeight = Number(ctx.font.replace(/[^0-9.]/g, '')),
-  x = 0,
-  y = lineHeight / 1.2,
-  notFillText?: boolean
+  config: FillWarpTextOpts
 ) => {
+  const newConfig = config = {
+    maxWidth: 100,
+    layer: 2,
+    lineHeight: Number(ctx.font.replace(/[^0-9.]/g, '')),
+    x: 0,
+    y: Number(ctx.font.replace(/[^0-9.]/g, '')) / 1.2,
+    splitText: '',
+    notFillText: false,
+    ...config
+  }
+  const { text, splitText, maxWidth, layer, lineHeight, notFillText, x, y } = newConfig
   // 当字符串为空时, 抛出错误
-  if (!text.length) {
+  if (!text) {
     throw Error('warpFillText Error: text is empty string')
   }
   // 分割所有单个字符串
-  const chr = text.split('')
+  const chr = text.split(splitText)
   // 存入的每行字体的容器
-  let row = []
+  let row: string[] = []
   // 判断字符串
   let timp = ''
-
-  // 遍历所有字符串, 填充行容器
-  for (let i = 0; i < chr.length; i++) {
-    if (ctx.measureText(timp).width < maxWidth) {
-      // 如果超出长度, 添加进row数组
-      timp += chr[i];
-    } else {
-      // 如超出一行长度, 则换行, 并清除容器
-      i--;
-      row.push(timp);
-      timp = '';
-    }
-  }
-  // 如有剩下字体, 则在最后时添加一行
-  if (timp) {
-    row.push(timp)
-  }
-
-  // 如果数组长度大于指定行数
-  if (row.length > layer) {
-    row = row.slice(0, layer);
-    // 结束的索引
-    const end = layer - 1;
-    for (let i = 0; i < end; i++) {
-      const currentWidth = ctx.measureText(`${row[end]}...`).width
-      if (currentWidth > maxWidth) {
-        // 加上... 当前宽度大于最大宽度时, 去除一位字符串
-        const strEnd = row[end].length - 1;
-        row[end] = row[end].slice(0, strEnd)
-      } else {
-        row[end] += '...'
+  if (splitText) {
+    row = chr
+  } else {
+    // 遍历所有字符串, 填充行容器
+    for (let i = 0; i < chr.length; i++) {
+      // 当超出行列时, 停止执行遍历, 节省计算时间
+      if (row.length >= layer) {
         break;
+      }
+      if (ctx.measureText(timp).width < maxWidth) {
+        // 如果超出长度, 添加进row数组
+        timp += chr[i];
+      } else {
+        // 如超出一行长度, 则换行, 并清除容器
+        i--;
+        row.push(timp);
+        timp = '';
+      }
+    }
+    // 如有剩下字体, 则在最后时添加一行
+    if (timp) {
+      row.push(timp)
+    }
+    // 如果数组长度大于指定行数
+    if (row.length >= layer) {
+      row = row.slice(0, layer);
+      // 结束的索引
+      const end = layer - 1;
+      for (let i = 0; i < row[end].length; i++) {
+        const currentWidth = ctx.measureText(`${row[end]}...`).width
+        if (currentWidth > maxWidth) {
+          // 加上... 当前宽度大于最大宽度时, 去除一位字符串
+          const strEnd = row[end].length - 1;
+          row[end] = row[end].slice(0, strEnd)
+        } else {
+          row[end] += '...'
+          break;
+        }
       }
     }
   }
-
   // 储存并返回绘制信息
   const drawInfo = row.map((item, index) => {
     const info = {
@@ -148,11 +158,14 @@ export const drawRoundImage = async (
   w: number, h: number,
   r = 15
 ) => {
+  ctx.save()
   ctx.setFillStyle?.('transparent')
   ctx.fillStyle = 'transparent'
   ctx.fillRoundRect(x, y, w, h, r)
   ctx.clip()
-  return await ctx.drawImage(url, x, y, w, h)
+  const result = await ctx.drawImage(url, x, y, w, h)
+  ctx.restore()
+  return result
 }
 
 /** 绘制画笔初始化挂载 */
@@ -166,16 +179,7 @@ export const drawCtxMount = (canvas: Canvas | undefined, ctx: DrawPosterCanvasCt
     h: number) => {
     return drawImage(canvas, ctx, url, x, y, w, h)
   }
-  ctx.fillWarpText = (options) => fillWarpText(
-    ctx,
-    options.text,
-    options.maxWidth,
-    options.layer,
-    options.lineHeight,
-    options.x,
-    options.y,
-    options.notFillText
-  )
+  ctx.fillWarpText = (options) => fillWarpText(ctx, options)
   ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r)
   ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r)
 }

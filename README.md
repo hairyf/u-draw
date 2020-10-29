@@ -239,6 +239,11 @@ interface DrawPosterBuildOpts {
     drawImageTime?: 100
 }
 ~~~
+## 多绘画构建(DrawPoster.buildAll | Function)
+
+`DrawPoster.buildAll(Array<string|object>)`
+
+构建多个绘画工具，传入build函数中参数string | options构成的数组，返回多个绘制工具组成的对象。key为canvasId，value为构建对象。
 
 ## 绘制节点(dp.canvas | Object)
 

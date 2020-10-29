@@ -108,77 +108,10 @@ const posterImgUrl = await dp.createImagePath();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
 
-# 全局实例 API
-
-## 绘画构建(DrawPoster.build | Function)
-
-`DrawPoster.build(string|object)`
-
-初始化构建绘制工具，传入查询字符串与配置对象，当配置对象时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
-
-~~~js
-/** DrawPoster.build 构建配置 */
-interface DrawPosterBuildOpts {
-    // 查询字符串(必须), 注意不要写错对应canvas id, 不需要传入#符号
-    selector: string;
-    // 选取组件范围
-    componentThis?: any;
-    // 类型为2d绘制, 默认开启, 在微信小程序的时候动态加载
-    type2d?: boolean;
-    // 是否在绘制的过程中, 显示加载框, 默认关闭
-    loading?: boolean,
-    // 当存在绘制图片时, 等待绘画完毕的时间（毫秒），仅在App中生效
-    drawImageTime?: 100
-}
-~~~
-
-## 绘制节点(dp.canvas | Object)
-
-`dp.canvas | dp.canvas.width | dp.canvas.height | ...`
-
-`dp.canvas`为全局的绘制根节点，在微信小程序中拥有独享`API`。在其他端将作为全局宽高容器使用。当`dp.createImagePath`未传入参数时，默认使用 `dp.canvas.width | dp.canvas.height` 创建图片，以下是`dp.canvas`对象中存在的`api`与属性。
-
-~~~js
-interface Canvas {
-  width: number;
-  height: number;
-  // 剩余参数为微信小程序独享API，只有微信小程序才拥有的API
-  // 具体参考微信小程序文档：https://developers.weixin.qq.com/miniprogram/dev/api/canvas/Canvas.html
-}
-~~~
-
-## 创建绘制(dp.draw | Function)
-
-`drawPoster.draw(async callback(ctx))`
-
-绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
-
-## 等待绘制(dp.awaitCreate | Function)
-
-`dp.awaitCreate()`
-
-异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
-
-## 创建图片(dp.createImagePath | Function)
-
-`dp.createImagePath(options)`
-
-创建当前`canvas`绘制后的本地图片地址，如绘制器堆栈未清空时，会自动调用`dp.awaitCreate()`清空堆栈。`createImagePath` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。如果你想自定义参数，`awaitCreate` 方法可以接受一个配置对象，返回图片地址，以下为可配置项。
-
-~~~js
-interface CreateImagePathOptions {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  destWidth?: number;
-  destHeight?: number;
-}
-~~~
-
 # 绘制扩展 API
 
 `drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
+
 ~~~js
 dp.draw(async (ctx) => {
   // ctx.drawImage | ctx.drawRoundImage | ctx.fillWarpText | ....
@@ -277,3 +210,71 @@ dp.draw(async (ctx) => {
 | x，y          | 图片的左上角的坐标。                      |
 | width，height | 图片的大小。                              |
 | r             | 图片的弧度半径。                          |
+
+# 全局实例 API
+
+## 绘画构建(DrawPoster.build | Function)
+
+`DrawPoster.build(string|object)`
+
+初始化构建绘制工具，传入查询字符串与配置对象，当配置对象时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
+
+~~~js
+/** DrawPoster.build 构建配置 */
+interface DrawPosterBuildOpts {
+    // 查询字符串(必须), 注意不要写错对应canvas id, 不需要传入#符号
+    selector: string;
+    // 选取组件范围
+    componentThis?: any;
+    // 类型为2d绘制, 默认开启, 在微信小程序的时候动态加载
+    type2d?: boolean;
+    // 是否在绘制的过程中, 显示加载框, 默认关闭
+    loading?: boolean,
+    // 当存在绘制图片时, 等待绘画完毕的时间（毫秒），仅在App中生效
+    drawImageTime?: 100
+}
+~~~
+
+## 绘制节点(dp.canvas | Object)
+
+`dp.canvas | dp.canvas.width | dp.canvas.height | ...`
+
+`dp.canvas`为全局的绘制根节点，在微信小程序中拥有独享`API`。在其他端将作为全局宽高容器使用。当`dp.createImagePath`未传入参数时，默认使用 `dp.canvas.width | dp.canvas.height` 创建图片，以下是`dp.canvas`对象中存在的`api`与属性。
+
+~~~js
+interface Canvas {
+  width: number;
+  height: number;
+  // 剩余参数为微信小程序独享API，只有微信小程序才拥有的API
+  // 具体参考微信小程序文档：https://developers.weixin.qq.com/miniprogram/dev/api/canvas/Canvas.html
+}
+~~~
+
+## 创建绘制(dp.draw | Function)
+
+`drawPoster.draw(async callback(ctx))`
+
+绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
+
+## 等待绘制(dp.awaitCreate | Function)
+
+`dp.awaitCreate()`
+
+异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
+
+## 创建图片(dp.createImagePath | Function)
+
+`dp.createImagePath(options)`
+
+创建当前`canvas`绘制后的本地图片地址，如绘制器堆栈未清空时，会自动调用`dp.awaitCreate()`清空堆栈。`createImagePath` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。如果你想自定义参数，`awaitCreate` 方法可以接受一个配置对象，返回图片地址，以下为可配置项。
+
+~~~js
+interface CreateImagePathOptions {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  destWidth?: number;
+  destHeight?: number;
+}
+~~~

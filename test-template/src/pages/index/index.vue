@@ -20,6 +20,7 @@ export default Vue.extend({
       { text: '图片绘制测试', path: 'imageDp' },
       { text: '基本动画测试', path: 'baseAnim' },
       { text: '完整海报绘制', path: 'completeDp' },
+      { text: '循环canvas测试', path: 'forCanvasDp' },
     ],
   }),
   methods: {

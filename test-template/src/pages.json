@@ -35,6 +35,12 @@
 			"style": {
 				"navigationBarTitleText": "completeDp"
 			}
+		},
+		{
+			"path": "pages/forCanvasDp/forCanvasDp",
+			"style": {
+				"navigationBarTitleText": "forCanvasDp"
+			}
 		}
 	],
 	"globalStyle": {

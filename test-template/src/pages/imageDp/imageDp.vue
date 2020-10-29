@@ -31,7 +31,8 @@ export default Vue.extend({
     // 测试本地地址
     // const url = '/static/logo.png';
     // 测试网络地址
-    const url = '/static/logo.png';
+    const url =
+      'https://qie-online-sale-qiniu.wsandos.com/uploads/20201027/FuZZKEsjnF1bTobVc4ujlKhuCUKP.png';
     // 绘制图片(矩形)
     dp.draw(async (ctx) => {
       await ctx.drawImage(url, 0, 150, 150, 150);

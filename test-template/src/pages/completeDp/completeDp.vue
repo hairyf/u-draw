@@ -53,7 +53,7 @@ export default Vue.extend({
     dp.draw((ctx) => {
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 32px PingFang SC';
-      ctx.fillText('分享海报', 34, 660);
+      ctx.fillText(' 分享海报 ', w / 2, 0);
       ctx.fillText('To倪好:', 34, 660);
       ctx.font = '28px PingFang SC';
       ctx.fillWarpText({

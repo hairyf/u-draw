@@ -52,7 +52,7 @@ class DrawPoster {
   }
 
   /** 等待创建绘画, 成功后清空绘制器容器 */
-  awaitCreate = async () => {
+  awaitCreate = async ():Promise<boolean[]> => {
     this.loading && uni.showLoading({ title: '绘制海报中...' })
     const result: Array<boolean> = []
     for (let i = 0; i < this.executeOnions.length; i++) {
@@ -84,7 +84,7 @@ class DrawPoster {
   }
 
   /** 创建canvas本地地址 @returns {string} 本地地址 */
-  createImagePath = async (baseOptions = {} as CreateImagePathOptions) => {
+  createImagePath = async (baseOptions = {} as CreateImagePathOptions):Promise<string> => {
     const { canvas, canvasId, executeOnions, awaitCreate } = this
     executeOnions.length && (await awaitCreate())
     this.loading && uni.showLoading({ title: '生成图片中...' })

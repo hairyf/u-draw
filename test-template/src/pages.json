@@ -29,6 +29,12 @@
 			"style": {
 				"navigationBarTitleText": "warpTextDp"
 			}
+		},
+		{
+			"path": "pages/completeDp/completeDp",
+			"style": {
+				"navigationBarTitleText": "completeDp"
+			}
 		}
 	],
 	"globalStyle": {

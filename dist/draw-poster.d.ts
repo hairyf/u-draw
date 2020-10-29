@@ -12,8 +12,8 @@ declare class DrawPoster {
     /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
     draw: (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => void;
     /** 等待创建绘画, 成功后清空绘制器容器 */
-    awaitCreate: () => Promise<unknown>;
+    awaitCreate: () => Promise<boolean[]>;
     /** 创建canvas本地地址 @returns {string} 本地地址 */
-    createImagePath: (baseOptions?: CreateImagePathOptions) => Promise<unknown>;
+    createImagePath: (baseOptions?: CreateImagePathOptions) => Promise<string>;
 }
 export default DrawPoster;

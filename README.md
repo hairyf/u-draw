@@ -127,6 +127,8 @@ dp.draw(async (ctx) => {
 
 `drawPoster`绘制图片与原生绘制不相同，`ctx.drawImage`内部已经内置了`downloadFile`，只需要传入本地/网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。需要await等待绘制。
 
+注意：当绘制环境为H5时，uniapp使用本地图片绘画时不要用尺寸较大的图片，不然会在创建图片时生成失败。
+
 ~~~js
 dp.draw(async (ctx)=>{
     const url = "/static/logo.png"

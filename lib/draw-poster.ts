@@ -2,13 +2,13 @@ import gbl from "./utils/global"
 import {
   Canvas,
   DrawPosterCanvasCtx,
-  getCanvas2dContext,
   Execute,
   CreateImagePathOptions,
-  DrawPosterBuildOpts
+  DrawPosterBuildOpts,
+  getCanvas2dContext,
+  handleBuildOpts
 } from "./utils";
 import { drawCtxMount } from "./draw-function"
-import { handleBuildOpts } from "./utils/utils";
 class DrawPoster {
   private executeOnions = [] as Execute;
   constructor(
@@ -25,19 +25,31 @@ class DrawPoster {
    }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
-  static async build(options: string | DrawPosterBuildOpts) {
+  static async build(options: string | DrawPosterBuildOpts, tips = true) {
     const { selector, componentThis, loading, drawImageTime } = handleBuildOpts(options)
     // 获取canvas实例
     const canvas = await getCanvas2dContext(selector) as Canvas
     const ctx = (
       canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector, componentThis)
     ) as DrawPosterCanvasCtx
-    console.log("draw-poster 构建成功 ", { canvas, ctx, selector })
+    tips && console.log("draw-poster 构建成功：", { canvas, ctx, selector })
     return new DrawPoster(canvas, ctx, selector, loading, drawImageTime)
+  }
+
+  /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
+  static async buildAll(optionsAll: (string | DrawPosterBuildOpts)[]) {
+    const dpsArr = await Promise.all(optionsAll.map(async options=> {
+      return await DrawPoster.build(options, false)
+    }))
+    const dpsObj = {} as {[key:string]: typeof dpsArr[0]}
+    dpsArr.forEach(dp => dpsObj[dp.canvasId] = dp)
+    console.log("draw-posters 构建成功：", dpsObj)
+    return dpsObj
   }
 
   /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
   draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
+    const length = this.executeOnions.length
     this.executeOnions.push(async () => {
       try {
         this.ctx.save()
@@ -45,7 +57,7 @@ class DrawPoster {
         this.ctx.restore()
         return true
       } catch (error) {
-        console.error(error)
+        console.error(`绘画栈(${length})，绘制错误：`, error)
         return false
       }
     })

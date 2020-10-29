@@ -27,9 +27,10 @@ export default Vue.extend({
   onLoad() {},
   // 页面周期函数--监听页面初次渲染完成
   onReady() {
-    this.$nextTick(() => {
-      this.list.forEach(async (id, index) => {
-        const dp = await DrawPoster.build(id);
+    this.$nextTick(async () => {
+      const dps = await DrawPoster.buildAll(this.list);
+      this.list.forEach(async (id) => {
+        const dp = dps[id];
         dp.canvas.width = 100;
         dp.canvas.height = 100;
         // 创建一个绘制任务

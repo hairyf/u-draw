@@ -35,13 +35,13 @@ export default Vue.extend({
       'https://qie-online-sale-qiniu.wsandos.com/uploads/20201027/FuZZKEsjnF1bTobVc4ujlKhuCUKP.png';
     // 绘制图片(矩形)
     dp.draw(async (ctx) => {
+      await ctx.drawRoundImage(url, 150, 0, 150, 150, 100);
       await ctx.drawImage(url, 0, 150, 150, 150);
       await ctx.drawImage(url, 150, 150, 150, 150);
     });
     // 绘制图片(圆角)
     dp.draw(async (ctx) => {
       await ctx.drawRoundImage(url, 0, 0, 150, 150, 100);
-      await ctx.drawRoundImage(url, 150, 0, 150, 150, 100);
     });
     // 创建本地地址
     this.imgUrl = await dp.createImagePath();

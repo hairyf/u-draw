@@ -42,9 +42,6 @@ export default Vue.extend({
       await ctx.drawRoundImage(url, 0, 0, 150, 150, 100);
       await ctx.drawRoundImage(url, 150, 0, 150, 150, 100);
     });
-    // 创建本地地址
-    this.imgUrl = await dp.createImagePath();
-    console.log('创建地址: ', this.imgUrl);
   },
 });
 </script>

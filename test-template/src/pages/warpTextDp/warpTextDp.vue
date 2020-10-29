@@ -38,7 +38,7 @@ export default Vue.extend({
       });
     });
     this.imgUrl = await dp.createImagePath();
-    console.log('创建地址: ', this.imgUrl);
+    // console.log('创建地址: ', this.imgUrl);
   },
 });
 </script>

@@ -30,11 +30,12 @@ export default Vue.extend({
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, 300, 300);
     });
+
     // 执行绘制任务
     console.log('绘制情况: ', await dp.awaitCreate());
     // 创建本地图片
-    this.imgUrl = await dp.createImagePath();
-    console.log('创建地址: ', this.imgUrl);
+    // this.imgUrl = await dp.createImagePath();
+    // console.log('创建地址: ', this.imgUrl);
   },
 });
 </script>

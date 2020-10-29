@@ -18,11 +18,11 @@ class DrawPoster {
     public loading: boolean,
     public drawImageTime: number
   ) {
-    if (!canvas || !ctx || !canvasId){
+    if (!canvas || !ctx || !canvasId) {
       throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects")
     }
     drawCtxMount(canvas, ctx)
-   }
+  }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
   static async build(options: string | DrawPosterBuildOpts) {
@@ -49,9 +49,6 @@ class DrawPoster {
         return false
       }
     })
-    return {
-      clone: this.awaitCreate
-    }
   }
 
   /** 等待创建绘画, 成功后清空绘制器容器 */

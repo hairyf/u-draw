@@ -24,12 +24,15 @@ export default Vue.extend({
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await DrawPoster.build('canvas');
+    const dp = await DrawPoster.build({
+      selector: 'canvas',
+      loading: true,
+    });
     const w = (dp.canvas.width = 650);
     const h = (dp.canvas.height = 920);
     // 绘制基本背景
     dp.draw((ctx) => {
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = '#ffffff';
       ctx.fillRoundRect(0, 0, w, h, 12);
       ctx.clip();
       ctx.fillStyle = '#E3712A';
@@ -41,7 +44,8 @@ export default Vue.extend({
       await ctx.drawImage('/static/tp.png', 19, 86, 612, 459);
       await ctx.drawImage('/static/bw.png', 188, 559, 274, 50);
       // 用户头像
-      await ctx.drawRoundImage('/static/tx.png', 39, 780, 90, 90, 100);
+      // await ctx.drawRoundImage('/static/tx.png', 39, 780, 90, 90, 100);
+      await ctx.drawImage('/static/tx.png', 39, 780, 90, 90);
       // 用户二维码
       await ctx.drawImage('/static/code.png', 518, 780, 92, 92);
     });
@@ -49,6 +53,7 @@ export default Vue.extend({
     dp.draw((ctx) => {
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 32px PingFang SC';
+      ctx.fillText('分享海报', 34, 660);
       ctx.fillText('To倪好:', 34, 660);
       ctx.font = '28px PingFang SC';
       ctx.fillWarpText({
@@ -57,7 +62,7 @@ export default Vue.extend({
         maxWidth: 527,
         x: 81,
         y: 700,
-        layer: 2,
+        layer: 3,
       });
     });
     // 绘制底部文字内容
@@ -70,6 +75,7 @@ export default Vue.extend({
       ctx.font = '21px PingFang SC';
       ctx.fillText('扫码聆听', 521, 895);
     });
+    console.log('绘制海报情况：', await dp.awaitCreate());
     this.imgUrl = await dp.createImagePath();
     // console.log('创建地址: ', this.imgUrl);
   },

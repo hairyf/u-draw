@@ -4,6 +4,8 @@
 
 创建绘制海报canvas矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。支持原生小程序，与`uniapp`多端应用。当是原生小程序时，自动切换为性能更好的`type2d`绘制方式。让你只需考虑业务逻辑，而不用考虑其他事情。
 
+wiki：https://github.com/TuiMao233/uni-draw-poster/wiki
+
 **npm 安装插件**
 
 ~~~
@@ -48,21 +50,24 @@ dp.canvas.height = 100
 
 ## 3. 绘制任意内容
 ~~~js
-dp.draw(async (ctx) => {
-    // 绘制背景颜色
+// 绘制背景与文字
+dp.draw((ctx) => {
     ctx.fillStyle = "#F4F4F4";
-    ctx.fillRect(0, 0, dp.node.width, dp.node.height);
-    // 绘制字体
+    ctx.fillRect(0, 0, dp.canvas.width, dp.canvas.height);
     ctx.textBaseline = "top";
     ctx.textAlign = "start";
     ctx.fillStyle = "white";
     ctx.font = `bold ${22}px sans-serif`;
-    ctx.fillText('周先生', dp.node.width/2, 38.5);
+    ctx.fillText('周先生', dp.canvas.width/2, 38.5);
+})
+// 绘制图片内容
+dp.draw(async (ctx) => {
+    //.......
 })
 ~~~
 值得注意的是, `draw`方法会自动的执行`ctx.save/ctx.restore`, 不需要人为操纵绘画栈.
 ~~~js
-dp.draw(async (ctx) => {/* ... */})
+dp.draw((ctx) => {/* ... */})
 // 相当于
 ctx.save()
 /* ... */
@@ -74,6 +79,7 @@ ctx.restore()
 `dp.awaitCreate`在非`2d`绘画中，执行绘画任务完毕后，将自动执行`ctx.draw`方法，并在draw绘画才算异步结束。
 
 ~~~js
+dp.draw((ctx) => {/* ... */})
 dp.draw(async (ctx) => {/* ... */})
 // 由于每个任务都有可能会有异步的绘制任务, 所以得需要使用await等待绘制
 const result = await dp.awaitCreate();
@@ -85,7 +91,7 @@ console.log("draw绘制状况:", result); // draw绘制状况: [true]
 
 ## 5. 生成图片本地地址
 
-在生产开发中，海报往往需要保存图片。如需要保存时，可以使用`dp.createImgUrl` 进行创建图片地址，在由`wx`或`uni`的`api`进行保存。
+如需要保存为图片时，可以使用`dp.createImgUrl` 进行创建图片本地地址，在由`wx`或`uni`的`api`进行保存。
 ~~~js
 dp.draw(async (ctx) => {/* ... */})
 const result = await dp.awaitCreate();
@@ -113,7 +119,7 @@ console.log("绘制生成本地地址:", posterImgUrl);
 ~~~js
 /** DrawPoster.build 构建配置 */
 interface DrawPosterBuildOpts {
-    // 查询字符串
+    // 查询字符串(必须), 注意不要写错对应canvas id, 不需要传入#符号
     selector: string;
     // 选取组件范围
     componentThis?: any;
@@ -121,7 +127,7 @@ interface DrawPosterBuildOpts {
     type2d?: boolean;
     // 是否在绘制的过程中, 显示加载框, 默认关闭
     loading?: boolean,
-    // 当存在绘制图片时, 等待绘画完毕的时间（秒），仅在App中生效
+    // 当存在绘制图片时, 等待绘画完毕的时间（毫秒），仅在App中生效
     drawImageTime?: 100
 }
 ~~~

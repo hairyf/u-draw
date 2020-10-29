@@ -52,7 +52,7 @@ export const fillWarpText = (ctx, config) => {
         // 遍历所有字符串, 填充行容器
         for (let i = 0; i < chr.length; i++) {
             // 当超出行列时, 停止执行遍历, 节省计算时间
-            if (row.length >= layer) {
+            if (row.length > layer) {
                 break;
             }
             if (ctx.measureText(timp).width < maxWidth) {
@@ -71,7 +71,7 @@ export const fillWarpText = (ctx, config) => {
             row.push(timp);
         }
         // 如果数组长度大于指定行数
-        if (row.length >= layer) {
+        if (row.length > layer) {
             row = row.slice(0, layer);
             // 结束的索引
             const end = layer - 1;
@@ -90,7 +90,7 @@ export const fillWarpText = (ctx, config) => {
         }
     }
     // 储存并返回绘制信息
-    const drawInfo = row.map((item, index) => {
+    const drawInfos = row.map((item, index) => {
         const info = {
             text: item,
             y: y + index * lineHeight,
@@ -102,10 +102,10 @@ export const fillWarpText = (ctx, config) => {
         }
         return info;
     });
-    return drawInfo;
+    return drawInfos;
 };
 /** 绘制圆角矩形原型方法 */
-export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
+export const roundRect = (ctx, x, y, w, h, r = 15, fill = false, stroke = false) => {
     if (w < 2 * r) {
         r = w / 2;
     }
@@ -129,10 +129,19 @@ export const fillRoundRect = (ctx, x, y, w, h, r = 15) => {
     ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI);
     ctx.lineTo(x, y + r);
     ctx.lineTo(x + r, y);
-    // 填充
-    ctx.fill();
-    // 剪裁
+    if (stroke)
+        ctx.stroke();
+    if (fill)
+        ctx.fill();
     ctx.closePath();
+};
+/** 绘制填充圆角矩形方法 */
+export const fillRoundRect = (ctx, x, y, w, h, r) => {
+    roundRect(ctx, x, y, w, h, r, true);
+};
+/** 绘制填充圆角矩形方法 */
+export const strokeRoundRect = (ctx, x, y, w, h, r) => {
+    roundRect(ctx, x, y, w, h, r, false, true);
 };
 /** 绘制圆角图片原型方法 */
 export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0, void 0, void 0, function* () {
@@ -149,10 +158,9 @@ export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0
 /** 绘制画笔初始化挂载 */
 export const drawCtxMount = (canvas, ctx) => {
     ctx.oldDrawImage = ctx.drawImage;
-    ctx.drawImage = (url, x, y, w, h) => {
-        return drawImage(canvas, ctx, url, x, y, w, h);
-    };
+    ctx.drawImage = (url, x, y, w, h) => drawImage(canvas, ctx, url, x, y, w, h);
     ctx.fillWarpText = (options) => fillWarpText(ctx, options);
     ctx.fillRoundRect = (x, y, w, h, r) => fillRoundRect(ctx, x, y, w, h, r);
+    ctx.strokeRoundRect = (x, y, w, h, r) => strokeRoundRect(ctx, x, y, w, h, r);
     ctx.drawRoundImage = (url, x, y, w, h, r) => drawRoundImage(ctx, url, x, y, w, h, r);
 };

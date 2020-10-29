@@ -8,7 +8,11 @@ export declare const fillWarpText: (ctx: DrawPosterCanvasCtx, config: FillWarpTe
     x: number;
 }[];
 /** 绘制圆角矩形原型方法 */
-export declare const fillRoundRect: (ctx: DrawPosterCanvasCtx, x: number, y: number, w: number, h: number, r?: number) => void;
+export declare const roundRect: (ctx: DrawPosterCanvasCtx, x: number, y: number, w: number, h: number, r?: number, fill?: boolean, stroke?: boolean) => void;
+/** 绘制填充圆角矩形方法 */
+export declare const fillRoundRect: (ctx: DrawPosterCanvasCtx, x: number, y: number, w: number, h: number, r: number) => void;
+/** 绘制填充圆角矩形方法 */
+export declare const strokeRoundRect: (ctx: DrawPosterCanvasCtx, x: number, y: number, w: number, h: number, r: number) => void;
 /** 绘制圆角图片原型方法 */
 export declare const drawRoundImage: (ctx: DrawPosterCanvasCtx, url: string, x: number, y: number, w: number, h: number, r?: number) => Promise<boolean>;
 /** 绘制画笔初始化挂载 */

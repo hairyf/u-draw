@@ -4,3 +4,5 @@ export * from "./interface"
 
 export * from "./wx-utils"
 
+export * from "./utils"
+

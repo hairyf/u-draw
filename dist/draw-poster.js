@@ -8,9 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import gbl from "./utils/global";
-import { getCanvas2dContext } from "./utils";
+import { getCanvas2dContext, handleBuildOpts } from "./utils";
 import { drawCtxMount } from "./draw-function";
-import { handleBuildOpts } from "./utils/utils";
 class DrawPoster {
     constructor(canvas, ctx, canvasId, loading, drawImageTime) {
         this.canvas = canvas;
@@ -21,6 +20,7 @@ class DrawPoster {
         this.executeOnions = [];
         /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
         this.draw = (execute) => {
+            const length = this.executeOnions.length;
             this.executeOnions.push(() => __awaiter(this, void 0, void 0, function* () {
                 try {
                     this.ctx.save();
@@ -29,7 +29,7 @@ class DrawPoster {
                     return true;
                 }
                 catch (error) {
-                    console.error(error);
+                    console.error(`绘画栈(${length})，绘制错误：`, error);
                     return false;
                 }
             }));
@@ -93,14 +93,26 @@ class DrawPoster {
         drawCtxMount(canvas, ctx);
     }
     /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
-    static build(options) {
+    static build(options, tips = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const { selector, componentThis, loading, drawImageTime } = handleBuildOpts(options);
             // 获取canvas实例
             const canvas = yield getCanvas2dContext(selector);
             const ctx = (canvas.getContext && canvas.getContext("2d") || gbl.createCanvasContext(selector, componentThis));
-            console.log("draw-poster 构建成功 ", { canvas, ctx, selector });
+            tips && console.log("draw-poster 构建成功：", { canvas, ctx, selector });
             return new DrawPoster(canvas, ctx, selector, loading, drawImageTime);
+        });
+    }
+    /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
+    static buildAll(optionsAll) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const dpsArr = yield Promise.all(optionsAll.map((options) => __awaiter(this, void 0, void 0, function* () {
+                return yield DrawPoster.build(options, false);
+            })));
+            const dpsObj = {};
+            dpsArr.forEach(dp => dpsObj[dp.canvasId] = dp);
+            console.log("draw-posters 构建成功：", dpsObj);
+            return dpsObj;
         });
     }
 }

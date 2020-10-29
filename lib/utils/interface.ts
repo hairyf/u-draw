@@ -1,3 +1,6 @@
+/** 绘制容器 */
+export type Execute = Array<() => Promise<boolean>>
+
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
   /** 查询选择器; 注意不需要加# */
@@ -8,8 +11,9 @@ export interface DrawPosterBuildOpts {
   type2d?: boolean;
   /** 是否在绘制时进行加载提示 */
   loading?: boolean;
-  /** 当存在绘制图片时, 等待绘画完毕的时间（秒）
-   *  仅App中生效, 具体查看文档说明：https://github.com/TuiMao233/uni-draw-poster
+  /** 当存在绘制图片时, 等待绘画完毕的时间（秒）仅App中生效
+   * 
+   *  具体查看文档说明：https://github.com/TuiMao233/uni-draw-poster
    */
   drawImageTime?: number
 }
@@ -38,18 +42,27 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
   /** 该次绘画是否存在绘制图片 */
   existDrawImage: boolean
   /** 等待绘制图片
+   * 
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#绘制图片
    */
   drawImage(url: string, x: number, y: number, w: number, h: number): Promise<boolean>;
   /** 绘制换行字体
+   * 
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#换行字体
    */
   fillWarpText(options: FillWarpTextOpts): Array<FillWarpTextItemInfo>;
-  /** 绘制圆角矩形
+  /** 绘制圆角矩形（填充）
+   * 
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
    */
   fillRoundRect(x: number, y: number, w: number, h: number, r: number): void;
+  /** 绘制圆角矩形（边框）
+   * 
+   * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
+   */
+  strokeRoundRect(x: number, y: number, w: number, h: number, r: number): void;
   /** 绘制圆角图片
+   * 
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角图片
    */
   drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number):Promise<boolean>;
@@ -73,9 +86,6 @@ export interface Canvas {
   createPath2D(path: Path2D): Path2D;
   toDataURL(type: string, encoderOptions: number): string;
 }
-
-/** 绘制容器 */
-export type Execute = Array<() => Promise<boolean>>
 
 /** 创建图片路径配置项 */
 export interface CreateImagePathOptions {

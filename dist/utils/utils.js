@@ -17,7 +17,8 @@ export const handleBuildOpts = (options) => {
         componentThis: undefined,
         type2d: true,
         loading: false,
-        drawImageTime: 100
+        drawImageTime: 100,
+        debugging: false
     };
     if (typeof options === "string") {
         newOpts.selector = options;

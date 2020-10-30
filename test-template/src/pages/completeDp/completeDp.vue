@@ -15,11 +15,15 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import DrawPoster from 'uni-draw-poster';
+const headImgUrl =
+  'https://avatars3.githubusercontent.com/u/49724027?s=460&u=7fc6b620b73a5a3486d85ceafb892b1c2d4eb698&v=4';
+const codeImgUrl =
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603993366156&di=1faef73f93c5b6d0183deafc23842579&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F01%2F37%2F28%2F39573c44ad6d806.jpg';
 
-export default Vue.extend({
+export default {
   data: () => ({
     imgUrl: '',
   }),
@@ -27,14 +31,10 @@ export default Vue.extend({
     // 创建绘制工具
     const dp = await DrawPoster.build({
       selector: 'canvas',
-      // loading: true,
+      loading: true,
     });
     const w = (dp.canvas.width = 650);
     const h = (dp.canvas.height = 920);
-    const headImg =
-      'https://avatars3.githubusercontent.com/u/49724027?s=460&u=7fc6b620b73a5a3486d85ceafb892b1c2d4eb698&v=4';
-    const codeImg =
-      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603993366156&di=1faef73f93c5b6d0183deafc23842579&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F01%2F37%2F28%2F39573c44ad6d806.jpg';
     // 绘制基本背景
     dp.draw((ctx) => {
       ctx.fillStyle = '#ffffff';
@@ -53,9 +53,9 @@ export default Vue.extend({
       await ctx.drawImage('/static/tp.png', 19, 86, 612, 459);
       await ctx.drawImage('/static/bw.png', 188, 559, 274, 50);
       // // 用户头像
-      await ctx.drawRoundImage(headImg, 39, 790, 90, 90, 100);
+      await ctx.drawRoundImage(headImgUrl, 39, 790, 90, 90, 100);
       // // 用户二维码
-      await ctx.drawImage(codeImg, 518, 780, 92, 92);
+      await ctx.drawImage(codeImgUrl, 518, 780, 92, 92);
     });
     // 绘制中间文字内容
     dp.draw((ctx) => {
@@ -82,11 +82,9 @@ export default Vue.extend({
       ctx.font = '21px PingFang SC';
       ctx.fillText('扫码聆听', 521, 895);
     });
-    console.log('绘制海报情况：', await dp.awaitCreate());
     this.imgUrl = await dp.createImagePath();
-    console.log(this.imgUrl);
   },
-});
+};
 </script>
 
 <style lang="scss">

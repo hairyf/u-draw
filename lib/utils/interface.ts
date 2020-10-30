@@ -16,6 +16,8 @@ export interface DrawPosterBuildOpts {
    *  具体查看文档说明：https://github.com/TuiMao233/uni-draw-poster
    */
   drawImageTime?: number
+  /** 是否开启调试模式 */
+  debugging?: boolean
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {

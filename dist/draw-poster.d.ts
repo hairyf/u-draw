@@ -5,8 +5,9 @@ declare class DrawPoster {
     canvasId: string;
     loading: boolean;
     drawImageTime: number;
+    debugging: boolean;
     private executeOnions;
-    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, drawImageTime: number);
+    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, drawImageTime: number, debugging: boolean);
     /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
     static build(options: string | DrawPosterBuildOpts, tips?: boolean): Promise<DrawPoster>;
     /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */

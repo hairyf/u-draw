@@ -12,4 +12,5 @@ export declare const handleBuildOpts: (options: string | DrawPosterBuildOpts) =>
     type2d: boolean;
     loading: boolean;
     drawImageTime: number;
+    debugging: boolean;
 };

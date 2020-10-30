@@ -21,7 +21,10 @@ export default Vue.extend({
     imgUrl: '',
   }),
   async onReady() {
-    const dp = await DrawPoster.build('canvas');
+    const dp = await DrawPoster.build({
+      selector: 'canvas',
+      loading: true,
+    });
     dp.canvas.width = 300;
     dp.canvas.height = 300;
     dp.draw((ctx) => {

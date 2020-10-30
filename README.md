@@ -288,3 +288,23 @@ interface CreateImagePathOptions {
   destHeight?: number;
 }
 ~~~
+
+# 常见问题
+
+## H5 端图片裁剪异常
+
+H5 端绘制两个以上的圆角图片时，创建的本地`base64`显示异常，建议当环境是`h5`时，将圆角图片限制为一个，或者`uni`动态编译展示`img`标签。
+
+## 绘制完毕后没有效果
+
+注意`DrawPoster.build`无法检测你所选择`canvasId`的是否正确，所以一定要确保与`canvas-id`和`html`中的`canvas`相同，在小程序端，由于会自动切换为`type2d`，必须得加上动态编译。
+
+~~~html
+<!-- #ifdef MP-WEIXIN -->
+<canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
+<!-- #endif -->
+<!-- #ifndef MP-WEIXIN -->
+<canvas canvas-id="canvas" id="canvas" style="width: 300px; height: 300px" />
+<!-- #endif -->
+~~~
+

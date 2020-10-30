@@ -21,6 +21,7 @@ export const drawImage = async (
       image.src = path
       image.onload = () => {
         ctx.oldDrawImage(image as any, x, y, w, h)
+        ctx.restore()
         resolve(true)
       }
       image.onerror = () => resolve(false)
@@ -185,7 +186,6 @@ export const drawRoundImage = async (
   ctx.fillRoundRect(x, y, w, h, r)
   ctx.clip()
   const result = await ctx.drawImage(url, x, y, w, h)
-  ctx.restore()
   return result
 }
 

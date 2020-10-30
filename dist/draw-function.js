@@ -24,6 +24,7 @@ export const drawImage = (canvas, ctx, url, x, y, w, h) => __awaiter(void 0, voi
             image.src = path;
             image.onload = () => {
                 ctx.oldDrawImage(image, x, y, w, h);
+                ctx.restore();
                 resolve(true);
             };
             image.onerror = () => resolve(false);
@@ -152,7 +153,6 @@ export const drawRoundImage = (ctx, url, x, y, w, h, r = 15) => __awaiter(void 0
     ctx.fillRoundRect(x, y, w, h, r);
     ctx.clip();
     const result = yield ctx.drawImage(url, x, y, w, h);
-    ctx.restore();
     return result;
 });
 /** 绘制画笔初始化挂载 */

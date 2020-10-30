@@ -49,12 +49,14 @@ export default {
     });
     // 绘制图片内容
     dp.draw(async (ctx) => {
-      await ctx.drawImage('/static/logo1.png', 20, 20, 35, 35);
-      await ctx.drawImage('/static/tp.png', 19, 86, 612, 459);
-      await ctx.drawImage('/static/bw.png', 188, 559, 274, 50);
       // // 用户头像
       await ctx.drawRoundImage(headImgUrl, 39, 790, 90, 90, 100);
-      // // 用户二维码
+      await Promise.all([
+        ctx.drawImage('/static/logo1.png', 20, 20, 35, 35),
+        ctx.drawImage('/static/tp.png', 19, 86, 612, 459),
+        ctx.drawImage('/static/bw.png', 188, 559, 274, 50),
+      ]);
+      // 用户二维码
       await ctx.drawImage(codeImgUrl, 518, 780, 92, 92);
     });
     // 绘制中间文字内容

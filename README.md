@@ -5,7 +5,9 @@
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 
-[api文档]: https://tuimao233.gitee.io/mao-blog/my-extends/uni-draw-poster.html
+api文档：[uni-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/uni-draw-poster.html)
+
+插件市场：[dcloud/uni-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
 
 **npm 安装插件**
 
@@ -333,3 +335,7 @@ dp.draw(async (ctx) => {
 ~~~
 
 需要注意的是：`ctx.drawRoundImage`不可以放在`Promise.all`当中，由于`ctx.drawRoundImage`内部会调用`ctx.clip`方法，在`Promise.all`中会与其他图片绘制产生冲突。从而导致圆角失效。
+
+我的博客：[Mr.Mao'blog](https://tuimao233.gitee.io/mao-blog/)
+
+联系方式：951416545@qq.com

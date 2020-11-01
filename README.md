@@ -1,13 +1,21 @@
-![](docs/logoo.png)
-
-# uni-draw-poster 绘制海报工具
+---
+title: uni-draw-poster 绘制海报工具
+date: 2020-11-01
+tags:
+ - typescript
+ - vue
+ - uni
+ - 小程序
+ - 海报
+---
+## 绘制海报工具简述
 
 - 创建绘制海报canvas矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。
 - 接近原生开发体验，上手快，只需考虑业务逻辑，而不用考虑其他问题。
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 
-wiki：https://github.com/TuiMao233/uni-draw-poster/wiki
+[api文档]: https://tuimao233.gitee.io/mao-blog/my-extends/uni-draw-poster.html
 
 **npm 安装插件**
 
@@ -24,7 +32,7 @@ module.exports = {
 };
 ~~~
 
-## 1. 创建生成海报绘制工具
+### 1. 创建生成海报绘制工具
 
 ~~~html
 <!-- #ifdef MP-WEIXIN -->
@@ -44,14 +52,14 @@ async onReady() {
 }
 ~~~
 
-## 2. 设置画布尺寸
+### 2. 设置画布尺寸
 ~~~js
 // 设置长高为100px的矩形宽高
 dp.canvas.width = 100
 dp.canvas.height = 100
 ~~~
 
-## 3. 绘制任意内容
+### 3. 绘制任意内容
 ~~~js
 // 绘制背景与文字
 dp.draw((ctx) => {
@@ -76,7 +84,7 @@ ctx.save()
 /* ... */
 ctx.restore()
 ~~~
-## 4. 进行绘制
+### 4. 进行绘制
 
 `dp.draw`并不会马上绘制，只是将该任务添加到了任务栈，需要使用`dp.awaitCreate`函数进行绘制，该函数在绘制完毕后将弹出所有任务。
 `dp.awaitCreate`在非`2d`绘画中，执行绘画任务完毕后，将自动执行`ctx.draw`方法，并在draw绘画才算异步结束。
@@ -92,7 +100,7 @@ console.log("draw绘制状况:", result); // draw绘制状况: [true]
 
 [^为什么这么做]: 当全部同步绘制时，将会出现绘制时间保持不一致的情况。这样就会导致一个问题，绘制图层覆盖导致显示未达到预期效果，之所以设计为异步等待，也是为了绘制图层能保持一致顺序。
 
-## 5. 生成图片本地地址
+### 5. 生成图片本地地址
 
 如需要保存为图片时，可以使用`dp.createImgUrl` 进行创建图片本地地址，在由`wx`或`uni`的`api`进行保存。
 ~~~js
@@ -111,7 +119,7 @@ const posterImgUrl = await dp.createImagePath();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
 
-# 绘制扩展 API
+## 绘制扩展 API
 
 `drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
 
@@ -121,7 +129,7 @@ dp.draw(async (ctx) => {
 })
 ~~~
 
-## 绘制图片(ctx.drawImage | DrawFunction)
+### 绘制图片(ctx.drawImage)
 
 `ctx.drawImage(url, x, y, w, h)`
 
@@ -144,7 +152,7 @@ dp.draw(async (ctx)=>{
 | x，y          | 图片的左上角的坐标。                      |
 | width，height | 图片的大小。                              |
 
-## 换行字体(ctx.fillWarpText | DrawFunction)
+### 换行字体(ctx.fillWarpText)
 
 `ctx.fillWarpText(options)`
 
@@ -178,7 +186,7 @@ interface FillWarpTextOpts {
 ]
 ~~~
 
-## 圆角矩形(ctx.fillRoundRect | DrawFunction)
+### 圆角矩形(ctx.fillRoundRect)
 
 `ctx.fillWarpText(x, y, w, h, r)`
 
@@ -197,7 +205,7 @@ dp.draw(async (ctx)=>{
 | width，height | 矩形的大小。         |
 | r             | 矩形的弧度半径。     |
 
-## 圆角图片(ctx.drawRoundImage | DrawFunction)
+### 圆角图片(ctx.drawRoundImage)
 
 `ctx.drawRoundImage(url, x, y, w, h, r)`
 
@@ -216,9 +224,9 @@ dp.draw(async (ctx) => {
 | width，height | 图片的大小。                              |
 | r             | 图片的弧度半径。                          |
 
-# 全局实例 API
+## 全局实例 API
 
-## 绘画构建(DrawPoster.build | Function)
+### 绘画构建(DrawPoster.build)
 
 `DrawPoster.build(string|object)`
 
@@ -239,13 +247,13 @@ interface DrawPosterBuildOpts {
     drawImageTime?: 100
 }
 ~~~
-## 多绘画构建(DrawPoster.buildAll | Function)
+### 多绘画构建(DrawPoster.buildAll)
 
 `DrawPoster.buildAll(Array<string|object>)`
 
 构建多个绘画工具，传入build函数中参数string | options构成的数组，返回多个绘制工具组成的对象。key为canvasId，value为构建对象。
 
-## 绘制节点(dp.canvas | Object)
+### 绘制节点(dp.canvas)
 
 `dp.canvas | dp.canvas.width | dp.canvas.height | ...`
 
@@ -260,19 +268,19 @@ interface Canvas {
 }
 ~~~
 
-## 创建绘制(dp.draw | Function)
+### 创建绘制(dp.draw)
 
 `drawPoster.draw(async callback(ctx))`
 
 绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
 
-## 等待绘制(dp.awaitCreate | Function)
+### 等待绘制(dp.awaitCreate)
 
 `dp.awaitCreate()`
 
 异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
 
-## 创建图片(dp.createImagePath | Function)
+### 创建图片(dp.createImagePath)
 
 `dp.createImagePath(options)`
 
@@ -289,21 +297,21 @@ interface CreateImagePathOptions {
 }
 ~~~
 
-# 常见问题
+## 常见问题
 
-## 微信小程序手机浏览空白
+### 微信小程序手机浏览空白
 
 微信小程序绘制如果有图片绘制，手机浏览需要在后台添加`downloadFile`域名。
 
-## 微信小程序无法真机调试
+### 微信小程序无法真机调试
 
 https://developers.weixin.qq.com/community/develop/doc/000eece1640d608df21bb19055b000
 
-## H5 端图片裁剪异常
+### H5 端图片裁剪异常
 
 H5 端绘制两个以上的`ctx.drawRoundImage`圆角图片时，创建的本地`base64`显示异常，建议当环境是`h5`时，将圆角图片限制为一个，或者`uni`动态编译展示`img`标签。
 
-## 绘制完毕后没有效果
+### 绘制完毕后没有效果
 
 注意`DrawPoster.build`无法检测你所选择`canvasId`的是否正确，所以一定要确保与`canvas-id`和`html`中的`canvas`相同，在小程序端，由于会自动切换为`type2d`，必须得加上动态编译。
 
@@ -316,7 +324,7 @@ H5 端绘制两个以上的`ctx.drawRoundImage`圆角图片时，创建的本地
 <!-- #endif -->
 ~~~
 
-## 绘制多个图片加载慢
+### 绘制多个图片加载慢
 
 如果觉得多个图片绘制`await`加载慢，可以使用`Promise.all`将一部分不需要处理图层覆盖的图片进行同步绘制。
 

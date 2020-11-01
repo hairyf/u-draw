@@ -1,13 +1,3 @@
----
-title: uni-draw-poster 绘制海报工具
-date: 2020-11-01
-tags:
- - typescript
- - vue
- - uni
- - 小程序
- - 海报
----
 ## 绘制海报工具简述
 
 - 创建绘制海报canvas矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。

@@ -19,27 +19,33 @@
 			}
 		},
 		{
-			"path": "pages/imageDp/imageDp",
+			"path": "pages/image/image",
 			"style": {
-				"navigationBarTitleText": "imageDp"
+				"navigationBarTitleText": "image"
 			}
 		},
 		{
-			"path": "pages/warpTextDp/warpTextDp",
+			"path": "pages/warpText/warpText",
 			"style": {
-				"navigationBarTitleText": "warpTextDp"
+				"navigationBarTitleText": "warpText"
 			}
 		},
 		{
-			"path": "pages/completeDp/completeDp",
+			"path": "pages/complete/complete",
 			"style": {
-				"navigationBarTitleText": "completeDp"
+				"navigationBarTitleText": "complete"
 			}
 		},
 		{
-			"path": "pages/forCanvasDp/forCanvasDp",
+			"path": "pages/forCanvas/forCanvas",
 			"style": {
-				"navigationBarTitleText": "forCanvasDp"
+				"navigationBarTitleText": "forCanvas"
+			}
+		},
+		{
+			"path": "pages/textPro/textPro",
+			"style": {
+				"navigationBarTitleText": "textPro"
 			}
 		}
 	],

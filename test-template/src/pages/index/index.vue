@@ -16,11 +16,11 @@ export default Vue.extend({
   data: () => ({
     naviList: [
       { text: '基本绘制测试', path: 'baseDp' },
-      { text: '换行字体绘制测试', path: 'warpTextDp' },
-      { text: '图片绘制测试', path: 'imageDp' },
+      { text: '换行字体绘制测试', path: 'warpText' },
+      { text: '图片绘制测试', path: 'image' },
       { text: '基本动画测试', path: 'baseAnim' },
-      { text: '完整海报绘制', path: 'completeDp' },
-      { text: '循环canvas测试', path: 'forCanvasDp' },
+      { text: '完整海报绘制', path: 'complete' },
+      { text: '循环canvas测试', path: 'forCanvas' },
     ],
   }),
   methods: {

@@ -15,7 +15,7 @@
 </template>
 <script>
 import Vue from 'vue';
-import DrawPoster from '@/js_sdk/uni-draw-poster';
+import DrawPoster from "@/js_sdk/draw-poster";
 export default {
   data: () => ({
     imgUrl: '',

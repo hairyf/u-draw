@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"enhance": false,
 		"postcss": true,
@@ -33,7 +33,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "",
 	"appid": "touristappid",
-	"projectname": "%E7%94%BB%E6%9D%BF%E7%A4%BA%E4%BE%8B",
+	"projectname": "画板示例",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

@@ -149,7 +149,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _uniDrawPoster = _interopRequireDefault(__webpack_require__(/*! @/js_sdk/uni-draw-poster */ 28));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var _drawPoster = _interopRequireDefault(__webpack_require__(/*! @/js_sdk/draw-poster */ 28));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 var headImgUrl =
 'https://avatars3.githubusercontent.com/u/49724027?s=460&u=7fc6b620b73a5a3486d85ceafb892b1c2d4eb698&v=4';
 var codeImgUrl =
@@ -161,7 +161,7 @@ var codeImgUrl =
 
   onReady: function onReady() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var dp, w, h;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
 
-                _uniDrawPoster.default.build({
+                _drawPoster.default.build({
                   selector: 'canvas',
                   loading: true,
                   debugging: true }));case 2:dp = _context2.sent;

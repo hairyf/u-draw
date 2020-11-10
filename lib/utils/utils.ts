@@ -14,23 +14,25 @@ export const isNetworkUrl = (str: string) => {
 } 
 /** 处理构建配置 */
 export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
-  let newOpts = {
+  let defaultOpts = {
     selector: '',
     componentThis: undefined,
     type2d: true,
     loading: false,
     drawImageTime: 100,
-    debugging: false
+    debugging: false,
+    loadingText: '绘制海报中...',
+    createText: '生成图片中...',
   }
   if (typeof options === "string") {
-    newOpts.selector = options
+    defaultOpts.selector = options
   } else {
-    newOpts = { ...newOpts, ...options }
+    defaultOpts = { ...defaultOpts, ...options }
   }
-  const oldSelector = newOpts.selector
+  const oldSelector = defaultOpts.selector
   // #ifdef MP-WEIXIN
-  if (newOpts.type2d) {
-    newOpts.selector = '#' + newOpts.selector
+  if (defaultOpts.type2d) {
+    defaultOpts.selector = '#' + defaultOpts.selector
   }
   // #endif
 
@@ -38,7 +40,7 @@ export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
   console.error('注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type2d模式')
   console.error(`请在vue.config.js中的transpileDependencies中添加'uni-draw-poster'`)
   console.error(`或者可以在选择器字符串前缀中添加#来切换为type2d绘制(不推荐)`)
-  newOpts.selector = oldSelector
+  defaultOpts.selector = oldSelector
   // #endif
-  return newOpts
+  return defaultOpts
 }

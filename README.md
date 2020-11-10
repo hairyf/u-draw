@@ -236,9 +236,14 @@ interface DrawPosterBuildOpts {
     // 是否在绘制的过程中, 显示加载框, 默认关闭
     loading?: boolean,
     // 当存在绘制图片时, 等待绘画完毕的时间（毫秒），仅在App中生效
-    drawImageTime?: 100
+    drawImageTime?: 100,
+    // 加载提示文字
+    loadingText?: '绘制海报中...',
+    // 创建图片加载提示文字
+    createText?: '生成图片中...'
 }
 ~~~
+
 ### 多绘画构建(DrawPoster.buildAll)
 
 `DrawPoster.buildAll(Array<string|object>)`
@@ -262,15 +267,27 @@ interface Canvas {
 
 ### 创建绘制(dp.draw)
 
-`drawPoster.draw(async callback(ctx))`
+`dp.draw(async callback(ctx))`
 
 绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
+
+### 全局画笔(dp.ctx)
+
+`dp.ctx`
+
+全局绘制画笔，特殊情况可以使用，推荐只使用`dp.draw`函数进行绘制。
 
 ### 等待绘制(dp.awaitCreate)
 
 `dp.awaitCreate()`
 
 异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
+
+### 停止绘画(dp.stop)
+
+`dp.stop()`
+
+停止当前绘画栈，调用后将停止`dp.awaitCreate |dp.createImagePath `的执行。
 
 ### 创建图片(dp.createImagePath)
 

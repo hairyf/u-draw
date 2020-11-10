@@ -18,6 +18,10 @@ export interface DrawPosterBuildOpts {
   drawImageTime?: number
   /** 是否开启调试模式 */
   debugging?: boolean
+  /** 加载提示文字 */
+  loadingText?: string
+  /** 创建图片提示文字 */
+  createText?: string
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {
@@ -67,7 +71,7 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
    * 
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角图片
    */
-  drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number):Promise<boolean>;
+  drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number): Promise<boolean>;
 }
 
 /** Canvas2d实例 */

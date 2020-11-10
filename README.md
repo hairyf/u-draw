@@ -36,7 +36,7 @@ module.exports = {
 ~~~
 
 ~~~js
-// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/uni-draw-poster'
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/draw-poster'
 import DrawPoster from 'uni-draw-poster'
 async onReady() {
  // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制

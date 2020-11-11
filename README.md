@@ -257,7 +257,7 @@ async onReady() {
 |         x         | number |  否  |                       水平方向偏移长度                       |
 |         y         | number |  否  |                       垂直方向偏移长度                       |
 |       text        | String |  是  |                          二维码内容                          |
-|       size        | Number |  否  | 画布尺寸大小，请与 `<canvas/>` 所设 `width` ， `height` 保持一致（默认：`354`） |
+|       size        | Number |  否  |                        二维码尺寸大小                        |
 |      margin       | Number |  否  | 边距，二维码实际尺寸会根据所设边距值进行缩放调整（默认：`0`） |
 |  backgroundColor  | String |  否  | 背景色，若设置为透明背景， `fileType` 需设置为 `'png'` ， 然后设置背景色为 `'rgba(255,255,255,0)'` 即可（默认：`'#ffffff'`） |
 |  foregroundColor  | String |  否  |                 前景色（默认：`'#000000'`）                  |

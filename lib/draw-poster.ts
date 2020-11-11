@@ -39,7 +39,7 @@ class DrawPoster {
   }
 
   /** 提示器, 传入消息与数据 */
-  private debuggingLog(message: string, data?: any) {
+  private debuggingLog = (message: string, data?: any) => {
     if (this.debugging) {
       if (data) {
         console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd", data)
@@ -50,7 +50,7 @@ class DrawPoster {
   }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
-  static async build(options: string | DrawPosterBuildOpts, tips = true) {
+  static build = async (options: string | DrawPosterBuildOpts, tips = true) => {
     const {
       selector,
       componentThis,
@@ -88,7 +88,7 @@ class DrawPoster {
   }
 
   /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
-  static async buildAll(optionsAll: (string | DrawPosterBuildOpts)[]) {
+  static buildAll = async (optionsAll: (string | DrawPosterBuildOpts)[]) => {
     const dpsArr = await Promise.all(optionsAll.map(async options => {
       return await DrawPoster.build(options, false)
     }))
@@ -118,6 +118,7 @@ class DrawPoster {
       }
     })
   }
+
   /** 等待创建绘画, 成功后清空绘制器容器 */
   awaitCreate = async (): Promise<boolean[]> => {
     this.debuggingLog('绘制海报中...')
@@ -198,5 +199,4 @@ class DrawPoster {
     this.stopStatus = true
   }
 }
-
 export default DrawPoster;

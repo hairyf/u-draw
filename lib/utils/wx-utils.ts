@@ -1,7 +1,7 @@
 import gbl from "./global"
 import { Canvas } from "./interface"
 import { isBaseUrl, isNetworkUrl, isTmpUrl } from './utils'
-// 下载图片方法
+// 下载指定地址图片, 如果不符合下载图片, 则直接返回
 export const downloadImgUrl = (url: string): Promise<string> =>
   new Promise((resolve, reject) => {
     if (isBaseUrl(url) || isTmpUrl(url) || !isNetworkUrl(url)) {
@@ -15,7 +15,7 @@ export const downloadImgUrl = (url: string): Promise<string> =>
     })
   })
 
-// 获取node节点
+// 获取当前指定 node 节点
 export const getCanvas2dContext = (selector: string, componentThis?: any): Promise<Canvas | {}> => {
   return new Promise(resolve => {
     const query = (

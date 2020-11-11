@@ -243,12 +243,14 @@ DrawPoster.useCtx(drawQrCode)
 async onReady() {
  const dp = await DrawPoster.build("canvas")
  dp.canvas.width = 200; dp.canvas.height = 200
- ctx.drawQrCode({
-   x: (dp.canvas.width / 2) - 50,
-   y: (dp.canvas.height / 2) - 50,
-   text: "http://www.baidu.com",
-   size: 100,
- });
+ dp.draw(ctx=>{
+   ctx.drawQrCode({
+    x: (dp.canvas.width / 2) - 50,
+    y: (dp.canvas.height / 2) - 50,
+    text: "http://www.baidu.com",
+    size: 100,
+  });
+ })
 }
 ~~~
 

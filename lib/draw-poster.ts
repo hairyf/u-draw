@@ -108,7 +108,7 @@ class DrawPoster {
         this.ctx.restore()
         return true
       } catch (error) {
-        const isOutError = error.search?.(`'nodeId' of undefined`) >= 0
+        const isOutError = error?.message?.search?.(`'nodeId' of undefined`) >= 0
         if (isOutError) {
           return false
         } else {

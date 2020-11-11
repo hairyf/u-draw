@@ -26,7 +26,7 @@ class DrawPoster {
         this.draw = (execute) => {
             const length = this.executeOnions.length;
             this.executeOnions.push(() => __awaiter(this, void 0, void 0, function* () {
-                var _a;
+                var _a, _b;
                 try {
                     this.ctx.save();
                     yield execute(this.ctx);
@@ -34,7 +34,7 @@ class DrawPoster {
                     return true;
                 }
                 catch (error) {
-                    const isOutError = ((_a = error.search) === null || _a === void 0 ? void 0 : _a.call(error, `'nodeId' of undefined`)) >= 0;
+                    const isOutError = ((_b = (_a = error === null || error === void 0 ? void 0 : error.message) === null || _a === void 0 ? void 0 : _a.search) === null || _b === void 0 ? void 0 : _b.call(_a, `'nodeId' of undefined`)) >= 0;
                     if (isOutError) {
                         return false;
                     }

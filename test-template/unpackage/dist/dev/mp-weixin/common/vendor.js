@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7331,7 +7331,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7352,14 +7352,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7445,7 +7445,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7882,9 +7882,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!**************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/pages.json ***!
-  \**************************************************************/
+/*!************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/pages.json ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8827,9 +8827,9 @@ if (hadRuntime) {
 
 /***/ }),
 /* 28 */
-/*!*******************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/index.js ***!
-  \*******************************************************************************/
+/*!*****************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/index.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8840,9 +8840,9 @@ _drawPoster.default;exports.default = _default;
 
 /***/ }),
 /* 29 */
-/*!*************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-poster.js ***!
-  \*************************************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-poster.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8874,7 +8874,7 @@ DrawPoster = /*#__PURE__*/function () {
     /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
     this.draw = function (execute) {
       var length = _this2.executeOnions.length;
-      _this2.executeOnions.push(function () {return __awaiter(_this2, void 0, void 0, /*#__PURE__*/_regenerator.default.mark(function _callee() {var _a, isOutError;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.prev = 0;
+      _this2.executeOnions.push(function () {return __awaiter(_this2, void 0, void 0, /*#__PURE__*/_regenerator.default.mark(function _callee() {var _a, _b, isOutError;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.prev = 0;
 
 
                   this.ctx.save();_context.next = 4;
@@ -8883,7 +8883,7 @@ DrawPoster = /*#__PURE__*/function () {
                   true);case 8:_context.prev = 8;_context.t0 = _context["catch"](0);
 
 
-                  isOutError = ((_a = _context.t0.search) === null || _a === void 0 ? void 0 : _a.call(_context.t0, "'nodeId' of undefined")) >= 0;if (!
+                  isOutError = ((_b = (_a = _context.t0 === null || _context.t0 === void 0 ? void 0 : _context.t0.message) === null || _a === void 0 ? void 0 : _a.search) === null || _b === void 0 ? void 0 : _b.call(_a, "'nodeId' of undefined")) >= 0;if (!
                   isOutError) {_context.next = 15;break;}return _context.abrupt("return",
                   false);case 15:
 
@@ -9026,9 +9026,9 @@ DrawPoster;exports.default = _default;
 
 /***/ }),
 /* 30 */
-/*!**************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/global.js ***!
-  \**************************************************************************************/
+/*!************************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/global.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9047,9 +9047,9 @@ gbl;exports.default = _default;
 
 /***/ }),
 /* 31 */
-/*!*************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/index.js ***!
-  \*************************************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/index.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9061,20 +9061,19 @@ var _utils = __webpack_require__(/*! ./utils */ 34);Object.keys(_utils).forEach(
 
 /***/ }),
 /* 32 */
-/*!*****************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/interface.js ***!
-  \*****************************************************************************************/
+/*!***************************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/interface.js ***!
+  \***************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+
 
 /***/ }),
 /* 33 */
-/*!****************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/wx-utils.js ***!
-  \****************************************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/wx-utils.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9109,9 +9108,9 @@ exports.downloadImgUrl = downloadImgUrl;var getCanvas2dContext = function getCan
 
 /***/ }),
 /* 34 */
-/*!*************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/utils.js ***!
-  \*************************************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/utils/utils.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9163,9 +9162,9 @@ var handleBuildOpts = function handleBuildOpts(options) {
 
 /***/ }),
 /* 35 */
-/*!***************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-function.js ***!
-  \***************************************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-function.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9339,9 +9338,9 @@ var drawCtxMount = function drawCtxMount(canvas, ctx) {
 
 /***/ }),
 /* 36 */
-/*!****************************************************************************************!*\
-  !*** G:/项目文件/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-animation.js ***!
-  \****************************************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/项目/开源库管理/uni-draw-poster/test-template/js_sdk/draw-poster/draw-animation.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

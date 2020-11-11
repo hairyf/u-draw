@@ -47,6 +47,12 @@
 			"style": {
 				"navigationBarTitleText": "use"
 			}
+		},
+		{
+			"path": "pages/qrcode/qrcode",
+			"style": {
+				"navigationBarTitleText": "qrcode"
+			}
 		}
 	],
 	"globalStyle": {

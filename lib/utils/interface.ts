@@ -36,7 +36,16 @@ export interface FillWarpTextOpts {
   splitText?: string
   notFillText?: boolean
 }
-
+/** 绘制二维码配置 */
+export interface DrawQrCodeOpts {
+  text: string
+  x?: number
+  y?: number
+  size?: number
+  margin?: number
+  backgroundColor?: string
+  foregroundColor?: string
+}
 /** 绘制换行, 单行信息 */
 export interface FillWarpTextItemInfo { text: string; y: number; x: number; }
 
@@ -79,6 +88,11 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
    * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角图片
    */
   drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number): Promise<boolean>
+  /** 绘制二维码
+   * 
+   * 说明文档: https://github.com/TuiMao233/uni-draw-poster#二维码
+   */
+  drawQrCode(options: DrawQrCodeOpts): void
 }
 
 /** Canvas2d实例 */
@@ -115,6 +129,7 @@ export interface DrawPosterUseOpts {
   name: string
   init?: (dp: typeof DrawPoster) => void
   handle: (dp: typeof DrawPoster, ...args: any[]) => any
+  [key: string]: any
 }
 
 /** 绘制画笔实例扩展配置 */
@@ -122,4 +137,5 @@ export interface DrawPosterUseCtxOpts {
   name: string
   init?: (canvas: Canvas, ctx: DrawPosterCanvasCtx) => void
   handle: (canvas: Canvas, ctx: DrawPosterCanvasCtx, ...args: any[]) => any
+  [key: string]: any
 }

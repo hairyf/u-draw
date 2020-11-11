@@ -19,6 +19,7 @@ export default {
 			{ text: '完整海报绘制', path: 'complete' },
 			{ text: '重复绘制', path: 'repeat' },
 			{ text: '扩展程序', path: 'extend' },
+			{ text: '二维码生成', path: 'qrcode' },
 			{ text: 'use方式引入', path: 'use' },
     ],
   }),

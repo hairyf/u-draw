@@ -229,6 +229,40 @@ dp.draw(async (ctx) => {
 | width，height | 图片的大小。                              |
 | r             | 图片的弧度半径。                          |
 
+### 绘制二维码(ctx.drawQrCode)
+
+生成二维码扩展，源码使用了 [uQRCode](https://github.com/Sansnn/uQRCode) 并改动了一下，该文件比较大，所以作为扩展插件使用，使用时得先引入插件。
+
+~~~js
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/draw-poster'
+import DrawPoster from 'uni-draw-poster'
+import drawQrCode from 'uni-draw-poster/extends/draw-qr-code'
+// 引入绘制二维码插件
+DrawPoster.useCtx(drawQrCode)
+
+async onReady() {
+ const dp = await DrawPoster.build("canvas")
+ dp.canvas.width = 200; dp.canvas.height = 200
+ ctx.drawQrCode({
+   x: (dp.canvas.width / 2) - 50,
+   y: (dp.canvas.height / 2) - 50,
+   text: "http://www.baidu.com",
+   size: 100,
+ });
+}
+~~~
+
+|       参数        |  类型  | 必填 |                             说明                             |
+| :---------------: | :----: | :--: | :----------------------------------------------------------: |
+|         x         | number |  否  |                       水平方向偏移长度                       |
+|         y         | number |  否  |                       垂直方向偏移长度                       |
+|       text        | String |  是  |                          二维码内容                          |
+|       size        | Number |  否  | 画布尺寸大小，请与 `<canvas/>` 所设 `width` ， `height` 保持一致（默认：`354`） |
+|      margin       | Number |  否  | 边距，二维码实际尺寸会根据所设边距值进行缩放调整（默认：`0`） |
+|  backgroundColor  | String |  否  | 背景色，若设置为透明背景， `fileType` 需设置为 `'png'` ， 然后设置背景色为 `'rgba(255,255,255,0)'` 即可（默认：`'#ffffff'`） |
+|  foregroundColor  | String |  否  |                 前景色（默认：`'#000000'`）                  |
+| errorCorrectLevel | Number |  否  | 纠错等级，包含 `errorCorrectLevel.L`、`errorCorrectLevel.M`、`errorCorrectLevel.Q`、`errorCorrectLevel.H` 四个级别，`L`: 最大 7% 的错误能够被纠正；`M`: 最大 15% 的错误能够被纠正；`Q`: 最大 25% 的错误能够被纠正；`H`: 最大 30% 的错误能够被纠正。 |
+
 ## 全局实例 API
 
 ### 绘画构建(DrawPoster.build)

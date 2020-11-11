@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { downloadImgUrl } from '../utils/wx-utils';
+import { downloadImgUrl } from '../../utils/wx-utils';
 /** 等待绘制图片原型方法 */
 export const drawImage = {
     name: 'drawImage',

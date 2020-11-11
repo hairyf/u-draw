@@ -1,4 +1,4 @@
-import { DrawPosterUseCtxOpts } from '../utils/interface';
+import { DrawPosterUseCtxOpts } from '../../utils/interface';
 /** 等待绘制图片原型方法 */
 export declare const drawImage: DrawPosterUseCtxOpts;
 /** 绘制换行字体原型方法 */

@@ -1,6 +1,6 @@
-import { DrawPosterUseCtxOpts } from '../utils/interface'
-import { Canvas, DrawPosterCanvasCtx, FillWarpTextOpts } from '../utils/interface'
-import { downloadImgUrl } from '../utils/wx-utils'
+import { DrawPosterUseCtxOpts } from '../../utils/interface'
+import { Canvas, DrawPosterCanvasCtx, FillWarpTextOpts } from '../../utils/interface'
+import { downloadImgUrl } from '../../utils/wx-utils'
 /** 等待绘制图片原型方法 */
 export const drawImage: DrawPosterUseCtxOpts = {
   name: 'drawImage',

@@ -14,28 +14,9 @@
   </div>
 </template>
 <script>
-import {DrawPoster} from "@/js_sdk/draw-poster";
-
-// 添加一个绘制个人海报的扩展实现
-DrawPoster.use({
-  name: "createMyCardImagePath",
-  handle: async (dp, opts) => {
-    // ..自定义绘制内容..
-    return await dp.createImagePath()
-  },
-});
-
-// 添加一个绘制二维码的绘画扩展实现
-DrawPoster.useCtx({
-  name: "drawMyQrCode",
-  handle: (canvas, ctx, url, x, y, w, h) => {
-    // ....
-    console.log('自定义绘制方法: drawMyQrCode-->', {
-      canvas, ctx, url, x, y, w, h
-    })
-  },
-});
-
+import DrawPoster from "@/js_sdk/draw-poster";
+import drawQrCode from "@/js_sdk/draw-poster/extends/draw-qr-code"
+DrawPoster.useCtx(drawQrCode)
 export default {
   data: () => ({
     imgUrl: "",
@@ -43,21 +24,25 @@ export default {
   async onReady() {
     // 创建绘制工具
     const dp = await DrawPoster.build("canvas");
-    dp.canvas.width = 300; dp.canvas.height = 300;
-    // 使用自定义扩展
-    const url = await dp.createMyCardImagePath({
-      name: '12111',
-      age: '11231',
-      headImg: '....'
-    })
-
+    dp.canvas.width = 300;
+    dp.canvas.height = 300;
+    // 创建一个绘制任务
     dp.draw((ctx) => {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, 300, 300);
-      // 使用扩展方法
-      ctx.drawMyQrCode('url', 0, 0, 100, 100)
+      ctx.drawQrCode({
+        x: (dp.canvas.width / 2) - 50,
+        y: (dp.canvas.height / 2) - 50,
+        text: "http://www.baidu.com",
+        size: 100,
+        errorCorrectLevel: drawQrCode.errorCorrectLevel.H
+      });
     });
+    // 执行绘制任务
+    console.log("绘制情况: ", await dp.awaitCreate());
+    // 创建本地图片
     this.imgUrl = await dp.createImagePath();
+    console.log("创建地址: ", { url: this.imgUrl });
   },
 };
 </script>

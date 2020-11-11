@@ -1,1 +1,0 @@
-<view class="index _div"><block wx:for="{{naviList}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view data-event-opts="{{[['tap',[['onHandlePathJump',['$0'],[[['naviList','',index,'path']]]]]]]}}" bindtap="__e" class="_div">{{''+item.text+''}}</view></block></view>

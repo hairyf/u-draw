@@ -14,50 +14,26 @@
   </div>
 </template>
 <script>
-import {DrawPoster} from "@/js_sdk/draw-poster";
-
-// 添加一个绘制个人海报的扩展实现
-DrawPoster.use({
-  name: "createMyCardImagePath",
-  handle: async (dp, opts) => {
-    // ..自定义绘制内容..
-    return await dp.createImagePath()
-  },
-});
-
-// 添加一个绘制二维码的绘画扩展实现
-DrawPoster.useCtx({
-  name: "drawQrCode",
-  handle: (canvas, ctx, url, x, y, w, h) => {
-    // ....
-    console.log('自定义绘制方法: drawQrCode-->', {
-      canvas, ctx, url, x, y, w, h
-    })
-  },
-});
-
+import { useDrawPoster } from "@/js_sdk/draw-poster";
 export default {
   data: () => ({
     imgUrl: "",
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await DrawPoster.build("canvas");
-    dp.canvas.width = 300; dp.canvas.height = 300;
-    // 使用自定义扩展
-    const url = await dp.createMyCardImagePath({
-      name: '12111',
-      age: '11231',
-      headImg: '....'
-    })
-
+    const dp = await useDrawPoster("canvas");
+    dp.canvas.width = 300;
+    dp.canvas.height = 300;
+    // 创建一个绘制任务
     dp.draw((ctx) => {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, 300, 300);
-      // 使用扩展方法
-      ctx.drawQrCode('url', 0, 0, 100, 100)
     });
+    // 执行绘制任务
+    console.log("绘制情况: ", await dp.awaitCreate());
+    // 创建本地图片
     this.imgUrl = await dp.createImagePath();
+    console.log("创建地址: ", { url: this.imgUrl });
   },
 };
 </script>

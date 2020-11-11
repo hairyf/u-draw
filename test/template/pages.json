@@ -35,6 +35,18 @@
 			"style": {
 				"navigationBarTitleText": "repeat"
 			}
+		},
+		{
+			"path": "pages/extend/extend",
+			"style": {
+				"navigationBarTitleText": "extend"
+			}
+		},
+		{
+			"path": "pages/use/use",
+			"style": {
+				"navigationBarTitleText": "use"
+			}
 		}
 	],
 	"globalStyle": {

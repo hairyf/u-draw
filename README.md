@@ -1,9 +1,11 @@
 ## 绘制海报工具简述
 
-- 创建绘制海报canvas矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。
+- 创建绘制海报`canvas`矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。
 - 接近原生开发体验，上手快，只需考虑业务逻辑，而不用考虑其他问题。
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
+- 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
+- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/uni-draw-poster/tree/master/docs/use.md)。
 
 api文档：[uni-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/uni-draw-poster.html)
 
@@ -24,7 +26,7 @@ module.exports = {
 };
 ~~~
 
-### 1. 创建生成海报绘制工具
+### 1. 创建海报绘制工具
 
 ~~~html
 <!-- #ifdef MP-WEIXIN -->
@@ -76,6 +78,7 @@ ctx.save()
 /* ... */
 ctx.restore()
 ~~~
+
 ### 4. 进行绘制
 
 `dp.draw`并不会马上绘制，只是将该任务添加到了任务栈，需要使用`dp.awaitCreate`函数进行绘制，该函数在绘制完毕后将弹出所有任务。
@@ -197,6 +200,16 @@ dp.draw(async (ctx)=>{
 | width，height | 矩形的大小。         |
 | r             | 矩形的弧度半径。     |
 
+### 圆角矩形边框(ctx.strokeRoundRect)
+
+`ctx.strokeRoundRect(x, y, w, h, r)`
+
+| 参数          | 描述                 |
+| :------------ | :------------------- |
+| x，y          | 矩形的左上角的坐标。 |
+| width，height | 矩形的大小。         |
+| r             | 矩形的弧度半径。     |
+
 ### 圆角图片(ctx.drawRoundImage)
 
 `ctx.drawRoundImage(url, x, y, w, h, r)`
@@ -222,7 +235,7 @@ dp.draw(async (ctx) => {
 
 `DrawPoster.build(string|object)`
 
-初始化构建绘制工具，传入查询字符串与配置对象，当配置对象时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
+初始化构建绘制工具，传入查询字符串与配置对象，当配置字符串时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
 
 ~~~js
 /** DrawPoster.build 构建配置 */
@@ -249,6 +262,66 @@ interface DrawPosterBuildOpts {
 `DrawPoster.buildAll(Array<string|object>)`
 
 构建多个绘画工具，传入build函数中参数string | options构成的数组，返回多个绘制工具组成的对象。key为canvasId，value为构建对象。
+
+### 挂载全局扩展(DrawPoster.use)
+
+`DrawPoster.use(object)`
+
+传入挂载配置对象，添加全局扩展方法，一般可用于海报绘制模板的封装，在不同页面有一样的海报模板时可以有效的减少代码量，使用方式如下。
+
+一、在任意位置添加扩展（建议放在`main.js`中执行）
+
+~~~js
+import DrawPoster from 'uni-draw-poster'
+// 全局添加绘制个人海报的扩展实现
+DrawPoster.use({
+  name: "createMyCardImagePath",
+  // dp为当前实例, 其余参数为自定义传入参数
+  handle: async (dp, opts) => {
+    // ..自定义构建内容..
+    return await dp.createImagePath()
+  }
+})
+~~~
+
+二、页面中使用自定义扩展
+
+~~~js
+import DrawPoster from 'uni-draw-poster'
+async onReady() {
+ const dp = await DrawPoster.build("canvas")
+ dp.canvas.width = 100; dp.canvas.height = 100
+ const posterImg = await dp.createMyCardImagePath({/*...*/})
+}
+~~~
+
+### 挂载绘制扩展(DrawPoster.useCtx)
+
+`DrawPoster.useCtx(object)`
+
+传入挂载配置对象，添加全局绘制扩展方法，用于自定义绘制方法的定义，使用方式如下。
+
+一、在任意位置添加扩展（建议放在`main.js`中执行）
+
+~~~js
+// 全局添加绘制二维码的绘画扩展实现
+DrawPoster.useCtx({
+  name: "drawQrCode",
+  // canvas(绘制节点), ctx(绘制画笔), 其余参数为自定义传入参数
+  handle: async (canvas, ctx, url, x, y, w, h) => {
+    // ..自定义绘制内容..
+  },
+});
+~~~
+
+二、绘制中使用自定义扩展
+
+~~~js
+dp.draw(ctx=> {
+  const url = 'http://www.baidu.com'
+  await ctx.drawQrCode(url, 0, 0, 50, 50)
+ })
+~~~
 
 ### 绘制节点(dp.canvas)
 
@@ -310,7 +383,7 @@ interface CreateImagePathOptions {
 
 ### 微信小程序手机浏览空白
 
-微信小程序绘制如果有图片绘制，手机浏览需要在后台添加`downloadFile`域名。
+微信小程序绘制如果有图片绘制，手机浏览需要在后台添加`downloadFile`域名，并需要重启开发者工具。
 
 ### 微信小程序无法真机调试
 

@@ -1,17 +1,25 @@
 import gbl from "./utils/global"
 import {
-  Canvas,
+  Canvas, Execute,
   DrawPosterCanvasCtx,
-  Execute,
   CreateImagePathOptions,
   DrawPosterBuildOpts,
-  getCanvas2dContext,
-  handleBuildOpts
-} from "./utils";
-import { drawCtxMount } from "./draw-function"
+  DrawPosterUseOpts,
+  DrawPosterUseCtxOpts,
+} from "./utils/interface"
+import { handleBuildOpts, extendMount } from "./utils/utils"
+import { getCanvas2dContext } from "./utils/wx-utils"
+
+// 扩展挂载储存
+let drawPosterExtend: Record<any, any> = {}
+let drawCtxPosterExtend: Record<any, any> = {}
+
 class DrawPoster {
-  private executeOnions = [] as Execute;
+  [key: string]: any
+  private executeOnions = [] as Execute
   private stopStatus = false
+
+  /** 构建器, 构建返回当前实例, 并挂载多个方法 */
   constructor(
     public canvas: Canvas,
     public ctx: DrawPosterCanvasCtx,
@@ -25,7 +33,16 @@ class DrawPoster {
     if (!canvas || !ctx || !canvasId) {
       throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects")
     }
-    drawCtxMount(canvas, ctx)
+
+    // 挂载全局实例, 绘画扩展
+    extendMount(this, drawPosterExtend, (extend, init) => {
+      init?.(this)
+      return (...args: any[]) => extend(this, ...args)
+    })
+    extendMount(this.ctx, drawCtxPosterExtend, (extend, init) => {
+      init?.(this.canvas, this.ctx)
+      return (...args: any[]) => extend(this.canvas, this.ctx, ...args)
+    })
 
     // 当离开页面时, 自动调用停止绘画
     const _this = this
@@ -37,7 +54,6 @@ class DrawPoster {
       page.oldOnUnload()
     }
   }
-
   /** 提示器, 传入消息与数据 */
   private debuggingLog = (message: string, data?: any) => {
     if (this.debugging) {
@@ -47,6 +63,16 @@ class DrawPoster {
         console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd")
       }
     }
+  }
+
+  /** 传入挂载配置对象, 添加扩展方法 */
+  static use = (opts: DrawPosterUseOpts) => {
+    drawPosterExtend[opts.name] = opts
+  }
+
+  /** 传入挂载配置对象, 添加绘画扩展方法 */
+  static useCtx = (opts: DrawPosterUseCtxOpts) => {
+    drawCtxPosterExtend[opts.name] = opts
   }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
@@ -199,4 +225,6 @@ class DrawPoster {
     this.stopStatus = true
   }
 }
+
+
 export default DrawPoster;

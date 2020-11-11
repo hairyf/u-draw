@@ -18,6 +18,8 @@ export default {
       { text: '图片绘制', path: 'image' },
 			{ text: '完整海报绘制', path: 'complete' },
 			{ text: '重复绘制', path: 'repeat' },
+			{ text: '扩展程序', path: 'extend' },
+			{ text: 'use方式引入', path: 'use' },
     ],
   }),
   methods: {

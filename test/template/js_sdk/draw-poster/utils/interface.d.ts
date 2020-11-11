@@ -1,4 +1,5 @@
 /// <reference types="@dcloudio/types" />
+import DrawPoster from "../draw-poster";
 /** 绘制容器 */
 export declare type Execute = Array<() => Promise<boolean>>;
 /** 构建器配置 */
@@ -42,6 +43,7 @@ export interface FillWarpTextItemInfo {
 }
 /** 绘制画笔 */
 export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
+    [key: string]: any;
     createImageData: () => ImageData;
     textAlign: CanvasTextDrawingStyles["textAlign"];
     textBaseline: CanvasTextDrawingStyles["textBaseline"];
@@ -59,6 +61,10 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
      * 说明文档: https://github.com/TuiMao233/uni-draw-poster#换行字体
      */
     fillWarpText(options: FillWarpTextOpts): Array<FillWarpTextItemInfo>;
+    /** 绘制圆角矩形（原型）
+     *
+     */
+    roundRect(x: number, y: number, w: number, h: number, r: number, fill?: boolean, stroke?: boolean): void;
     /** 绘制圆角矩形（填充）
      *
      * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
@@ -101,4 +107,16 @@ export interface CreateImagePathOptions {
     height?: number;
     destWidth?: number;
     destHeight?: number;
+}
+/** 绘制实例扩展配置 */
+export interface DrawPosterUseOpts {
+    name: string;
+    init?: (dp: typeof DrawPoster) => void;
+    handle: (dp: typeof DrawPoster, ...args: any[]) => any;
+}
+/** 绘制画笔实例扩展配置 */
+export interface DrawPosterUseCtxOpts {
+    name: string;
+    init?: (canvas: Canvas, ctx: DrawPosterCanvasCtx) => void;
+    handle: (canvas: Canvas, ctx: DrawPosterCanvasCtx, ...args: any[]) => any;
 }

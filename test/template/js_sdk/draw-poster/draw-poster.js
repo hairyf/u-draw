@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import gbl from "./utils/global";
-import { getCanvas2dContext, handleBuildOpts } from "./utils";
-import { drawCtxMount } from "./draw-function";
+import { handleBuildOpts, extendMount } from "./utils/utils";
+import { getCanvas2dContext } from "./utils/wx-utils";
+// 扩展挂载储存
+let drawPosterExtend = {};
+let drawCtxPosterExtend = {};
 class DrawPoster {
+    /** 构建器, 构建返回当前实例, 并挂载多个方法 */
     constructor(canvas, ctx, canvasId, loading, drawImageTime, debugging, loadingText, createText) {
         this.canvas = canvas;
         this.ctx = ctx;
@@ -22,6 +26,17 @@ class DrawPoster {
         this.createText = createText;
         this.executeOnions = [];
         this.stopStatus = false;
+        /** 提示器, 传入消息与数据 */
+        this.debuggingLog = (message, data) => {
+            if (this.debugging) {
+                if (data) {
+                    console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd", data);
+                }
+                else {
+                    console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd");
+                }
+            }
+        };
         /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
         this.draw = (execute) => {
             const length = this.executeOnions.length;
@@ -116,7 +131,15 @@ class DrawPoster {
         if (!canvas || !ctx || !canvasId) {
             throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects");
         }
-        drawCtxMount(canvas, ctx);
+        // 挂载全局实例, 绘画扩展
+        extendMount(this, drawPosterExtend, (extend, init) => {
+            init === null || init === void 0 ? void 0 : init(this);
+            return (...args) => extend(this, ...args);
+        });
+        extendMount(this.ctx, drawCtxPosterExtend, (extend, init) => {
+            init === null || init === void 0 ? void 0 : init(this.canvas, this.ctx);
+            return (...args) => extend(this.canvas, this.ctx, ...args);
+        });
         // 当离开页面时, 自动调用停止绘画
         const _this = this;
         const pages = getCurrentPages();
@@ -127,49 +150,42 @@ class DrawPoster {
             page.oldOnUnload();
         };
     }
-    /** 提示器, 传入消息与数据 */
-    debuggingLog(message, data) {
-        if (this.debugging) {
-            if (data) {
-                console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd", data);
-            }
-            else {
-                console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd");
-            }
-        }
-    }
-    /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
-    static build(options, tips = true) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            const { selector, componentThis, loading, drawImageTime, debugging, loadingText, createText } = handleBuildOpts(options);
-            // 初始化监测当前页面绘制对象
-            const pages = getCurrentPages();
-            const page = pages[pages.length - 1];
-            if (page[selector + '__dp']) {
-                return page[selector + '__dp'];
-            }
-            // 获取canvas实例
-            const canvas = yield getCanvas2dContext(selector);
-            const ctx = (((_a = canvas.getContext) === null || _a === void 0 ? void 0 : _a.call(canvas, "2d")) || gbl.createCanvasContext(selector, componentThis));
-            tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector });
-            const dp = new DrawPoster(canvas, ctx, selector, loading, drawImageTime, debugging, loadingText, createText);
-            // 储存当前绘制对象
-            page[selector + '__dp'] = dp;
-            return dp;
-        });
-    }
-    /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
-    static buildAll(optionsAll) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dpsArr = yield Promise.all(optionsAll.map((options) => __awaiter(this, void 0, void 0, function* () {
-                return yield DrawPoster.build(options, false);
-            })));
-            const dpsObj = {};
-            dpsArr.forEach(dp => dpsObj[dp.canvasId] = dp);
-            console.log("%cdraw-poster 构建完成：", "#E3712A", dpsObj);
-            return dpsObj;
-        });
-    }
 }
+/** 传入挂载配置对象, 添加扩展方法 */
+DrawPoster.use = (opts) => {
+    drawPosterExtend[opts.name] = opts;
+};
+/** 传入挂载配置对象, 添加绘画扩展方法 */
+DrawPoster.useCtx = (opts) => {
+    drawCtxPosterExtend[opts.name] = opts;
+};
+/** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
+DrawPoster.build = (options, tips = true) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { selector, componentThis, loading, drawImageTime, debugging, loadingText, createText } = handleBuildOpts(options);
+    // 初始化监测当前页面绘制对象
+    const pages = getCurrentPages();
+    const page = pages[pages.length - 1];
+    if (page[selector + '__dp']) {
+        return page[selector + '__dp'];
+    }
+    // 获取canvas实例
+    const canvas = yield getCanvas2dContext(selector);
+    const ctx = (((_a = canvas.getContext) === null || _a === void 0 ? void 0 : _a.call(canvas, "2d")) || gbl.createCanvasContext(selector, componentThis));
+    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector });
+    const dp = new DrawPoster(canvas, ctx, selector, loading, drawImageTime, debugging, loadingText, createText);
+    // 储存当前绘制对象
+    page[selector + '__dp'] = dp;
+    return dp;
+});
+/** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
+DrawPoster.buildAll = (optionsAll) => __awaiter(void 0, void 0, void 0, function* () {
+    const dpsArr = yield Promise.all(optionsAll.map((options) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield DrawPoster.build(options, false);
+    })));
+    const dpsObj = {};
+    dpsArr.forEach(dp => dpsObj[dp.canvasId] = dp);
+    console.log("%cdraw-poster 构建完成：", "#E3712A", dpsObj);
+    return dpsObj;
+});
 export default DrawPoster;

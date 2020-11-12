@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <image :src="imgUrl" style="width: 100px; height: 100px" />
+    <!-- <image :src="imgUrl" style="width: 100px; height: 100px" /> -->
     <!-- #ifdef MP-WEIXIN -->
     <canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
     <!-- #endif -->
@@ -15,8 +15,8 @@
 </template>
 <script>
 import DrawPoster from "@/js_sdk/u-draw-poster";
-import drawQrCode from "@/js_sdk/u-draw-poster/extends/draw-qr-code"
-DrawPoster.useCtx(drawQrCode)
+import drawQrCode from "@/js_sdk/u-draw-poster/extends/draw-qr-code";
+DrawPoster.useCtx(drawQrCode);
 export default {
   data: () => ({
     imgUrl: "",
@@ -24,19 +24,35 @@ export default {
   async onReady() {
     // 创建绘制工具
     const dp = await DrawPoster.build("canvas");
-    const w = dp.canvas.width = 300;
-    const h = dp.canvas.height = 300;
+    const w = (dp.canvas.width = 300);
+    const h = (dp.canvas.height = 300);
     // 创建一个绘制任务
-    dp.draw((ctx) => {
+    dp.draw(async (ctx) => {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, w, h);
-			// 绘制二维码
+      // 绘制二维码
       ctx.drawQrCode({
-        x: (w / 2) - 50,
-        y: (h / 2) - 50,
+        x: 0,
+        y: h / 2 - 50,
         text: "http://www.baidu.com",
         size: 100,
-        errorCorrectLevel: drawQrCode.errorCorrectLevel.H
+        margin: 5,
+      });
+      ctx.drawQrCode({
+        x: 100,
+        y: h / 2 - 50,
+        text: "http://www.baidu.com",
+        size: 100,
+        margin: 5,
+        backgroundColor: "#cdd0d2",
+      });
+      ctx.drawQrCode({
+        x: 200,
+        y: h / 2 - 50,
+        text: "http://www.baidu.com",
+        size: 100,
+        margin: 5,
+        foregroundColor: "#fbbd08",
       });
     });
     this.imgUrl = await dp.createImagePath();

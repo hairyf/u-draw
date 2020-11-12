@@ -1299,49 +1299,46 @@ let uQRCode = {};
     },
 
     make: function (canvas, ctx, options) {
-      return new Promise((reslove, reject) => {
-        var defaultOptions = {
-          x: 0,
-          y: 0,
-          text: options.text,
-          size: this.defaults.size,
-          margin: this.defaults.margin,
-          backgroundColor: this.defaults.backgroundColor,
-          foregroundColor: this.defaults.foregroundColor,
-          errorCorrectLevel: this.defaults.errorCorrectLevel,
-          typeNumber: this.defaults.typeNumber
-        };
-        if (options) {
-          for (var i in options) {
-            defaultOptions[i] = options[i];
-          }
+      var defaultOptions = {
+        x: 0,
+        y: 0,
+        text: options.text,
+        size: this.defaults.size,
+        margin: this.defaults.margin,
+        backgroundColor: this.defaults.backgroundColor,
+        foregroundColor: this.defaults.foregroundColor,
+        errorCorrectLevel: this.defaults.errorCorrectLevel,
+        typeNumber: this.defaults.typeNumber
+      };
+      if (options) {
+        for (var i in options) {
+          defaultOptions[i] = options[i];
         }
-        options = defaultOptions;
+      }
+      options = defaultOptions;
 
-        var qrcode = new QRCode(options.typeNumber, options.errorCorrectLevel);
-        qrcode.addData(utf16To8(options.text));
-        qrcode.make();
+      var qrcode = new QRCode(options.typeNumber, options.errorCorrectLevel);
+      qrcode.addData(utf16To8(options.text));
+      qrcode.make();
 
-        ctx.fill
-        ctx.fillStyle = options.backgroundColor;
-        ctx.fillRect(0, 0, options.size, options.size);
+      ctx.fill
+      ctx.fillStyle = options.backgroundColor;
+      ctx.fillRect(options.x, options.y, options.size, options.size);
 
-        var tileW = (options.size - options.margin * 2) / qrcode.getModuleCount();
-        var tileH = tileW;
+      var tileW = (options.size - options.margin * 2) / qrcode.getModuleCount();
+      var tileH = tileW;
 
-        for (var row = 0; row < qrcode.getModuleCount(); row++) {
-          for (var col = 0; col < qrcode.getModuleCount(); col++) {
-            var style = qrcode.isDark(row, col) ? options.foregroundColor : options.backgroundColor;
-            ctx.fillStyle = style
-            var x = Math.round(col * tileW) + options.margin;
-            var y = Math.round(row * tileH) + options.margin;
-            var w = Math.ceil((col + 1) * tileW) - Math.floor(col * tileW);
-            var h = Math.ceil((row + 1) * tileW) - Math.floor(row * tileW);
-            ctx.fillRect(options.x + x, options.y + y, w, h);
-          }
+      for (var row = 0; row < qrcode.getModuleCount(); row++) {
+        for (var col = 0; col < qrcode.getModuleCount(); col++) {
+          var style = qrcode.isDark(row, col) ? options.foregroundColor : options.backgroundColor;
+          ctx.fillStyle = style
+          var x = Math.round(col * tileW) + options.margin;
+          var y = Math.round(row * tileH) + options.margin;
+          var w = Math.ceil((col + 1) * tileW) - Math.floor(col * tileW);
+          var h = Math.ceil((row + 1) * tileW) - Math.floor(row * tileW);
+          ctx.fillRect(options.x + x, options.y + y, w, h);
         }
-
-      });
+      }
     }
   }
 

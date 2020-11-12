@@ -14,8 +14,8 @@
   </div>
 </template>
 <script>
-import DrawPoster from "@/js_sdk/draw-poster";
-import drawQrCode from "@/js_sdk/draw-poster/extends/draw-qr-code"
+import DrawPoster from "@/js_sdk/u-draw-poster";
+import drawQrCode from "@/js_sdk/u-draw-poster/extends/draw-qr-code"
 DrawPoster.useCtx(drawQrCode)
 export default {
   data: () => ({

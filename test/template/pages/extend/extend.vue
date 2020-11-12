@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import {DrawPoster} from "@/js_sdk/draw-poster";
+import {DrawPoster} from "@/js_sdk/u-draw-poster";
 
 // 添加一个绘制个人海报的扩展实现
 DrawPoster.use({

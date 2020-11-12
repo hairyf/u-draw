@@ -5,16 +5,16 @@
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
-- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/uni-draw-poster/tree/master/docs/use.md)。
+- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
 
-api文档：[uni-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/uni-draw-poster.html)
+api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster.html)
 
-插件市场：[dcloud/uni-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
+插件市场：[dcloud/u-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
 
 **npm 安装插件**
 
 ~~~
-npm i --save-dev uni-draw-poster
+npm i --save-dev u-draw-poster
 ~~~
 
 **开启对该插件的uni条件编译（重要）**
@@ -22,7 +22,7 @@ npm i --save-dev uni-draw-poster
 ~~~js
 // vue.config.js
 module.exports = {
-  transpileDependencies: ['uni-draw-poster'],
+  transpileDependencies: ['u-draw-poster'],
 };
 ~~~
 
@@ -38,8 +38,8 @@ module.exports = {
 ~~~
 
 ~~~js
-// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/draw-poster'
-import DrawPoster from 'uni-draw-poster'
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw-poster'
+import DrawPoster from 'u-draw-poster'
 async onReady() {
  // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制
  const dp = await DrawPoster.build("canvas")   
@@ -234,9 +234,9 @@ dp.draw(async (ctx) => {
 生成二维码扩展，源码使用了 [uQRCode](https://github.com/Sansnn/uQRCode) 并改动了一下，该文件比较大，所以作为扩展插件使用，使用时得先引入插件。
 
 ~~~js
-// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/draw-poster'
-import DrawPoster from 'uni-draw-poster'
-import drawQrCode from 'uni-draw-poster/extends/draw-qr-code'
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw-poster'
+import DrawPoster from 'u-draw-poster'
+import drawQrCode from 'u-draw-poster/dist/extends/draw-qr-code'
 // 引入绘制二维码插件
 DrawPoster.useCtx(drawQrCode)
 
@@ -308,7 +308,7 @@ interface DrawPosterBuildOpts {
 一、在任意位置添加扩展（建议放在`main.js`中执行）
 
 ~~~js
-import DrawPoster from 'uni-draw-poster'
+import DrawPoster from 'u-draw-poster'
 // 全局添加绘制个人海报的扩展实现
 DrawPoster.use({
   name: "createMyCardImagePath",
@@ -323,7 +323,7 @@ DrawPoster.use({
 二、页面中使用自定义扩展
 
 ~~~js
-import DrawPoster from 'uni-draw-poster'
+import DrawPoster from 'u-draw-poster'
 async onReady() {
  const dp = await DrawPoster.build("canvas")
  dp.canvas.width = 100; dp.canvas.height = 100

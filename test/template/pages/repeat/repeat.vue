@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import DrawPoster from "@/js_sdk/draw-poster";
+import DrawPoster from "@/js_sdk/u-draw-poster";
 export default {
   data: () => ({
     imgUrl: '',

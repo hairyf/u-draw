@@ -17,7 +17,7 @@
 </template>
 <script>
 import Vue from 'vue';
-import DrawPoster from "@/js_sdk/draw-poster";
+import DrawPoster from "@/js_sdk/u-draw-poster";
 const headImgUrl =
   'https://avatars3.githubusercontent.com/u/49724027?s=460&u=7fc6b620b73a5a3486d85ceafb892b1c2d4eb698&v=4';
 const codeImgUrl =

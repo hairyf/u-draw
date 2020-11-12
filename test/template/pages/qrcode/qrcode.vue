@@ -24,25 +24,22 @@ export default {
   async onReady() {
     // 创建绘制工具
     const dp = await DrawPoster.build("canvas");
-    dp.canvas.width = 300;
-    dp.canvas.height = 300;
+    const w = dp.canvas.width = 300;
+    const h = dp.canvas.height = 300;
     // 创建一个绘制任务
     dp.draw((ctx) => {
       ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, 300, 300);
+      ctx.fillRect(0, 0, w, h);
+			// 绘制二维码
       ctx.drawQrCode({
-        x: (dp.canvas.width / 2) - 50,
-        y: (dp.canvas.height / 2) - 50,
+        x: (w / 2) - 50,
+        y: (h / 2) - 50,
         text: "http://www.baidu.com",
         size: 100,
         errorCorrectLevel: drawQrCode.errorCorrectLevel.H
       });
     });
-    // 执行绘制任务
-    console.log("绘制情况: ", await dp.awaitCreate());
-    // 创建本地图片
     this.imgUrl = await dp.createImagePath();
-    console.log("创建地址: ", { url: this.imgUrl });
   },
 };
 </script>

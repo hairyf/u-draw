@@ -1,10 +1,11 @@
 let gbl = undefined;
-const isUni = typeof uni !== "undefined";
-const isWx = typeof wx !== "undefined" && !isUni;
-if (isUni) {
+const ENV_UNI = typeof uni !== "undefined";
+const ENV_WX = typeof wx !== "undefined" && !ENV_UNI;
+if (ENV_UNI) {
     gbl = uni;
 }
-if (isWx) {
+if (ENV_WX) {
     gbl = wx;
 }
+export { ENV_UNI, ENV_WX };
 export default gbl;

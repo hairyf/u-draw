@@ -12,7 +12,6 @@ export const isTmpUrl = (str: string) => {
 export const isNetworkUrl = (str: string) => {
   return /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/.test(str)
 }
-
 /** 对象target挂载到对象current */
 export const extendMount = (
   current: Record<any, any>,
@@ -23,7 +22,6 @@ export const extendMount = (
     current[key] = handle(target[key].handle, target[key].init) || target[key].handle
   }
 }
-
 /** 处理构建配置 */
 export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
   let defaultOpts = {

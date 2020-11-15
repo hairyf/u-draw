@@ -56,9 +56,9 @@ export default {
         ctx.drawImage('/static/bw.png', 188, 559, 274, 50),
       ]);
       // 用户二维码
-      await ctx.drawImage(codeImgUrl, 518, 780, 92, 92);
-			// // 用户头像
-			await ctx.drawRoundImage(codeImgUrl, 39, 790, 90, 90, 100);
+      await ctx.drawImage(headImgUrl, 518, 780, 92, 92);
+			// 用户头像
+			await ctx.drawRoundImage(headImgUrl, 39, 790, 90, 90, 100);
     });
     // 绘制中间文字内容
     dp.draw((ctx) => {

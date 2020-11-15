@@ -415,6 +415,22 @@ interface CreateImagePathOptions {
 }
 ~~~
 
+## 使用建议
+
+canvas在海报生成中请当做一个生成工具来看待，它的作用仅是绘制出海报。应把生成得到的资源保存并使用，显示用image图片组件，原因是方便操作，例如调整大小，或是H5端长按保存或识别，所以canvas应将它放在看不见的地方。不能用display:none;overflow:hidden;隐藏，否则生成空白。这里推荐canvas的隐藏样式代码
+<style>
+	.canvas-hide {
+		/* 1 */
+		position: fixed;
+		right: 100vw;
+		bottom: 100vh;
+		/* 2 */
+		z-index: -9999;
+		/* 3 */
+		opacity: 0;
+	}
+</style>
+
 ## 常见问题
 
 ### 微信小程序手机浏览空白

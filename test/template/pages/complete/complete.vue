@@ -56,7 +56,7 @@ export default {
         ctx.drawImage('/static/bw.png', 188, 559, 274, 50),
       ]);
       // 用户二维码
-      await ctx.drawImage(headImgUrl, 518, 780, 92, 92);
+      await ctx.drawRoundImage(headImgUrl, 518, 780, 92, 92);
 			// 用户头像
 			await ctx.drawRoundImage(headImgUrl, 39, 790, 90, 90, 100);
     });

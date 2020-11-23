@@ -39,7 +39,7 @@ export default {
     });
     // 绘制图片(圆角)
     dp.draw(async (ctx) => {
-      await ctx.drawImage(url, 0, 0, 150, 150, 100);
+      await ctx.drawRoundImage(url, 0, 0, 150, 150, 100);
       await ctx.drawRoundImage(url, 150, 0, 150, 150, 100);
     });
     // 创建本地地址

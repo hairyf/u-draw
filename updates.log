@@ -1,0 +1,2 @@
+- 1.0.69
+  1. 修复h5中ctx.drawRoundImage后裁剪图片异常

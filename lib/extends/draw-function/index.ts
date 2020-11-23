@@ -19,6 +19,7 @@ export const drawImage: DrawPosterUseCtxOpts = {
     let result = false
     if (!canvas?.createImage) {
       ctx.oldDrawImage(path, x, y, w, h)
+      ctx.restore()
       result = true
     } else {
       // canvas2d 绘制图片

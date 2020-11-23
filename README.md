@@ -30,10 +30,10 @@ module.exports = {
 
 ~~~html
 <!-- #ifdef MP-WEIXIN -->
-<canvas id="canvas" type="2d" style="width:100rpx; height:100rpx" />
+<canvas id="canvas" type="2d" style="width:100px; height:100px" />
 <!-- #endif -->
 <!-- #ifndef MP-WEIXIN -->
-<canvas canvas-id="canvas" id="canvas" style="width:100rpx; height:100rpx" />
+<canvas canvas-id="canvas" id="canvas" style="width:100px; height:100px" />
 <!-- #endif -->
 ~~~
 

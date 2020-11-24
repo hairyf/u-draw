@@ -1,0 +1,10 @@
+require("./compress/extend")
+require("./compress/template")
+
+const fs = require("fs")
+const path = require("path")
+const readmePath = path.resolve(__dirname, "../README.md")
+const outReadmePath = path.resolve(__dirname, "../dist/dcloud/README.md")
+const readmeFile = fs.readFileSync(readmePath)
+fs.writeFileSync(outReadmePath, readmeFile.toString())
+console.log("说明文档写入成功")

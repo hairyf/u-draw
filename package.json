@@ -1,8 +1,11 @@
 {
   "name": "u-draw-poster",
-  "version": "1.0.69",
+  "version": "1.0.7",
   "description": "绘制uniapp海报工具类",
   "main": "dist/index.js",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
   "files": [
     "dist",
     "lib"
@@ -11,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@dcloudio/types": "^2.0.16",
+    "archiver": "^5.1.0",
     "miniprogram-api-typings": "^3.1.3"
   },
   "devDependencies": {

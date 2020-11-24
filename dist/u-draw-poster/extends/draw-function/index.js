@@ -20,6 +20,7 @@ export const drawImage = {
         let result = false;
         if (!(canvas === null || canvas === void 0 ? void 0 : canvas.createImage)) {
             ctx.oldDrawImage(path, x, y, w, h);
+            ctx.restore();
             result = true;
         }
         else {

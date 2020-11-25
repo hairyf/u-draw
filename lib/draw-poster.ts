@@ -93,7 +93,7 @@ class DrawPoster {
       return page[selector + '__dp'] as InstanceType<typeof DrawPoster>
     }
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(selector) as Canvas
+    const canvas = await getCanvas2dContext(selector, componentThis) as Canvas
     const ctx = (
       canvas.getContext?.("2d") || gbl.createCanvasContext(selector, componentThis)
     ) as DrawPosterCanvasCtx

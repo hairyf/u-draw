@@ -1,4 +1,4 @@
-## 绘制海报工具简述
+# 绘制海报工具简述
 
 - 创建绘制海报`canvas`矩形方法，内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。
 - 接近原生开发体验，上手快，只需考虑业务逻辑，而不用考虑其他问题。
@@ -17,7 +17,7 @@ api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/u-dra
 npm i --save-dev u-draw-poster
 ~~~
 
-### 1. 创建海报绘制工具
+## 1. 创建海报绘制工具
 
 ~~~html
 <!-- #ifdef MP-WEIXIN -->
@@ -37,14 +37,14 @@ async onReady() {
 }
 ~~~
 
-### 2. 设置画布尺寸
+## 2. 设置画布尺寸
 ~~~js
 // 设置长高为100px的矩形宽高
 dp.canvas.width = 100
 dp.canvas.height = 100
 ~~~
 
-### 3. 绘制任意内容
+## 3. 绘制任意内容
 ~~~js
 // 绘制背景与文字
 dp.draw((ctx) => {
@@ -70,7 +70,7 @@ ctx.save()
 ctx.restore()
 ~~~
 
-### 4. 进行绘制
+## 4. 进行绘制
 
 `dp.draw`并不会马上绘制，只是将该任务添加到了任务栈，需要使用`dp.awaitCreate`函数进行绘制，该函数在绘制完毕后将弹出所有任务。
 `dp.awaitCreate`在非`2d`绘画中，执行绘画任务完毕后，将自动执行`ctx.draw`方法，并在draw绘画才算异步结束。
@@ -86,7 +86,7 @@ console.log("draw绘制状况:", result); // draw绘制状况: [true]
 
 [^为什么这么做]: 当全部同步绘制时，将会出现绘制时间保持不一致的情况。这样就会导致一个问题，绘制图层覆盖导致显示未达到预期效果，之所以设计为异步等待，也是为了绘制图层能保持一致顺序。
 
-### 5. 生成图片本地地址
+## 5. 生成图片本地地址
 
 如需要保存为图片时，可以使用`dp.createImgUrl` 进行创建图片本地地址，在由`wx`或`uni`的`api`进行保存。
 ~~~js
@@ -105,7 +105,7 @@ const posterImgUrl = await dp.createImagePath();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
 
-## 绘制扩展 API
+# 绘制扩展 API
 
 `drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
 
@@ -115,7 +115,7 @@ dp.draw(async (ctx) => {
 })
 ~~~
 
-### 绘制图片(ctx.drawImage)
+## 绘制图片(ctx.drawImage)
 
 `ctx.drawImage(url, x, y, w, h)`
 
@@ -138,7 +138,7 @@ dp.draw(async (ctx)=>{
 | x，y          | 图片的左上角的坐标。                      |
 | width，height | 图片的大小。                              |
 
-### 换行字体(ctx.fillWarpText)
+## 换行字体(ctx.fillWarpText)
 
 `ctx.fillWarpText(options)`
 
@@ -172,7 +172,7 @@ interface FillWarpTextOpts {
 ]
 ~~~
 
-### 圆角矩形(ctx.fillRoundRect)
+## 圆角矩形(ctx.fillRoundRect)
 
 `ctx.fillWarpText(x, y, w, h, r)`
 
@@ -191,7 +191,7 @@ dp.draw(async (ctx)=>{
 | width，height | 矩形的大小。         |
 | r             | 矩形的弧度半径。     |
 
-### 圆角矩形边框(ctx.strokeRoundRect)
+## 圆角矩形边框(ctx.strokeRoundRect)
 
 `ctx.strokeRoundRect(x, y, w, h, r)`
 
@@ -201,7 +201,7 @@ dp.draw(async (ctx)=>{
 | width，height | 矩形的大小。         |
 | r             | 矩形的弧度半径。     |
 
-### 圆角图片(ctx.drawRoundImage)
+## 圆角图片(ctx.drawRoundImage)
 
 `ctx.drawRoundImage(url, x, y, w, h, r)`
 
@@ -220,7 +220,7 @@ dp.draw(async (ctx) => {
 | width，height | 图片的大小。                              |
 | r             | 图片的弧度半径。                          |
 
-### 绘制二维码(ctx.drawQrCode)
+## 绘制二维码(ctx.drawQrCode)
 
 生成二维码扩展，源码使用了 [uQRCode](https://github.com/Sansnn/uQRCode) 并改动了一下，该文件比较大，所以作为扩展插件使用，使用时得先引入插件。
 
@@ -256,9 +256,9 @@ async onReady() {
 |  foregroundColor  | String |  否  |                 前景色（默认：`'#000000'`）                  |
 | errorCorrectLevel | Number |  否  | 纠错等级，包含 `errorCorrectLevel.L`、`errorCorrectLevel.M`、`errorCorrectLevel.Q`、`errorCorrectLevel.H` 四个级别，`L`: 最大 7% 的错误能够被纠正；`M`: 最大 15% 的错误能够被纠正；`Q`: 最大 25% 的错误能够被纠正；`H`: 最大 30% 的错误能够被纠正。 |
 
-## 全局实例 API
+# 全局实例 API
 
-### 绘画构建(DrawPoster.build)
+## 绘画构建(DrawPoster.build)
 
 `DrawPoster.build(string|object)`
 
@@ -284,13 +284,13 @@ interface DrawPosterBuildOpts {
 }
 ~~~
 
-### 多绘画构建(DrawPoster.buildAll)
+## 多绘画构建(DrawPoster.buildAll)
 
 `DrawPoster.buildAll(Array<string|object>)`
 
 构建多个绘画工具，传入build函数中参数string | options构成的数组，返回多个绘制工具组成的对象。key为canvasId，value为构建对象。
 
-### 挂载全局扩展(DrawPoster.use)
+## 挂载全局扩展(DrawPoster.use)
 
 `DrawPoster.use(object)`
 
@@ -322,7 +322,7 @@ async onReady() {
 }
 ~~~
 
-### 挂载绘制扩展(DrawPoster.useCtx)
+## 挂载绘制扩展(DrawPoster.useCtx)
 
 `DrawPoster.useCtx(object)`
 
@@ -350,7 +350,7 @@ dp.draw(ctx=> {
  })
 ~~~
 
-### 绘制节点(dp.canvas)
+## 绘制节点(dp.canvas)
 
 `dp.canvas | dp.canvas.width | dp.canvas.height | ...`
 
@@ -365,31 +365,31 @@ interface Canvas {
 }
 ~~~
 
-### 创建绘制(dp.draw)
+## 创建绘制(dp.draw)
 
 `dp.draw(async callback(ctx))`
 
 绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
 
-### 全局画笔(dp.ctx)
+## 全局画笔(dp.ctx)
 
 `dp.ctx`
 
 全局绘制画笔，特殊情况可以使用，推荐只使用`dp.draw`函数进行绘制。
 
-### 等待绘制(dp.awaitCreate)
+## 等待绘制(dp.awaitCreate)
 
 `dp.awaitCreate()`
 
 异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
 
-### 停止绘画(dp.stop)
+## 停止绘画(dp.stop)
 
 `dp.stop()`
 
 停止当前绘画栈，调用后将停止`dp.awaitCreate |dp.createImagePath `的执行。
 
-### 创建图片(dp.createImagePath)
+## 创建图片(dp.createImagePath)
 
 `dp.createImagePath(options)`
 
@@ -406,9 +406,9 @@ interface CreateImagePathOptions {
 }
 ~~~
 
-## 使用建议
+# 使用建议
 
-### canvas 当做为生成工具
+## canvas 当做为生成工具
 canvas在海报生成中请当做一个生成工具来看待，它的作用仅是绘制出海报。应把生成得到的资源保存并使用，显示用image图片组件，原因是方便操作，例如调整大小，或是H5端长按保存或识别，所以canvas应将它放在看不见的地方。不能用display:none;overflow:hidden;隐藏，否则生成空白。这里推荐canvas的隐藏样式代码，该说明为 [uQRCode](https://github.com/Sansnn/uQRCode) 提供的说明，同样`u-draw-poster`也适用
 ~~~css
 .canvas-hide {
@@ -423,7 +423,7 @@ canvas在海报生成中请当做一个生成工具来看待，它的作用仅�
 }
 ~~~
 
-### 支持重复调用
+## 支持重复调用
 需要注意的是，创建绘制工具支持重复调用，当构建第一次的绘制工具后，重复构建将自动获取第一次的实例。不需要存入`this`中，其实`vue3`也不提倡使用`this`这个黑盒，甚至抛弃了使用`this`。
 ~~~js
 data: () => ({})
@@ -461,17 +461,17 @@ async onReady() {
 }
 ~~~
 
-## 常见问题
+# 常见问题
 
-### 微信小程序手机浏览空白
+## 微信小程序手机浏览空白
 
 微信小程序绘制如果有图片绘制，手机浏览需要在后台添加`downloadFile`域名，并需要重启开发者工具。
 
-### 微信小程序无法真机调试
+## 微信小程序无法真机调试
 
 https://developers.weixin.qq.com/community/develop/doc/000eece1640d608df21bb19055b000
 
-### 绘制完毕后没有效果
+## 绘制完毕后没有效果
 
 注意`DrawPoster.build`无法检测你所选择`canvasId`的是否正确，所以一定要确保与`canvas-id`和`html`中的`canvas`相同，在小程序端，由于会自动切换为`type2d`，必须得加上动态编译。
 
@@ -484,7 +484,7 @@ https://developers.weixin.qq.com/community/develop/doc/000eece1640d608df21bb1905
 <!-- #endif -->
 ~~~
 
-### 绘制多个图片加载慢
+## 绘制多个图片加载慢
 
 如果觉得多个图片绘制`await`加载慢，可以使用`Promise.all`将一部分不需要处理图层覆盖的图片进行同步绘制。
 

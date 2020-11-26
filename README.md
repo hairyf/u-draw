@@ -7,7 +7,7 @@
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
 - 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
 
-api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster.html)
+api文档：[u-draw-poster](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/01-base-desc.html)
 
 插件市场：[dcloud/u-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
 

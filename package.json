@@ -1,6 +1,6 @@
 {
   "name": "u-draw-poster",
-  "version": "1.0.7",
+  "version": "1.0.75",
   "description": "绘制uniapp海报工具类",
   "main": "dist/u-draw-poster/index.js",
   "scripts": {

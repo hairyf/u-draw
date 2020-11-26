@@ -17,15 +17,6 @@ api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/u-dra
 npm i --save-dev u-draw-poster
 ~~~
 
-**开启对该插件的uni条件编译（重要）**
-
-~~~js
-// vue.config.js
-module.exports = {
-  transpileDependencies: ['u-draw-poster'],
-};
-~~~
-
 ### 1. 创建海报绘制工具
 
 ~~~html
@@ -236,7 +227,7 @@ dp.draw(async (ctx) => {
 ~~~js
 // 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw-poster'
 import DrawPoster from 'u-draw-poster'
-import drawQrCode from 'u-draw-poster/dist/extends/draw-qr-code'
+import { drawQrCode } from 'u-draw-poster'
 // 引入绘制二维码插件
 DrawPoster.useCtx(drawQrCode)
 

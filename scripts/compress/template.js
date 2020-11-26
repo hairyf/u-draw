@@ -3,7 +3,7 @@ const path = require("path");
 const archiver = require('archiver');
 const { logger } = require('../utils')
 const templatePath = path.resolve(__dirname, "../../test/template")
-const dcloudExtendPath = path.resolve(__dirname, "../../dist/dcloud/template.zip")
+const dcloudExtendPath = path.resolve(__dirname, "../../dcloud/template.zip")
 // 创建文件输出流
 const output = fs.createWriteStream(dcloudExtendPath)
 const archive = archiver("zip", {

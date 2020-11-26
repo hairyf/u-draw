@@ -11,6 +11,7 @@ declare class DrawPoster {
     [key: string]: any;
     private executeOnions;
     private stopStatus;
+    private drawType;
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
     constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, drawImageTime: number, debugging: boolean, loadingText: string, createText: string);
     /** 提示器, 传入消息与数据 */

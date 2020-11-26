@@ -1,4 +1,4 @@
-import gbl from "./utils/global"
+import gbl, { PLATFORM } from "./utils/global"
 import {
   Canvas, Execute,
   DrawPosterCanvasCtx,
@@ -18,6 +18,7 @@ class DrawPoster {
   [key: string]: any
   private executeOnions = [] as Execute
   private stopStatus = false
+  private drawType: 'type2d' | 'context'
 
   /** 构建器, 构建返回当前实例, 并挂载多个方法 */
   constructor(
@@ -33,6 +34,9 @@ class DrawPoster {
     if (!canvas || !ctx || !canvasId) {
       throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects")
     }
+
+    // 判断当前绘制类型
+    this.drawType = (ctx.draw) ? 'context' : 'type2d'
 
     // 挂载全局实例, 绘画扩展
     extendMount(this, drawPosterExtend, (extend, init) => {
@@ -77,39 +81,34 @@ class DrawPoster {
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
   static build = async (options: string | DrawPosterBuildOpts, tips = true) => {
-    const {
-      selector,
-      componentThis,
-      loading,
-      drawImageTime,
-      debugging,
-      loadingText,
-      createText
-    } = handleBuildOpts(options)
+    const config = handleBuildOpts(options)
+
     // 初始化监测当前页面绘制对象
     const pages = getCurrentPages()
-    const page = pages[pages.length - 1] as Record<any, any>
-    if (page[selector + '__dp']) {
-      return page[selector + '__dp'] as InstanceType<typeof DrawPoster>
+    const page = pages[pages.length - 1] as Record<string, InstanceType<typeof DrawPoster>>
+    if (page[config.selector + '__dp']) {
+      return page[config.selector + '__dp']
     }
+
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(selector, componentThis) as Canvas
+    const canvas = await getCanvas2dContext(config.selector, config.componentThis) as Canvas
     const ctx = (
-      canvas.getContext?.("2d") || gbl.createCanvasContext(selector, componentThis)
+      canvas.getContext?.("2d") || gbl.createCanvasContext(config.selector, config.componentThis)
     ) as DrawPosterCanvasCtx
-    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector })
+
+    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector })
+
     const dp = new DrawPoster(
-      canvas,
-      ctx,
-      selector,
-      loading,
-      drawImageTime,
-      debugging,
-      loadingText,
-      createText
+      canvas, ctx,
+      config.selector,
+      config.loading,
+      config.drawImageTime,
+      config.debugging,
+      config.loadingText,
+      config.createText
     )
     // 储存当前绘制对象
-    page[selector + '__dp'] = dp;
+    page[config.selector + '__dp'] = dp;
     return dp
   }
 
@@ -135,12 +134,8 @@ class DrawPoster {
         return true
       } catch (error) {
         const isOutError = error?.message?.search?.(`'nodeId' of undefined`) >= 0
-        if (isOutError) {
-          return false
-        } else {
-          console.error(`${this.canvasId} -> 绘画栈(${length})，绘制错误：`, error)
-          return false
-        }
+        !isOutError && console.error(`${this.canvasId} -> 绘画栈(${length})，绘制错误：`, error)
+        return false
       }
     })
   }
@@ -149,6 +144,7 @@ class DrawPoster {
   awaitCreate = async (): Promise<boolean[]> => {
     this.debuggingLog('绘制海报中...')
     this.loading && uni.showLoading({ title: this.loadingText })
+
     const tips: Array<boolean> = []
     for (let i = 0; i < this.executeOnions.length; i++) {
       const execute = this.executeOnions[i]
@@ -158,8 +154,8 @@ class DrawPoster {
     this.debuggingLog('绘制状况', tips)
 
     // 当前绘制为 type2 绘制
-    if (!this.ctx.draw) {
-      uni.hideLoading()
+    if (this.drawType === 'type2d') {
+      this.loading && uni.hideLoading()
       return tips
     }
     // 当前绘制为 context 绘制
@@ -168,52 +164,52 @@ class DrawPoster {
         resolve(tips)
         this.loading && uni.hideLoading()
       })
-      // #ifdef APP-PLUS
-      let time = 0
-      if (this.ctx.existDrawImage) {
-        time = 100
+      // 当环境是app时，ctx.draw 回调不触发, 手动定时器触发
+      if (PLATFORM === "app-plus") {
+        const time = this.ctx.existDrawImage ? this.drawImageTime : 0
         this.ctx.existDrawImage = false
+        setTimeout(() => {
+          resolve(tips)
+          this.loading && uni.hideLoading()
+        }, time)
       }
-      setTimeout(() => {
-        resolve(tips)
-        this.loading && uni.hideLoading()
-      }, time)
-      // #endif
     })
   }
 
   /** 创建canvas本地地址 @returns {string} 本地地址 */
-  createImagePath = async (baseOptions = {} as CreateImagePathOptions): Promise<string> => {
+  createImagePath = async (baseOptions: CreateImagePathOptions = {}): Promise<string> => {
     const { canvas, canvasId, executeOnions, awaitCreate } = this
     executeOnions.length && await awaitCreate()
+    // 如果当前为停止状态
     if (this.stopStatus) {
       this.stopStatus = false
-      return ''
+      return '---stop createImagePath---'
     }
     this.loading && uni.showLoading({ title: this.createText })
+    const options: WechatMiniprogram.CanvasToTempFilePathOption = {
+      x: 0, y: 0,
+      width: canvas.width,
+      height: canvas.height,
+      destWidth: canvas.width * 2,
+      destHeight: canvas.height * 2,
+      ...baseOptions
+    };
+
+    if (this.drawType === 'context')
+      options.canvasId = canvasId
+    if (this.drawType === 'type2d')
+      options.canvas = canvas
+    
     return new Promise((resolve, reject) => {
-      const options: WechatMiniprogram.CanvasToTempFilePathOption = {
-        x: 0, y: 0,
-        width: canvas.width,
-        height: canvas.height,
-        destWidth: canvas.width * 2,
-        destHeight: canvas.height * 2,
-        success: (res) => {
-          resolve(res.tempFilePath)
-          this.loading && uni.hideLoading();
-          this.debuggingLog('绘制成功 🎉', res)
-        },
-        fail: (err) => {
-          reject(err)
-          this.loading && uni.hideLoading();
-          this.debuggingLog('绘制失败 🌟', err)
-        },
-        ...baseOptions
-      };
-      if (!canvas.createImage) {
-        options.canvasId = canvasId
-      } else {
-        options.canvas = canvas
+      options.success = (res) => {
+        resolve(res.tempFilePath)
+        this.loading && uni.hideLoading();
+        this.debuggingLog('绘制成功 🎉', res)
+      }
+      options.fail = (err) => {
+        reject(err)
+        this.loading && uni.hideLoading();
+        this.debuggingLog('绘制失败 🌟', err)
       }
       gbl.canvasToTempFilePath(options as any)
     })

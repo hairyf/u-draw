@@ -3,7 +3,7 @@ const path = require("path");
 const archiver = require('archiver');
 const { logger } = require('../utils')
 const uDrawPosterPath = path.resolve(__dirname, "../../dist/u-draw-poster")
-const dcloudExtendPath = path.resolve(__dirname, "../../dist/dcloud/u-draw-poster.zip")
+const dcloudExtendPath = path.resolve(__dirname, "../../dcloud/u-draw-poster.zip")
 // 创建文件输出流
 const output = fs.createWriteStream(dcloudExtendPath)
 const archive = archiver("zip", {

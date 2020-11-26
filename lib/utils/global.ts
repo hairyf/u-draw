@@ -1,15 +1,16 @@
-let gbl: UniApp.Uni = undefined as any;
-const ENV_UNI = typeof uni !== "undefined"
-const ENV_WX = typeof wx !== "undefined" && !ENV_UNI
-if (ENV_UNI) {
-  gbl = uni as any
-}
-if (ENV_WX) {
-  gbl = wx as any
-}
+declare const wx: UniApp.Uni
 
-export {
-  ENV_UNI,
-  ENV_WX
-}
-export default gbl
+/** 当前环境类型 */
+export type UniPlatforms = 'app-plus' | 'app-plus-nvue' | 'h5' | 'mp-weixin' | 'mp-alipay' | 'mp-baidu' | 'mp-toutiao' | 'mp-qq' | 'mp-360' | 'mp' | 'quickapp-webview' | 'quickapp-webview-union' | 'quickapp-webview-huawei' | undefined
+export const PLATFORM = process?.env?.VUE_APP_PLATFORM as UniPlatforms
+
+/** 全局对象 */
+const _uni = (function () {
+  if (typeof uni != "undefined")
+    return uni;
+  if (typeof wx != "undefined")
+    return wx;
+  return uni;
+})()
+
+export default _uni

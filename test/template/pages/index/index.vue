@@ -30,7 +30,7 @@ export default {
 				url:`/pages/${path}/${path}`
 			})
     },
-  },
+  }
 };
 </script>
 

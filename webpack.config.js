@@ -2,6 +2,17 @@ const path = require('path');
 module.exports = {
   mode: 'production',
   entry: './lib/index.ts',
+  // entry: './lib/extends/draw-qr-code/index.ts',
+  output: {
+    filename: 'index.js',
+    // 打包扩展
+    path: path.resolve(__dirname, 'dist/u-draw-poster'),
+    // path: path.resolve(__dirname, 'dist/u-draw-poster/extends/draw-qr-code'),
+    // 打包测试
+    // path: path.resolve(__dirname, 'test/template/js_sdk/u-draw-poster'),
+    // path: path.resolve(__dirname, 'test/template/js_sdk/u-draw-poster/extends/draw-qr-code'),
+    libraryTarget: "commonjs", // 采用通用模块定义
+  },
   module: {
     rules: [{
       test: /\.tsx?$/,
@@ -11,9 +22,5 @@ module.exports = {
   },
   resolve: {
     extensions: [ '.tsx', '.ts',  '.js' ]    
-  },
-  output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'dist')
   }
 }

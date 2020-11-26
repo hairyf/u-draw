@@ -1,4 +1,5 @@
 import { DrawPosterBuildOpts } from "./interface"
+import { PLATFORM } from "./global"
 
 /** 是否是base64本地地址 */
 export const isBaseUrl = (str: string) => {
@@ -40,17 +41,16 @@ export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
     defaultOpts = { ...defaultOpts, ...options }
   }
   const oldSelector = defaultOpts.selector
-  // #ifdef MP-WEIXIN
-  if (defaultOpts.type2d) {
+
+  if (PLATFORM === 'mp-weixin' && defaultOpts.type2d) {
     defaultOpts.selector = '#' + defaultOpts.selector
   }
-  // #endif
 
-  // #ifndef APP-PLUS || APP-PLUS-NVUE || H5 || MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO || MP-QQ || MP-360 || MP || quickapp-webview || quickapp-webview-union || quickapp-webview-huawei
-  console.error('注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type2d模式')
-  console.error(`请在vue.config.js中的transpileDependencies中添加'uni-draw-poster'`)
-  console.error(`或者可以在选择器字符串前缀中添加#来切换为type2d绘制(不推荐)`)
-  defaultOpts.selector = oldSelector
-  // #endif
+  if (!PLATFORM) {
+    console.error('注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type2d模式')
+    console.error(`请在vue.config.js中的transpileDependencies中添加'uni-draw-poster'`)
+    console.error(`或者可以在选择器字符串前缀中添加#来切换为type2d绘制(不推荐)`)
+    defaultOpts.selector = oldSelector
+  }
   return defaultOpts
 }

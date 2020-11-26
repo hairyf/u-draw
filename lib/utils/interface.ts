@@ -25,6 +25,7 @@ export interface DrawPosterBuildOpts {
   /** 创建图片提示文字 */
   createText?: string
 }
+
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {
   text: string
@@ -36,6 +37,7 @@ export interface FillWarpTextOpts {
   splitText?: string
   notFillText?: boolean
 }
+
 /** 绘制二维码配置 */
 export interface DrawQrCodeOpts {
   text: string
@@ -46,6 +48,7 @@ export interface DrawQrCodeOpts {
   backgroundColor?: string
   foregroundColor?: string
 }
+
 /** 绘制换行, 单行信息 */
 export interface FillWarpTextItemInfo { text: string; y: number; x: number; }
 

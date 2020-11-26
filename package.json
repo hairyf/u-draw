@@ -1,8 +1,8 @@
 {
   "name": "u-draw-poster",
-  "version": "1.0.75",
+  "version": "1.0.76",
   "description": "绘制uniapp海报工具类",
-  "main": "dist/u-draw-poster/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "node scripts/build.js"
   },
@@ -14,13 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "@dcloudio/types": "^2.0.16",
-    "archiver": "^5.1.0",
     "miniprogram-api-typings": "^3.1.3"
   },
   "devDependencies": {
     "@types/node": "^14.14.9",
     "ts-loader": "^8.0.11",
     "typescript": "^4.0.5",
+    "archiver": "^5.1.0",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0"
   }

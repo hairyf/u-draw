@@ -6,8 +6,8 @@ module.exports = {
   output: {
     filename: 'index.js',
     // 打包扩展
-    path: path.resolve(__dirname, 'dist/u-draw-poster'),
-    // path: path.resolve(__dirname, 'dist/u-draw-poster/extends/draw-qr-code'),
+    path: path.resolve(__dirname, 'dist'),
+    // path: path.resolve(__dirname, 'dist/extends/draw-qr-code'),
     // 打包测试
     // path: path.resolve(__dirname, 'test/template/js_sdk/u-draw-poster'),
     // path: path.resolve(__dirname, 'test/template/js_sdk/u-draw-poster/extends/draw-qr-code'),

@@ -1,4 +1,6 @@
-exports.logger = (output, archive) => {
+import fs = require('fs');
+import archiver = require('archiver');
+export const logger = (output: fs.WriteStream, archive: archiver.Archiver) => {
   // 文件输出流结束
   output.on('close', () => {
     console.log(`总共 ${archive.pointer()} 字节`)

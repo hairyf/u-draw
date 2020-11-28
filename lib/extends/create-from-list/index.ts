@@ -1,7 +1,7 @@
 import { DrawPosterUseOpts } from '../../utils/interface'
+
 export interface CreateLayerOpts {
   background?: string
-  y?: number
   self?: boolean
   line?: boolean
   lineHeight?: number
@@ -19,22 +19,22 @@ export default {
   name: 'createLayer',
   init: (dp) => {
     dp.from = {
-      offsetTop: 0,
+      height: 0,
       margin: 8,
       padding: 15
     }
   },
   handle: (dp, afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => {
     // 当前配置(头部偏移量, 列内边距, 表单外边距)
-    const offsetTop = dp.from.offsetTop as number
+    const height = dp.from.height as number
     const padding = dp.from.padding as number
     const margin = dp.from.margin as number
     // 当前层宽度
-    const containerWidth = dp.canvas.width - (dp.from.padding * 2)
+    const containerWidth = dp.canvas.width - (padding * 2)
     // 基本层配置
     const opts = {
       background: "#fff",
-      y: 0,
+      height: height || padding,
       self: true,
       line: true,
       lineHeight: 0,
@@ -52,8 +52,6 @@ export default {
     let maxRowHeight = 0
     // 累计固定栅格列偏移量
     let columnOffsetX = padding
-    // 定义配置中y的默认尺寸
-    opts.y = offsetTop || padding
 
     // 创建行绘制任务
     const drawLayerInfos = rowList.map((afferRowOpts = {}, index) => {
@@ -88,7 +86,7 @@ export default {
         maxWidth: fontMaxWidth,
         lineHeight: opts.lineHeight,
         x: fontOffsetX,
-        y: offsetTop,
+        y: height,
         layer: 10,
         notFillText: true
       })
@@ -107,7 +105,7 @@ export default {
         background: opts.background,
         lineHeight: opts.lineHeight,
         line: opts.line,
-        offsetTop: opts.y,
+        height: opts.height,
         drawFontInfos,
         columnX,
         columnW,
@@ -127,14 +125,14 @@ export default {
       }
       ctx.fillRect(
         rowOpts.columnX,
-        rowOpts.offsetTop,
+        rowOpts.height,
         rowOpts.columnW,
         maxRowHeight
       )
       if (rowOpts.line) {
         ctx.strokeRect(
           rowOpts.columnX,
-          rowOpts.offsetTop,
+          rowOpts.height,
           rowOpts.columnW,
           maxRowHeight
         )
@@ -145,20 +143,21 @@ export default {
         // y(当前列置顶轴) + (maxRowHeight(当前列最高长度) / 2) - (((总列数-1) * 行高) / 2)
         const textTotal = rowOpts.drawFontInfos.length - 1
         const textMiddleY = (textTotal * rowOpts.lineHeight) / 2
-        let fontOffsetTop = fontInfo.y + (maxRowHeight / 2)
-        fontOffsetTop -= textMiddleY
-        if (rowOpts.offsetTop === 0 || rowOpts.offsetTop === rowOpts.padding) {
-          fontOffsetTop -= (margin / 2)
+        let fontHeight = fontInfo.y + (maxRowHeight / 2)
+        fontHeight -= textMiddleY
+        if (rowOpts.height === 0 || rowOpts.height === rowOpts.padding) {
+          fontHeight -= (margin / 2)
         }
         ctx.fillText(
           fontInfo.text,
           fontInfo.x,
-          fontOffsetTop
+          fontHeight
         )
       })
     }))
     
     // 叠加高度
-    dp.from.offsetTop += maxRowHeight
+    dp.from.height += maxRowHeight
+    return maxRowHeight
   }
 } as DrawPosterUseOpts

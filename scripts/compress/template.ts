@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require("path");
-const archiver = require('archiver');
-const { logger } = require('../utils')
-const uDrawPosterPath = path.resolve(__dirname, "../../dist")
-const dcloudExtendPath = path.resolve(__dirname, "../../dcloud/u-draw-poster.zip")
+import fs = require('fs');
+import path = require('path');
+import archiver = require('archiver');
+import { logger } from '../utils';
+const templatePath = path.resolve(__dirname, "../../test/template")
+const dcloudExtendPath = path.resolve(__dirname, "../../dcloud/template.zip")
 // 创建文件输出流
 const output = fs.createWriteStream(dcloudExtendPath)
 const archive = archiver("zip", {
@@ -13,7 +13,7 @@ const archive = archiver("zip", {
 // 绑定事件设置打印报告
 logger(output, archive)
 // 从子目录追加文件并将其命名为“新子dir”在存档中
-archive.directory(uDrawPosterPath, false)
+archive.directory(templatePath, false)
 // 通过管道方法将输出流存档到文件
 archive.pipe(output)
 // 完成归档

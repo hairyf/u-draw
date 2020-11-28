@@ -60,6 +60,8 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
   textBaseline: CanvasTextDrawingStyles["textBaseline"]
   transform: CanvasTransform["transform"]
   oldDrawImage: UniApp.CanvasContext['drawImage']
+  /** 当前绘制类型 */
+  drawType: 'context' | 'type2d'
   /** 该次绘画是否存在绘制图片 */
   existDrawImage: boolean
   /** 等待绘制图片

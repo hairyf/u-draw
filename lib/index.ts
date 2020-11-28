@@ -1,5 +1,4 @@
 import DrawPoster from "./draw-poster"
-import DrawAnimation from "./draw-animation"
 import { DrawPosterBuildOpts } from "./utils/interface"
 import * as dfucs from "./extends/draw-function"
 
@@ -22,7 +21,6 @@ const useDrawPosters = async (optionsAll: (string | DrawPosterBuildOpts)[]) => {
 
 export {
   DrawPoster,
-  DrawAnimation,
   useDrawPoster,
   useDrawPosters
 }

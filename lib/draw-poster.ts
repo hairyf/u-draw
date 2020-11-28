@@ -36,8 +36,8 @@ class DrawPoster {
     }
 
     // 判断当前绘制类型
-    this.drawType = (ctx.draw) ? 'context' : 'type2d'
-
+    ctx.drawType = this.drawType = (ctx.draw) ? 'context' : 'type2d'
+    
     // 挂载全局实例, 绘画扩展
     extendMount(this, drawPosterExtend, (extend, init) => {
       init?.(this)

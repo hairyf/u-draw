@@ -5,7 +5,7 @@ import {
   CreateImagePathOptions,
   DrawPosterBuildOpts,
   DrawPosterUseOpts,
-  DrawPosterUseCtxOpts,
+  DrawPosterUseCtxOpts
 } from "./utils/interface"
 import { handleBuildOpts, extendMount } from "./utils/utils"
 import { getCanvas2dContext } from "./utils/wx-utils"
@@ -13,7 +13,6 @@ import { getCanvas2dContext } from "./utils/wx-utils"
 // 扩展挂载储存
 let drawPosterExtend: Record<any, any> = {}
 let drawCtxPosterExtend: Record<any, any> = {}
-
 class DrawPoster {
   [key: string]: any
   private executeOnions = [] as Execute
@@ -37,15 +36,15 @@ class DrawPoster {
 
     // 判断当前绘制类型
     ctx.drawType = this.drawType = (ctx.draw) ? 'context' : 'type2d'
-    
+
     // 挂载全局实例, 绘画扩展
-    extendMount(this, drawPosterExtend, (extend, init) => {
-      init?.(this)
-      return (...args: any[]) => extend(this, ...args)
-    })
     extendMount(this.ctx, drawCtxPosterExtend, (extend, init) => {
       init?.(this.canvas, this.ctx)
       return (...args: any[]) => extend(this.canvas, this.ctx, ...args)
+    })
+    extendMount(this, drawPosterExtend, (extend, init) => {
+      init?.(this)
+      return (...args: any[]) => extend(this, ...args)
     })
 
     // 当离开页面时, 自动调用停止绘画
@@ -221,6 +220,5 @@ class DrawPoster {
     this.stopStatus = true
   }
 }
-
 
 export default DrawPoster;

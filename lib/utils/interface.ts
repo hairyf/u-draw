@@ -132,8 +132,8 @@ export interface CreateImagePathOptions {
 /** 绘制实例扩展配置 */
 export interface DrawPosterUseOpts {
   name: string
-  init?: (dp: typeof DrawPoster) => void
-  handle: (dp: typeof DrawPoster, ...args: any[]) => any
+  init?: (dp: InstanceType<typeof DrawPoster>) => void
+  handle: (dp: InstanceType<typeof DrawPoster>, ...args: any[]) => any
   [key: string]: any
 }
 

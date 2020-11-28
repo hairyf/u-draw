@@ -5,11 +5,7 @@
     <canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
     <!-- #endif -->
     <!-- #ifndef MP-WEIXIN -->
-    <canvas
-      canvas-id="canvas"
-      id="canvas"
-      style="width: 300px; height: 300px"
-    />
+    <canvas canvas-id="canvas" id="canvas" style="width: 300px; height: 300px" />
     <!-- #endif -->
   </div>
 </template>

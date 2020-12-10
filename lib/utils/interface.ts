@@ -134,6 +134,7 @@ export interface DrawPosterUseOpts {
   name: string
   init?: (dp: InstanceType<typeof DrawPoster>) => void
   handle: (dp: InstanceType<typeof DrawPoster>, ...args: any[]) => any
+  createImage?: (dp: InstanceType<typeof DrawPoster>) => void
   [key: string]: any
 }
 

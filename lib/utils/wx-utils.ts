@@ -1,3 +1,11 @@
+/*
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-10-12 08:49:27
+ * @LastEditTime: 2020-12-09 13:54:10
+ * @Description: 
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+ */
 import gbl from "./global"
 import { Canvas } from "./interface"
 import { isBaseUrl, isNetworkUrl, isTmpUrl } from './utils'
@@ -15,7 +23,6 @@ export const downloadImgUrl = (url: string): Promise<string> => {
     })
   })
 }
-
 // 获取当前指定 node 节点
 export const getCanvas2dContext = (selector: string, componentThis?: any): Promise<Canvas | {}> => {
   return new Promise(resolve => {

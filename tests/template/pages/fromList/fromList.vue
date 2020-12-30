@@ -1,6 +1,14 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-11-28 19:00:39
+ * @LastEditTime: 2020-12-31 03:14:50
+ * @Description: 
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
-    <image :src="imgUrl" style="width: 100px; height: 100px" />
+    <!-- <image :src="imgUrl" style="width: 300px; height: height" /> -->
     <!-- #ifdef MP-WEIXIN -->
     <canvas id="canvas" type="2d" style="width: 300px;" :style="{height:height+'px'}" />
     <!-- #endif -->
@@ -21,16 +29,20 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await DrawPoster.build("canvas");
+    const dp = await DrawPoster.build({
+      selector: "canvas",
+      debugging: true,
+    });
     dp.canvas.width = 300;
-    dp.createLayer({background: '#fff'}, [
+    dp.createLayer({background: '#fff', line: false}, [
+      {text: '字体与颜色', font: '35px sans-serif', color: 'red'},
       {text: '字体与颜色', font: '35px sans-serif', color: 'red'},
     ])
     dp.createLayer({background: '#fff'}, [
       {text: '普通字体'},
       {text: '居中字体', center: true},
     ])
-    dp.createLayer({background: '#fff'}, [
+    dp.createLayer({background: '#fff', border:false}, [
       {text: '自动换行，，计算高度'},
       {text: '普通字体'},
     ])
@@ -51,9 +63,9 @@ export default {
       {text: '普通字体'},
     ])
     this.height = dp.canvas.height = dp.from.height+1
-    setTimeout(()=>{
+    setTimeout(() => {
       dp.createImagePath()
-    }, 10)
+    }, 20);
   },
 };
 </script>

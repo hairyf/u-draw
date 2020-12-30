@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "component",
+  "usingComponents": {
+    "test-component": "/pages/component/TestComponent"
+  }
+}

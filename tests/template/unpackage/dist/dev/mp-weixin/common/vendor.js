@@ -1935,6 +1935,429 @@ function normalizeComponent (
 
 /***/ }),
 
+/***/ 126:
+/*!************************************************!*\
+  !*** ./node_modules/timers-browserify/main.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(/*! setimmediate */ 127);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ 3)))
+
+/***/ }),
+
+/***/ 127:
+/*!***************************************************!*\
+  !*** ./node_modules/setimmediate/setImmediate.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ 3), __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 31)))
+
+/***/ }),
+
+/***/ 128:
+/*!*********************************************************************************************************!*\
+  !*** G:/项目文件/开源库管理/u-draw-poster/tests/template/js_sdk/u-draw-poster/extends/create-from-list/index.js ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /** 绘制表单扩展方法 */var _default =
+{
+  name: 'createLayer',
+  init: function init(dp) {
+    dp.from = {
+      height: 0,
+      padding: 8,
+      margin: 0 };
+
+    dp.setFromOptions = function (opts) {
+      if (typeof opts.height !== 'undefined') {
+        dp.from.height = opts.height;
+      }
+      if (typeof opts.margin !== 'undefined') {
+        dp.from.margin = opts.margin;
+      }
+      if (typeof opts.padding !== 'undefined') {
+        dp.from.padding = opts.padding;
+      }
+    };
+  },
+  handle: function handle(dp, afferOpts, rowList) {
+    // 当前配置(头部偏移量, 列内边距, 表单外边距)
+    var height = dp.from.height;
+    var margin = dp.from.margin;
+    var padding = dp.from.padding;
+    // 当前层宽度
+    var containerWidth = dp.canvas.width - margin * 2;
+    // 基本层配置
+    var opts = Object.assign({ background: "#fff", columnY: height || margin, self: true, line: true, lineHeight: 0, border: true }, afferOpts);
+    // 基本列配置
+    var baseRowOpts = {
+      text: "",
+      font: "24px sans-serif",
+      color: "#333",
+      center: false,
+      width: 0 };
+
+    // 累计最高的列为标准定义为层高度
+    var maxRowHeight = 0;
+    // 累计固定栅格列偏移量
+    var columnOffsetX = margin;
+    // 创建行绘制任务
+    var drawLayerInfos = rowList.map(function () {var afferRowOpts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};var index = arguments.length > 1 ? arguments[1] : undefined;
+      var rowOpts = Object.assign(Object.assign({}, baseRowOpts), afferRowOpts);
+      var columnX = 0; // 每列的X轴
+      var columnW = 0; // 每列的宽度
+      var fontOffsetX = 0; // 字体偏移X轴
+      var fontMaxWidth = 100; // 字体最大宽度
+      opts.lineHeight = opts.lineHeight || Number(rowOpts.font.replace(/[^0-9.]/g, ""));
+      if (opts.self) {
+        // 自适应栅格格子计算
+        columnX = containerWidth - containerWidth / (index + 1) + margin;
+        columnW = containerWidth / rowList.length;
+        if (columnX > 0 && columnX < containerWidth - columnW) {
+          columnX = columnW * index + margin;
+        }
+        fontOffsetX = rowOpts.center ? columnX + columnW / 2 : columnX + padding;
+        fontMaxWidth = columnW - padding * 3;
+      }
+      if (!opts.self) {
+        // 固定栅格格子计算
+        columnW = rowOpts.width;
+        columnX = columnOffsetX;
+        fontMaxWidth = columnW - padding * 3;
+        fontOffsetX = rowOpts.center ? columnOffsetX + rowOpts.width / 2 : columnOffsetX + padding;
+        columnOffsetX += rowOpts.width;
+      }
+      dp.ctx.font = rowOpts.font;
+      var drawFontInfos = dp.ctx.fillWarpText({
+        text: rowOpts.text,
+        maxWidth: fontMaxWidth,
+        lineHeight: opts.lineHeight,
+        x: fontOffsetX,
+        y: opts.columnY,
+        layer: 10,
+        notFillText: true });
+
+      // 当前行的高度
+      var rowHeight = opts.lineHeight * drawFontInfos.length + padding * 3;
+      // 若该列高度大于累计高度, 将累计高度替换
+      if (rowHeight > maxRowHeight) {
+        maxRowHeight = rowHeight;
+      }
+      return {
+        font: rowOpts.font,
+        center: rowOpts.center,
+        color: rowOpts.color,
+        border: opts.border,
+        background: opts.background,
+        lineHeight: opts.lineHeight,
+        line: opts.line,
+        drawFontInfos: drawFontInfos,
+        columnY: opts.columnY,
+        columnX: columnX,
+        columnW: columnW,
+        columnH: maxRowHeight,
+        margin: margin,
+        padding: padding };
+
+    });
+    // 将行绘制任务添加至绘制容器中
+    dp.draw(function (ctx) {return drawLayerInfos.forEach(function (rowOpts, index) {
+        ctx.font = rowOpts.font;
+        ctx.fillStyle = rowOpts.background;
+        ctx.strokeStyle = "#333";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = 'left';
+        if (rowOpts.center) {
+          ctx.textAlign = "center";
+        }
+        ctx.fillRect(rowOpts.columnX, rowOpts.columnY, rowOpts.columnW, rowOpts.columnH);
+        if (rowOpts.border) {
+          dp.ctx.strokeRect(margin, rowOpts.columnY, dp.canvas.width - margin, maxRowHeight);
+        }
+        if (rowOpts.line && rowOpts.columnX !== margin) {
+          ctx.moveTo(rowOpts.columnX, rowOpts.columnY);
+          ctx.lineTo(rowOpts.columnX, rowOpts.columnY + rowOpts.columnH);
+          ctx.stroke();
+          ctx.beginPath();
+        }
+        ctx.fillStyle = rowOpts.color;
+        rowOpts.drawFontInfos.forEach(function (fontInfo) {
+          // 计算每行字体绘制y轴长度
+          // y(当前列置顶轴) + (rowOpts.columnH(当前列最高长度) / 2) - (((总列数-1) * 行高) / 2)
+          var textTotal = rowOpts.drawFontInfos.length - 1;
+          var textMiddleY = textTotal * rowOpts.lineHeight / 2;
+          var fontOffsetY = fontInfo.y + rowOpts.columnH / 2;
+          fontOffsetY -= textMiddleY;
+          ctx.fillText(fontInfo.text, fontInfo.x, fontOffsetY);
+        });
+      });});
+    if (opts.columnY === 0 || opts.columnY === margin) {
+      maxRowHeight += margin;
+    }
+    // 叠加高度
+    dp.from.height += maxRowHeight;
+    return maxRowHeight;
+  } };exports.default = _default;
+
+/***/ }),
+
 /***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
@@ -8943,11 +9366,15 @@ function DrawPoster(canvas, ctx, canvasId, loading, drawImageTime, debugging, lo
   var _this = this;
   var pages = getCurrentPages();
   var page = pages[pages.length - 1];
-  page.oldOnUnload = page.onUnload;
-  page.onUnload = function () {
-    _this.stop();
-    page.oldOnUnload();
-  };
+  // 查询标识, 不存在, 在替换页面卸载回调, 避免产生死循环
+  if (!page.onUnload.identification) {
+    page.oldOnUnload = page.onUnload;
+    page.onUnload = function () {
+      _this === null || _this === void 0 ? void 0 : _this.stop();
+      page.oldOnUnload();
+    };
+    page.onUnload.identification = true;
+  }
 };
 
 /** 传入挂载配置对象, 添加扩展方法 */
@@ -9473,16 +9900,24 @@ var handleBuildOpts = function handleBuildOpts(options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getCanvas2dContext = exports.downloadImgUrl = void 0;var _global = _interopRequireDefault(__webpack_require__(/*! ./global */ 30));
-var _utils = __webpack_require__(/*! ./utils */ 33);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-// 下载指定地址图片, 如果不符合下载图片, 则直接返回
-var downloadImgUrl = function downloadImgUrl(url) {
-  var isLocalFile = (0, _utils.isBaseUrl)(url) || (0, _utils.isTmpUrl)(url) || !(0, _utils.isNetworkUrl)(url);
-  return new Promise(function (resolve, reject) {
-    if (isLocalFile) {
-      return resolve(url);
-    }
-    _global.default.downloadFile({
+Object.defineProperty(exports, "__esModule", { value: true });exports.getCanvas2dContext = exports.downloadImgUrl = void 0;
+
+
+
+
+
+
+
+var _global = _interopRequireDefault(__webpack_require__(/*! ./global */ 30));
+var _utils = __webpack_require__(/*! ./utils */ 33);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /*
+                                                                                                                               * @Author: Mr.Mao
+                                                                                                                               * @LastEditors: Mr.Mao
+                                                                                                                               * @Date: 2020-10-12 08:49:27
+                                                                                                                               * @LastEditTime: 2020-12-09 13:54:10
+                                                                                                                               * @Description:
+                                                                                                                               * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+                                                                                                                               */ // 下载指定地址图片, 如果不符合下载图片, 则直接返回
+var downloadImgUrl = function downloadImgUrl(url) {var isLocalFile = (0, _utils.isBaseUrl)(url) || (0, _utils.isTmpUrl)(url) || !(0, _utils.isNetworkUrl)(url);return new Promise(function (resolve, reject) {if (isLocalFile) {return resolve(url);}_global.default.downloadFile({
       url: url,
       success: function success(res) {return resolve(res.tempFilePath);},
       fail: reject });
@@ -9537,12 +9972,12 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   init: function init(canvas, ctx) {
     ctx.oldDrawImage = ctx.drawImage;
   },
-  handle: function () {var _handle = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(canvas, ctx, url, x, y, w, h) {var path, result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+  handle: function () {var _handle = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(canvas, ctx, url, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight) {var path, result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                 (0, _wxUtils.downloadImgUrl)(url));case 2:path = _context.sent;
               ctx.existDrawImage = true;
               result = false;
               if (ctx.drawType === 'context') {
-                ctx.oldDrawImage(path, x, y, w, h);
+                ctx.oldDrawImage(path, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight);
                 ctx.restore();
                 result = true;
               }if (!(
@@ -9551,14 +9986,31 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
                   var image = canvas.createImage();
                   image.src = path;
                   image.onload = function () {
-                    ctx.oldDrawImage(image, x, y, w, h);
+                    ctx.oldDrawImage(image, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight);
                     ctx.restore();
                     resolve(true);
                   };
                   image.onerror = function () {return resolve(false);};
                 }));case 9:result = _context.sent;case 10:return _context.abrupt("return",
 
-              result);case 11:case "end":return _context.stop();}}}, _callee);}));function handle(_x, _x2, _x3, _x4, _x5, _x6, _x7) {return _handle.apply(this, arguments);}return handle;}() };exports.default = _default;
+              result);case 11:case "end":return _context.stop();}}}, _callee);}));function handle(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8, _x9, _x10, _x11) {return _handle.apply(this, arguments);}return handle;}() };
+
+
+// ctx.drawCoverImage
+// ctx.drawCoverRoundImage
+// ctx.drawFillImage
+// ctx.drawFillRoundImage
+// ctx.drawContainImage
+// ctx.drawContainRoundImage
+// ctx.drawRoundImage
+// ctx.drawImage({
+//   round: 15,
+//   objectFit: 'cover',
+//   intrinsicSize: {width: 100, height: 100}, 
+//   specifiedSize: {width: 100, height: 100},
+//   position: ['left', 'center']
+// })
+exports.default = _default;
 
 /***/ }),
 

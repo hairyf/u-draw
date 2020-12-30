@@ -8,7 +8,9 @@
     "pages/repeat/repeat",
     "pages/extend/extend",
     "pages/use/use",
-    "pages/qrcode/qrcode"
+    "pages/qrcode/qrcode",
+    "pages/component/component",
+    "pages/fromList/fromList"
   ],
   "subPackages": [],
   "window": {
@@ -17,5 +19,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

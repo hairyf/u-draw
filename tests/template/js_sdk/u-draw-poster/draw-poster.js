@@ -131,11 +131,15 @@ class DrawPoster {
         const _this = this;
         const pages = getCurrentPages();
         const page = pages[pages.length - 1];
-        page.oldOnUnload = page.onUnload;
-        page.onUnload = function () {
-            _this.stop();
-            page.oldOnUnload();
-        };
+        // 查询标识, 不存在, 在替换页面卸载回调, 避免产生死循环
+        if (!page.onUnload.identification) {
+            page.oldOnUnload = page.onUnload;
+            page.onUnload = function () {
+                _this === null || _this === void 0 ? void 0 : _this.stop();
+                page.oldOnUnload();
+            };
+            page.onUnload.identification = true;
+        }
     }
 }
 /** 传入挂载配置对象, 添加扩展方法 */

@@ -5,12 +5,12 @@ export default {
     init: (canvas, ctx) => {
         ctx.oldDrawImage = ctx.drawImage;
     },
-    handle: async (canvas, ctx, url, x, y, w, h) => {
+    handle: async (canvas, ctx, url, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight) => {
         const path = await downloadImgUrl(url);
         ctx.existDrawImage = true;
         let result = false;
         if (ctx.drawType === 'context') {
-            ctx.oldDrawImage(path, x, y, w, h);
+            ctx.oldDrawImage(path, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight);
             ctx.restore();
             result = true;
         }
@@ -19,7 +19,7 @@ export default {
                 const image = canvas.createImage();
                 image.src = path;
                 image.onload = () => {
-                    ctx.oldDrawImage(image, x, y, w, h);
+                    ctx.oldDrawImage(image, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight);
                     ctx.restore();
                     resolve(true);
                 };
@@ -29,3 +29,17 @@ export default {
         return result;
     }
 };
+// ctx.drawCoverImage
+// ctx.drawCoverRoundImage
+// ctx.drawFillImage
+// ctx.drawFillRoundImage
+// ctx.drawContainImage
+// ctx.drawContainRoundImage
+// ctx.drawRoundImage
+// ctx.drawImage({
+//   round: 15,
+//   objectFit: 'cover',
+//   intrinsicSize: {width: 100, height: 100}, 
+//   specifiedSize: {width: 100, height: 100},
+//   position: ['left', 'center']
+// })

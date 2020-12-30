@@ -1,63 +1,80 @@
 <template>
-  <div class="from-list">
+  <div class="index">
     <image :src="imgUrl" style="width: 100px; height: 100px" />
     <!-- #ifdef MP-WEIXIN -->
-    <canvas id="canvas" type="2d" :style="{height: height}" style="width: 750px;" />
+    <canvas id="canvas" type="2d" style="width: 300px;" :style="{height:height+'px'}" />
     <!-- #endif -->
     <!-- #ifndef MP-WEIXIN -->
-    <canvas canvas-id="canvas" :style="{height: height}" id="canvas" style="width: 300px;"/>
+    <canvas canvas-id="canvas" id="canvas" style="width: 300px;" :style="{height:height+'px'}"  />
     <!-- #endif -->
   </div>
 </template>
-
 <script>
+import { setTimeout } from 'timers';
 import DrawPoster from "../../js_sdk/u-draw-poster";
-import createFromList from "../../js_sdk/u-draw-poster/extends/create-from-list";
-DrawPoster.use(createFromList);
+import DreateLayer from "../../js_sdk/u-draw-poster/extends/create-from-list";
+DrawPoster.use(DreateLayer)
 export default {
   data: () => ({
-    height:0
+    imgUrl: "",
+    height: 10
   }),
   async onReady() {
-    const dp = await DrawPoster.build({
-      selector: "canvas",
-      loading: true,
-    });
-    dp.canvas.width = 750;
-    dp.from.padding = 15;
-    dp.from.height = 0;
-    dp.from.margin = 8;
-    dp.createLayer({ background: "#ECECEC" }, [
-      { text: "产品报价清单", font: "bold 34px sans-serif", center: true },
-    ]);
-    dp.createLayer({ background: "#ECECEC" }, [
-      { text: `报价单号：暂无` },
-      { text: `报价日期：暂无` },
-    ]);
-    dp.createLayer({ background: "#ECECEC" }, [
-      { text: `优势品牌：暂无、暂无、暂无` },
-    ]);
-    dp.createLayer({ background: "#ECECEC" }, [
-      { text: `报价单位：暂无、暂无、暂无` },
-    ]);
-    dp.createLayer({ background: "#ECECEC" }, [
-      { text: `联系人：暂无` },
-      { text: `联系方式：暂无` },
-    ]);
-    dp.createLayer({ y: h, self: false }, [
-      { text: "序号", center: true, width: 67 },
-      { text: "品牌/规格", center: true, width: 180 },
-      { text: "单价", center: true, width: 128 },
-      { text: "单位", center: true, width: 96 },
-      { text: "数量", center: true, width: 71 },
-      { text: "金额(元)", center: true, width: 110 },
-      { text: "备注", center: true, width: 68 },
-    ]);
-    this.height = dp.canvas.height = dp.from.height;
-    
-    const imageUrl = await dp.createImagePath();
+    // 创建绘制工具
+    const dp = await DrawPoster.build("canvas");
+    dp.canvas.width = 300;
+    dp.createLayer({background: '#fff'}, [
+      {text: '字体与颜色', font: '35px sans-serif', color: 'red'},
+    ])
+    dp.createLayer({background: '#fff'}, [
+      {text: '普通字体'},
+      {text: '居中字体', center: true},
+    ])
+    dp.createLayer({background: '#fff'}, [
+      {text: '自动换行，，计算高度'},
+      {text: '普通字体'},
+    ])
+    dp.createLayer({background: '#fff', line: false}, [
+      {text: '去内边框'},
+      {text: '去内边框'},
+    ])
+    dp.createLayer({background: '#fff'}, [
+      {text: '普通字体'},
+      {text: '普通字体'},
+    ])
+    dp.createLayer({background: '#fff'}, [
+      {text: '普通字体'},
+      {text: '普通字体'},
+    ])
+    dp.createLayer({background: '#fff'}, [
+      {text: '普通字体'},
+      {text: '普通字体'},
+    ])
+    this.height = dp.canvas.height = dp.from.height+1
+    setTimeout(()=>{
+      dp.createImagePath()
+    }, 10)
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+page,
+.index {
+  height: 100%;
+}
+.index {
+  position: relative;
+  text-align: center;
+  background: rgba($color: grey, $alpha: 0.2);
+}
+image {
+  margin-top: 30rpx;
+}
+canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

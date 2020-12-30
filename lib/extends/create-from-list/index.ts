@@ -20,8 +20,8 @@ export default {
   init: (dp) => {
     dp.from = {
       height: 0,
-      margin: 8,
-      padding: 15
+      padding: 8,
+      margin: 0
     }
     dp.setFromOptions = (opts: Record<any, any>) => {
       if (typeof opts.height !== 'undefined'){
@@ -38,14 +38,14 @@ export default {
   handle: (dp, afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => {
     // 当前配置(头部偏移量, 列内边距, 表单外边距)
     const height = dp.from.height as number
-    const padding = dp.from.padding as number
     const margin = dp.from.margin as number
+    const padding = dp.from.padding as number
     // 当前层宽度
-    const containerWidth = dp.canvas.width - (padding * 2)
+    const containerWidth = dp.canvas.width - (margin * 2)
     // 基本层配置
     const opts = {
       background: "#fff",
-      height: height || padding,
+      columnY: height || margin,
       self: true,
       line: true,
       lineHeight: 0,
@@ -62,8 +62,7 @@ export default {
     // 累计最高的列为标准定义为层高度
     let maxRowHeight = 0
     // 累计固定栅格列偏移量
-    let columnOffsetX = padding
-
+    let columnOffsetX = margin
     // 创建行绘制任务
     const drawLayerInfos = rowList.map((afferRowOpts = {}, index) => {
       const rowOpts = {
@@ -77,33 +76,34 @@ export default {
       opts.lineHeight = opts.lineHeight || Number(rowOpts.font.replace(/[^0-9.]/g, ""))
       if (self) {
         // 自适应栅格格子计算
-        columnX = containerWidth - (containerWidth / (index + 1)) + padding
+        columnX = containerWidth - (containerWidth / (index + 1)) + margin
         columnW = containerWidth / rowList.length
         if (columnX > 0 && columnX < containerWidth - columnW) {
-          columnX = (columnW * index) + padding
+          columnX = (columnW * index) + margin
         }
-        fontMaxWidth = columnW - (margin * 3)
+        fontOffsetX = rowOpts.center ? columnX + (columnW / 2) : columnX + padding
+        fontMaxWidth = columnW - (padding * 3)
       }
       if (!self) {
         // 固定栅格格子计算
         columnW = rowOpts.width
         columnX = columnOffsetX
-        fontMaxWidth = columnW - (margin * 3)
-        fontOffsetX = rowOpts.center ? columnOffsetX + (rowOpts.width / 2) : columnOffsetX + margin
+        fontMaxWidth = columnW - (padding * 3)
+        fontOffsetX = rowOpts.center ? columnOffsetX + (rowOpts.width / 2) : columnOffsetX + padding
         columnOffsetX += rowOpts.width
       }
+      dp.ctx.font = rowOpts.font
       const drawFontInfos = dp.ctx.fillWarpText({
         text: rowOpts.text,
         maxWidth: fontMaxWidth,
         lineHeight: opts.lineHeight,
         x: fontOffsetX,
-        y: height,
+        y: opts.columnY,
         layer: 10,
         notFillText: true
       })
-
       // 当前行的高度
-      const rowHeight = (opts.lineHeight * drawFontInfos.length) + (margin * 3)
+      const rowHeight = (opts.lineHeight * drawFontInfos.length) + (padding * 3)
       // 若该列高度大于累计高度, 将累计高度替换
       if (rowHeight > maxRowHeight) {
         maxRowHeight = rowHeight
@@ -116,12 +116,13 @@ export default {
         background: opts.background,
         lineHeight: opts.lineHeight,
         line: opts.line,
-        height: opts.height,
         drawFontInfos,
+        columnY: opts.columnY,
         columnX,
         columnW,
-        padding,
-        margin
+        columnH: maxRowHeight,
+        margin,
+        padding
       }
     })
 
@@ -131,44 +132,50 @@ export default {
       ctx.fillStyle = rowOpts.background
       ctx.strokeStyle = "#333"
       ctx.textBaseline = "middle"
+      ctx.textAlign = 'left'
       if (rowOpts.center) {
         ctx.textAlign = "center"
       }
       ctx.fillRect(
         rowOpts.columnX,
-        rowOpts.height,
+        rowOpts.columnY,
         rowOpts.columnW,
+        rowOpts.columnH
+      )
+      dp.ctx.strokeRect(
+        margin,
+        rowOpts.columnY,
+        dp.canvas.width - margin,
         maxRowHeight
       )
-      if (rowOpts.line) {
-        ctx.strokeRect(
-          rowOpts.columnX,
-          rowOpts.height,
-          rowOpts.columnW,
-          maxRowHeight
-        )
+      if (rowOpts.line && rowOpts.columnX !== margin) {
+        ctx.moveTo(rowOpts.columnX, rowOpts.columnY)
+        ctx.lineTo(rowOpts.columnX, rowOpts.columnY + rowOpts.columnH)
+        ctx.stroke()
+        ctx.beginPath()
       }
+
       ctx.fillStyle = rowOpts.color
       rowOpts.drawFontInfos.forEach(fontInfo => {
         // 计算每行字体绘制y轴长度
-        // y(当前列置顶轴) + (maxRowHeight(当前列最高长度) / 2) - (((总列数-1) * 行高) / 2)
+        // y(当前列置顶轴) + (rowOpts.columnH(当前列最高长度) / 2) - (((总列数-1) * 行高) / 2)
         const textTotal = rowOpts.drawFontInfos.length - 1
         const textMiddleY = (textTotal * rowOpts.lineHeight) / 2
-        let fontHeight = fontInfo.y + (maxRowHeight / 2)
-        fontHeight -= textMiddleY
-        if (rowOpts.height === 0 || rowOpts.height === rowOpts.padding) {
-          fontHeight -= (margin / 2)
-        }
+        let fontOffsetY = fontInfo.y + (rowOpts.columnH / 2)
+        fontOffsetY -= textMiddleY
         ctx.fillText(
           fontInfo.text,
           fontInfo.x,
-          fontHeight
+          fontOffsetY
         )
       })
     }))
+    if (opts.columnY === 0 || opts.columnY === margin) {
+      maxRowHeight += margin
+    }
 
     // 叠加高度
     dp.from.height += maxRowHeight
     return maxRowHeight
-  }
+  },
 } as DrawPosterUseOpts

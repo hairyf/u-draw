@@ -11,14 +11,20 @@ export default {
     canvas: Canvas,
     ctx: DrawPosterCanvasCtx,
     url: string,
-    x: number, y: number,
-    w: number, h: number,
+    dx?: number | undefined,
+    dy?: number | undefined,
+    dWidth?: number | undefined,
+    dHeigt?: number | undefined,
+    sx?: number | undefined,
+    sy?: number | undefined,
+    sWidth?: number | undefined,
+    sHeight?: number | undefined
   ): Promise<boolean> => {
     const path = await downloadImgUrl(url)
     ctx.existDrawImage = true
     let result = false
     if (ctx.drawType === 'context') {
-      ctx.oldDrawImage(path, x, y, w, h)
+      ctx.oldDrawImage(path, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight)
       ctx.restore()
       result = true
     }
@@ -27,7 +33,7 @@ export default {
         const image = canvas.createImage()
         image.src = path
         image.onload = () => {
-          ctx.oldDrawImage(image as any, x, y, w, h)
+          ctx.oldDrawImage(image as any, dx, dy, dWidth, dHeigt, sx, sy, sWidth, sHeight)
           ctx.restore()
           resolve(true)
         }
@@ -37,3 +43,20 @@ export default {
     return result
   }
 } as DrawPosterUseCtxOpts
+
+// ctx.drawCoverImage
+// ctx.drawCoverRoundImage
+// ctx.drawFillImage
+// ctx.drawFillRoundImage
+// ctx.drawContainImage
+// ctx.drawContainRoundImage
+// ctx.drawRoundImage
+
+
+// ctx.drawImage({
+//   round: 15,
+//   objectFit: 'cover',
+//   intrinsicSize: {width: 100, height: 100}, 
+//   specifiedSize: {width: 100, height: 100},
+//   position: ['left', 'center']
+// })

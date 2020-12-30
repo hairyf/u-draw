@@ -2,7 +2,7 @@ import fs = require('fs');
 import path = require('path');
 import archiver = require('archiver');
 import { logger } from '../utils';
-const templatePath = path.resolve(__dirname, "../../test/template")
+const templatePath = path.resolve(__dirname, "../../tests/template")
 const dcloudExtendPath = path.resolve(__dirname, "../../dcloud/template.zip")
 // 创建文件输出流
 const output = fs.createWriteStream(dcloudExtendPath)

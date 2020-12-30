@@ -7,17 +7,6 @@ export default {
             padding: 8,
             margin: 0
         };
-        dp.setFromOptions = (opts) => {
-            if (typeof opts.height !== 'undefined') {
-                dp.from.height = opts.height;
-            }
-            if (typeof opts.margin !== 'undefined') {
-                dp.from.margin = opts.margin;
-            }
-            if (typeof opts.padding !== 'undefined') {
-                dp.from.padding = opts.padding;
-            }
-        };
     },
     handle: (dp, afferOpts, rowList) => {
         // 当前配置(头部偏移量, 列内边距, 表单外边距)

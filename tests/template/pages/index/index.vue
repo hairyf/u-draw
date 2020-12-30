@@ -21,6 +21,8 @@ export default {
 			{ text: '扩展程序', path: 'extend' },
 			{ text: '二维码生成', path: 'qrcode' },
 			{ text: 'use方式引入', path: 'use' },
+			{ text: '组件引入', path: 'component' },
+			{ text: '表单绘制插件', path: 'fromList' },
     ],
   }),
   methods: {

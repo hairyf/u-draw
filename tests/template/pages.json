@@ -53,6 +53,18 @@
 			"style": {
 				"navigationBarTitleText": "qrcode"
 			}
+		},
+		{
+			"path": "pages/component/component",
+			"style": {
+				"navigationBarTitleText": "component"
+			}
+		},
+		{
+			"path": "pages/fromList/fromList",
+			"style": {
+				"navigationBarTitleText": "fromList"
+			}
 		}
 	],
 	"globalStyle": {

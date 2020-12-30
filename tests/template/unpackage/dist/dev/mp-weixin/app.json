@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/base/base",
+    "pages/image/image",
+    "pages/warpText/warpText",
+    "pages/complete/complete",
+    "pages/repeat/repeat",
+    "pages/extend/extend",
+    "pages/use/use",
+    "pages/qrcode/qrcode"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

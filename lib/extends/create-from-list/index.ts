@@ -23,6 +23,17 @@ export default {
       margin: 8,
       padding: 15
     }
+    dp.setFromOptions = (opts: Record<any, any>) => {
+      if (typeof opts.height !== 'undefined'){
+        dp.from.height = opts.height
+      }
+      if (typeof opts.margin !== 'undefined'){
+        dp.from.margin = opts.margin
+      }
+      if (typeof opts.padding !== 'undefined'){
+        dp.from.padding = opts.padding
+      }
+    }
   },
   handle: (dp, afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => {
     // 当前配置(头部偏移量, 列内边距, 表单外边距)
@@ -155,7 +166,7 @@ export default {
         )
       })
     }))
-    
+
     // 叠加高度
     dp.from.height += maxRowHeight
     return maxRowHeight

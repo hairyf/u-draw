@@ -52,7 +52,7 @@ class DrawPoster {
     const pages = getCurrentPages()
     const page = pages[pages.length - 1] as Record<any, any>
     // 查询标识, 不存在, 在替换页面卸载回调, 避免产生死循环
-    if (!page.onUnload.identification) {
+    if (!page?.onUnload?.identification) {
       page.oldOnUnload = page.onUnload
       page.onUnload = function () {
         _this?.stop()

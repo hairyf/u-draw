@@ -2,13 +2,13 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2020-10-22 22:48:35
- * @LastEditTime: 2021-01-02 00:17:10
+ * @LastEditTime: 2021-01-02 13:21:09
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
  */
 import DrawPoster from "./draw-poster"
 import { DrawPosterBuildOpts } from "./utils/interface"
-import * as dfucs from "./extends/draw-function"
+import * as dfucs from "./extends/draw-function/index"
 
 DrawPoster.useCtx(dfucs.drawImage)
 DrawPoster.useCtx(dfucs.fillWarpText)

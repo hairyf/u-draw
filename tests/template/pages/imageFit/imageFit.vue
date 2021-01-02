@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2021-01-02 00:11:21
- * @LastEditTime: 2021-01-02 10:39:11
+ * @LastEditTime: 2021-01-02 12:05:49
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
@@ -68,9 +68,19 @@ export default {
         specifiedPosition: [0, 150],
         intrinsicPosition: ['right', 'center'],
       })
+      // 测试案例三：居中裁剪方式
+      await ctx.drawImageFit(url, {
+        round: 150,
+        objectFit: 'cover',
+        intrinsicSize: { width: 1000, height: 707 },
+        specifiedSize: { width: 150, height: 150 },
+        specifiedPosition: [150, 150],
+        intrinsicPosition: ['center', 'center'],
+      })
     });
     // 创建本地地址
-    this.imgUrl = await dp.createImagePath();
+    await await dp.awaitCreate()
+    // this.imgUrl = await dp.createImagePath();
   },
 };
 </script>

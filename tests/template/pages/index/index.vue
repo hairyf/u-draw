@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2020-11-28 12:04:04
- * @LastEditTime: 2021-01-02 10:26:45
+ * @LastEditTime: 2021-01-02 12:04:59
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
@@ -29,7 +29,7 @@ export default {
 			{ text: '重复绘制', path: 'repeat' },
 			{ text: '扩展程序', path: 'extend' },
 			{ text: '二维码生成', path: 'qrcode' },
-			{ text: 'use方式引入', path: 'use' },
+			{ text: 'use|component方式引入', path: 'use' },
 			{ text: '组件引入', path: 'useComponent' },
 			{ text: '表单绘制插件', path: 'fromList' },
     ],

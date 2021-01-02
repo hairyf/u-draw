@@ -50,7 +50,7 @@ class DrawPoster {
         /** 等待创建绘画, 成功后清空绘制器容器 */
         this.awaitCreate = async () => {
             this.debuggingLog('绘制海报中...');
-            this.loading && uni.showLoading({ title: this.loadingText });
+            this.loading && gbl.showLoading({ title: this.loadingText });
             const tips = [];
             for (let i = 0; i < this.executeOnions.length; i++) {
                 const execute = this.executeOnions[i];
@@ -60,14 +60,14 @@ class DrawPoster {
             this.debuggingLog('绘制状况', tips);
             // 当前绘制为 type2 绘制
             if (this.drawType === 'type2d') {
-                this.loading && uni.hideLoading();
+                this.loading && gbl.hideLoading();
                 return tips;
             }
             // 当前绘制为 context 绘制
             return await new Promise((resolve) => {
                 this.ctx.draw(true, () => {
                     resolve(tips);
-                    this.loading && uni.hideLoading();
+                    this.loading && gbl.hideLoading();
                 });
                 // 当环境是app时，ctx.draw 回调不触发, 手动定时器触发
                 if (PLATFORM === "app-plus") {
@@ -75,7 +75,7 @@ class DrawPoster {
                     this.ctx.existDrawImage = false;
                     setTimeout(() => {
                         resolve(tips);
-                        this.loading && uni.hideLoading();
+                        this.loading && gbl.hideLoading();
                     }, time);
                 }
             });
@@ -89,7 +89,7 @@ class DrawPoster {
                 this.stopStatus = false;
                 return '---stop createImagePath---';
             }
-            this.loading && uni.showLoading({ title: this.createText });
+            this.loading && gbl.showLoading({ title: this.createText });
             const options = Object.assign({ x: 0, y: 0, width: canvas.width, height: canvas.height, destWidth: canvas.width * 2, destHeight: canvas.height * 2 }, baseOptions);
             if (this.drawType === 'context')
                 options.canvasId = canvasId;
@@ -98,12 +98,12 @@ class DrawPoster {
             return new Promise((resolve, reject) => {
                 options.success = (res) => {
                     resolve(res.tempFilePath);
-                    this.loading && uni.hideLoading();
+                    this.loading && gbl.hideLoading();
                     this.debuggingLog('绘制成功 🎉', res);
                 };
                 options.fail = (err) => {
                     reject(err);
-                    this.loading && uni.hideLoading();
+                    this.loading && gbl.hideLoading();
                     this.debuggingLog('绘制失败 🌟', err);
                 };
                 gbl.canvasToTempFilePath(options);

@@ -19,6 +19,12 @@
 			}
 		},
 		{
+			"path": "pages/imageFit/imageFit",
+			"style": {
+				"navigationBarTitleText": "imageFit"
+			}
+		},
+		{
 			"path": "pages/warpText/warpText",
 			"style": {
 				"navigationBarTitleText": "warpText"
@@ -43,21 +49,15 @@
 			}
 		},
 		{
-			"path": "pages/use/use",
-			"style": {
-				"navigationBarTitleText": "use"
-			}
-		},
-		{
 			"path": "pages/qrcode/qrcode",
 			"style": {
 				"navigationBarTitleText": "qrcode"
 			}
 		},
 		{
-			"path": "pages/component/component",
+			"path": "pages/useComponent/useComponent",
 			"style": {
-				"navigationBarTitleText": "component"
+				"navigationBarTitleText": "useComponent"
 			}
 		},
 		{

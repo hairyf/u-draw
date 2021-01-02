@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-11-28 12:04:04
+ * @LastEditTime: 2021-01-02 10:26:45
+ * @Description: 
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
     <div
@@ -16,12 +24,13 @@ export default {
       { text: '基本绘制', path: 'base' },
       { text: '换行字体绘制', path: 'warpText' },
       { text: '图片绘制', path: 'image' },
+      { text: '图片Fit绘制', path: 'imageFit' },
 			{ text: '完整海报绘制', path: 'complete' },
 			{ text: '重复绘制', path: 'repeat' },
 			{ text: '扩展程序', path: 'extend' },
 			{ text: '二维码生成', path: 'qrcode' },
 			{ text: 'use方式引入', path: 'use' },
-			{ text: '组件引入', path: 'component' },
+			{ text: '组件引入', path: 'useComponent' },
 			{ text: '表单绘制插件', path: 'fromList' },
     ],
   }),

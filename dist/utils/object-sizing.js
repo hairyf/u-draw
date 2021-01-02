@@ -16,6 +16,8 @@
  */
 export function calculateConcreteRect(style, intrinsicSize, specifiedSize) {
     var _a, _b;
+    const isContain = style.objectFit === 'contain';
+    const specifiedPosition = style.specifiedPosition || [0, 0];
     // ratio 越大表示矩形越"扁"
     let intrinsicRatio = intrinsicSize.width / intrinsicSize.height;
     let specifiedRatio = specifiedSize.width / specifiedSize.height;
@@ -40,10 +42,14 @@ export function calculateConcreteRect(style, intrinsicSize, specifiedSize) {
     let concreteRectWidth = intrinsicSize.width * concreteScale;
     let concreteRectHeight = intrinsicSize.height * concreteScale;
     // 这里可以把 left top 的计算想象成投影
-    let xRelativeOrigin = { left: 0, center: .5, right: 1 }[((_a = style.objectPosition) === null || _a === void 0 ? void 0 : _a[0]) || "center"];
-    let yRelativeOrigin = { top: 0, center: .5, bottom: 1 }[((_b = style.objectPosition) === null || _b === void 0 ? void 0 : _b[1]) || "center"];
+    let xRelativeOrigin = { left: 0, center: .5, right: 1 }[((_a = style.intrinsicPosition) === null || _a === void 0 ? void 0 : _a[0]) || "center"];
+    let yRelativeOrigin = { top: 0, center: .5, bottom: 1 }[((_b = style.intrinsicPosition) === null || _b === void 0 ? void 0 : _b[1]) || "center"];
     let concreteRectLeft = (specifiedSize.width - concreteRectWidth) * xRelativeOrigin;
     let concreteRectTop = (specifiedSize.height - concreteRectHeight) * yRelativeOrigin;
+    if (isContain) {
+        concreteRectLeft += specifiedPosition[0];
+        concreteRectTop += specifiedPosition[1];
+    }
     // 这里有两个坐标系，一个是 specified (dist) 的坐标系，一个是 intrinsic (src) 的坐标系
     // 这里将两个坐标系的点位置进行变换
     // 例: 带入 x=0, y=0, 得到的结果就是 specifiedRect 的左上角在 intrinsic 坐标系下的坐标位置
@@ -64,8 +70,8 @@ export function calculateConcreteRect(style, intrinsicSize, specifiedSize) {
         sy: Math.max(srcTop, 0),
         sw: Math.min(srcRight - srcLeft, intrinsicSize.width),
         sh: Math.min(srcBottom - srcTop, intrinsicSize.height),
-        dx: Math.max(concreteRectLeft, 0),
-        dy: Math.max(concreteRectTop, 0),
+        dx: isContain ? Math.max(concreteRectLeft, 0) : specifiedPosition[0],
+        dy: isContain ? Math.max(concreteRectTop, 0) : specifiedPosition[1],
         dw: Math.min(concreteRectWidth, specifiedSize.width),
         dh: Math.min(concreteRectHeight, specifiedSize.height)
     };

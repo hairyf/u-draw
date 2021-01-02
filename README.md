@@ -6,6 +6,7 @@
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
 - 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
+- 更加强大的图片绘制与裁剪方法（object-fit）
 
 api文档：[u-draw-poster](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/01-base-desc.html)
 
@@ -107,7 +108,9 @@ console.log("绘制生成本地地址:", posterImgUrl);
 
 # 绘制扩展 API
 
-`drawPoster`在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
+DrawPoster 在创建时，会自动的向`ctx(画笔)`添加/覆盖扩展方法，以便构建海报矩形。
+
+目前支持绘制图片、圆角图片、绘制裁剪图片（object-fit）、换行字体、圆角矩形、圆角矩形边框、绘制二维码。
 
 ~~~js
 dp.draw(async (ctx) => {
@@ -115,301 +118,21 @@ dp.draw(async (ctx) => {
 })
 ~~~
 
-## 绘制图片(ctx.drawImage)
+具体查看API文档：[u-draw-poster](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/02-draw-extends.html)
 
-`ctx.drawImage(url, x, y, w, h)`
-
-`drawPoster`绘制图片与原生绘制不相同，`ctx.drawImage`内部已经内置了`downloadFile`，只需要传入本地/网络地址即可。支持`2d`与`非2d`绘制，绘制方式一致。需要await等待绘制。
-
-注意：当绘制环境为H5时，uniapp使用本地图片绘画时不要用尺寸较大的图片，不然会在创建图片时生成失败。
-
-~~~js
-dp.draw(async (ctx)=>{
-    const url = "/static/logo.png"
-    // const url = "https://...."
-    await ctx.drawImage(url, 88, 174.94, 198.98, 36);
-})
-~~~
-[^注意]:小程序端需要添加域名才能绘制成功！
-
-| 参数          | 描述                                      |
-| :------------ | :---------------------------------------- |
-| url           | 网络图片地址，或本地`/static`中图片路径。 |
-| x，y          | 图片的左上角的坐标。                      |
-| width，height | 图片的大小。                              |
-
-## 换行字体(ctx.fillWarpText)
-
-`ctx.fillWarpText(options)`
-
-传入配置对象，绘制换行字体，以下为可配置项。
-
-~~~js
-interface FillWarpTextOpts {
-  // 绘制字符串, 必传项
-  text: string;
-  // 绘制最长高度, 默认100px
-  maxWidth?: number;
-  // 绘制行高, 默认取当前字体的默认宽度
-  lineHeight?: number;
-  // 绘制行数量, 默认限制为2层
-  layer?: number;
-  // 绘制x轴, 默认0
-  x?: number;
-  // 绘制y轴, 默认0
-  y?: number;
-  // 设置换行字符, 默认为空, 如设置, maxWidth|layer 将会失效
-  splitText?: string;
-  // 是否不马上进行绘制
-  notFillText?: boolean;
-}
-// 当 `notFillText` 为 `true` 时，则不进行绘制，该函数将返回一个绘制信息队列
-// 用于代表每行字体所对应的绘制信息, 以下是返回的结构信息，你可以用于计算该
-// 换行字体的宽度，也你可以使用array.forEach与ctx.fillText进行绘制。
-[
-  { text: string, y: number, x: number}
-  // ....
-]
-~~~
-
-## 圆角矩形(ctx.fillRoundRect)
-
-`ctx.fillWarpText(x, y, w, h, r)`
-
-~~~js
-dp.draw(async (ctx)=>{
-   // 设置矩形颜色
-   ctx.fillStyle = "#fff";
-   // 进行绘制
-   ctx.fillRoundRect(15, 179, 345, 365.5, 10);
-})
-~~~
-
-| 参数          | 描述                 |
-| :------------ | :------------------- |
-| x，y          | 矩形的左上角的坐标。 |
-| width，height | 矩形的大小。         |
-| r             | 矩形的弧度半径。     |
-
-## 圆角矩形边框(ctx.strokeRoundRect)
-
-`ctx.strokeRoundRect(x, y, w, h, r)`
-
-| 参数          | 描述                 |
-| :------------ | :------------------- |
-| x，y          | 矩形的左上角的坐标。 |
-| width，height | 矩形的大小。         |
-| r             | 矩形的弧度半径。     |
-
-## 圆角图片(ctx.drawRoundImage)
-
-`ctx.drawRoundImage(url, x, y, w, h, r)`
-
-~~~js
-dp.draw(async (ctx) => {
-  const url = "static/logo.png"
-  // const url = "https://...."
-  await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
-});
-~~~
-
-| 参数          | 描述                                      |
-| :------------ | :---------------------------------------- |
-| url           | 网络图片地址，或本地`/static`中图片路径。 |
-| x，y          | 图片的左上角的坐标。                      |
-| width，height | 图片的大小。                              |
-| r             | 图片的弧度半径。                          |
-
-## 绘制二维码(ctx.drawQrCode)
-
-生成二维码扩展，源码使用了 [uQRCode](https://github.com/Sansnn/uQRCode) 并改动了一下，该文件比较大，所以作为扩展插件使用，使用时得先引入插件。
-
-~~~js
-// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw-poster'
-import DrawPoster from 'u-draw-poster'
-import { drawQrCode } from 'u-draw-poster'
-// 引入绘制二维码插件
-DrawPoster.useCtx(drawQrCode)
-
-async onReady() {
- const dp = await DrawPoster.build("canvas")
- dp.canvas.width = 200; dp.canvas.height = 200
- dp.draw(ctx=>{
-   ctx.drawQrCode({
-    x: (dp.canvas.width / 2) - 50,
-    y: (dp.canvas.height / 2) - 50,
-    text: "http://www.baidu.com",
-    size: 100,
-  });
- })
-}
-~~~
-
-|       参数        |  类型  | 必填 |                             说明                             |
-| :---------------: | :----: | :--: | :----------------------------------------------------------: |
-|         x         | number |  否  |                       水平方向偏移长度                       |
-|         y         | number |  否  |                       垂直方向偏移长度                       |
-|       text        | String |  是  |                          二维码内容                          |
-|       size        | Number |  否  |                        二维码尺寸大小                        |
-|      margin       | Number |  否  | 边距，二维码实际尺寸会根据所设边距值进行缩放调整（默认：`0`） |
-|  backgroundColor  | String |  否  | 背景色，若设置为透明背景， `fileType` 需设置为 `'png'` ， 然后设置背景色为 `'rgba(255,255,255,0)'` 即可（默认：`'#ffffff'`） |
-|  foregroundColor  | String |  否  |                 前景色（默认：`'#000000'`）                  |
-| errorCorrectLevel | Number |  否  | 纠错等级，包含 `errorCorrectLevel.L`、`errorCorrectLevel.M`、`errorCorrectLevel.Q`、`errorCorrectLevel.H` 四个级别，`L`: 最大 7% 的错误能够被纠正；`M`: 最大 15% 的错误能够被纠正；`Q`: 最大 25% 的错误能够被纠正；`H`: 最大 30% 的错误能够被纠正。 |
 
 # 全局实例 API
 
-## 绘画构建(DrawPoster.build)
+DrawPoster 的静态与扩展方法，除了最常用的：绘制节点、绘画构建、创建绘制、创建图片，以及还有另外的扩展功能：绘画构建、挂载全局扩展、挂载绘制扩展、全局画笔、等待绘制、停止绘画。
 
-`DrawPoster.build(string|object)`
-
-初始化构建绘制工具，传入查询字符串与配置对象，当配置字符串时，则直接查询该字符串的`canvas`，当配置对象时，`object.selector`则为必选项，以下是`options`的配置项，需要注意的是，返回值为`Promise`，返回绘制构建对象`dp`。
-
-~~~js
-/** DrawPoster.build 构建配置 */
-interface DrawPosterBuildOpts {
-    // 查询字符串(必须), 注意不要写错对应canvas id, 不需要传入#符号
-    selector: string;
-    // 选取组件范围
-    componentThis?: any;
-    // 类型为2d绘制, 默认开启, 在微信小程序的时候动态加载
-    type2d?: boolean;
-    // 是否在绘制的过程中, 显示加载框, 默认关闭
-    loading?: boolean,
-    // 当存在绘制图片时, 等待绘画完毕的时间（毫秒），仅在App中生效
-    drawImageTime?: 100,
-    // 加载提示文字
-    loadingText?: '绘制海报中...',
-    // 创建图片加载提示文字
-    createText?: '生成图片中...'
-}
-~~~
-
-## 多绘画构建(DrawPoster.buildAll)
-
-`DrawPoster.buildAll(Array<string|object>)`
-
-构建多个绘画工具，传入build函数中参数string | options构成的数组，返回多个绘制工具组成的对象。key为canvasId，value为构建对象。
-
-## 挂载全局扩展(DrawPoster.use)
-
-`DrawPoster.use(object)`
-
-传入挂载配置对象，添加全局扩展方法，一般可用于海报绘制模板的封装，在不同页面有一样的海报模板时可以有效的减少代码量，使用方式如下。
-
-一、在任意位置添加扩展（建议放在`main.js`中执行）
-
-~~~js
-import DrawPoster from 'u-draw-poster'
-// 全局添加绘制个人海报的扩展实现
-DrawPoster.use({
-  name: "createMyCardImagePath",
-  // dp为当前实例, 其余参数为自定义传入参数
-  handle: async (dp, opts) => {
-    // ..自定义构建内容..
-    return await dp.createImagePath()
-  }
-})
-~~~
-
-二、页面中使用自定义扩展
-
-~~~js
-import DrawPoster from 'u-draw-poster'
-async onReady() {
- const dp = await DrawPoster.build("canvas")
- dp.canvas.width = 100; dp.canvas.height = 100
- const posterImg = await dp.createMyCardImagePath({/*...*/})
-}
-~~~
-
-## 挂载绘制扩展(DrawPoster.useCtx)
-
-`DrawPoster.useCtx(object)`
-
-传入挂载配置对象，添加全局绘制扩展方法，用于自定义绘制方法的定义，使用方式如下。
-
-一、在任意位置添加扩展（建议放在`main.js`中执行）
-
-~~~js
-// 全局添加绘制二维码的绘画扩展实现
-DrawPoster.useCtx({
-  name: "drawQrCode",
-  // canvas(绘制节点), ctx(绘制画笔), 其余参数为自定义传入参数
-  handle: async (canvas, ctx, url, x, y, w, h) => {
-    // ..自定义绘制内容..
-  },
-});
-~~~
-
-二、绘制中使用自定义扩展
-
-~~~js
-dp.draw(ctx=> {
-  const url = 'http://www.baidu.com'
-  await ctx.drawQrCode(url, 0, 0, 50, 50)
- })
-~~~
-
-## 绘制节点(dp.canvas)
-
-`dp.canvas | dp.canvas.width | dp.canvas.height | ...`
-
-`dp.canvas`为全局的绘制根节点，在微信小程序中拥有独享`API`。在其他端将作为全局宽高容器使用。当`dp.createImagePath`未传入参数时，默认使用 `dp.canvas.width | dp.canvas.height` 创建图片，以下是`dp.canvas`对象中存在的`api`与属性。
-
-~~~js
-interface Canvas {
-  width: number;
-  height: number;
-  // 剩余参数为微信小程序独享API，只有微信小程序才拥有的API
-  // 具体参考微信小程序文档：https://developers.weixin.qq.com/miniprogram/dev/api/canvas/Canvas.html
-}
-~~~
-
-## 创建绘制(dp.draw)
-
-`dp.draw(async callback(ctx))`
-
-绘制器, 接收执行器函数, 添加到绘制容器中，可改装为异步函数处理图片绘制，也可以为同步函数。
-
-## 全局画笔(dp.ctx)
-
-`dp.ctx`
-
-全局绘制画笔，特殊情况可以使用，推荐只使用`dp.draw`函数进行绘制。
-
-## 等待绘制(dp.awaitCreate)
-
-`dp.awaitCreate()`
-
-异步绘制绘制器堆栈，成功后清空绘制器容器，返回成功堆栈状况的数组(`boolean[]`)。
-
-## 停止绘画(dp.stop)
-
-`dp.stop()`
-
-停止当前绘画栈，调用后将停止`dp.awaitCreate |dp.createImagePath `的执行。
-
-## 创建图片(dp.createImagePath)
-
-`dp.createImagePath(options)`
-
-创建当前`canvas`绘制后的本地图片地址，如绘制器堆栈未清空时，会自动调用`dp.awaitCreate()`清空堆栈。`createImagePath` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。如果你想自定义参数，`awaitCreate` 方法可以接受一个配置对象，返回图片地址，以下为可配置项。
-
-~~~js
-interface CreateImagePathOptions {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  destWidth?: number;
-  destHeight?: number;
-}
-~~~
+具体查看API文档：[u-draw-poster](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/03-gbl-example.html)
 
 # 使用建议
 
 ## canvas 当做为生成工具
+
 canvas在海报生成中请当做一个生成工具来看待，它的作用仅是绘制出海报。应把生成得到的资源保存并使用，显示用image图片组件，原因是方便操作，例如调整大小，或是H5端长按保存或识别，所以canvas应将它放在看不见的地方。不能用display:none;overflow:hidden;隐藏，否则生成空白。这里推荐canvas的隐藏样式代码，该说明为 [uQRCode](https://github.com/Sansnn/uQRCode) 提供的说明，同样`u-draw-poster`也适用
+
 ~~~css
 .canvas-hide {
 	/* 1 */
@@ -426,15 +149,15 @@ canvas在海报生成中请当做一个生成工具来看待，它的作用仅�
 ## 支持重复调用
 需要注意的是，创建绘制工具支持重复调用，当构建第一次的绘制工具后，重复构建将自动获取第一次的实例。不需要存入`this`中，其实`vue3`也不提倡使用`this`这个黑盒，甚至抛弃了使用`this`。
 ~~~js
-data: () => ({})
+data: () => ({}),
 // 不存入实例(推荐)
 method: {
-  draw() {
+  async draw() {
     const dp = await DrawPoster.build("canvas")
     //...
   }
-}
-async onReady() {
+},
+onReady() {
  this.draw()
  // 重复调用....
  this.draw()
@@ -444,17 +167,17 @@ async onReady() {
 // 存入实例(不推荐)
 data: () => ({
   dp: null
-})
+}),
 method: {
-  draw() {
+  async draw() {
     if (!this.dp) {
       const dp = await DrawPoster.build("canvas")
       this.dp = dp
     }
     //...
   }
-}
-async onReady() {
+},
+onReady() {
  this.draw()
  // 重复调用....
  this.draw()
@@ -506,4 +229,6 @@ dp.draw(async (ctx) => {
 
 我的博客：[Mr.Mao'blog](https://tuimao233.gitee.io/mao-blog/)
 
-联系方式：951416545@qq.com
+联系方式（邮箱）：951416545@qq.com
+
+海报绘制QQ群：936377537

@@ -9,6 +9,7 @@ export default {
         ctx.fillRoundRect(x, y, w, h, r);
         ctx.clip();
         const result = await ctx.drawImage(url, x, y, w, h);
+        ctx.restore();
         return result;
     }
 };

@@ -7,6 +7,7 @@ let drawCtxPosterExtend = {};
 class DrawPoster {
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
     constructor(canvas, ctx, canvasId, loading, drawImageTime, debugging, loadingText, createText) {
+        var _a;
         this.canvas = canvas;
         this.ctx = ctx;
         this.canvasId = canvasId;
@@ -132,7 +133,7 @@ class DrawPoster {
         const pages = getCurrentPages();
         const page = pages[pages.length - 1];
         // 查询标识, 不存在, 在替换页面卸载回调, 避免产生死循环
-        if (!page.onUnload.identification) {
+        if (!((_a = page === null || page === void 0 ? void 0 : page.onUnload) === null || _a === void 0 ? void 0 : _a.identification)) {
             page.oldOnUnload = page.onUnload;
             page.onUnload = function () {
                 _this === null || _this === void 0 ? void 0 : _this.stop();

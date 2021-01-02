@@ -1,6 +1,6 @@
-declare type ObjectFit = "fill" | "contain" | "cover";
-declare type ObjectPosition = ["left" | "center" | "right", "top" | "center" | "bottom"];
-interface Size {
+export declare type ObjectFit = "contain" | "cover";
+export declare type ObjectPosition = ["left" | "center" | "right", "top" | "center" | "bottom"];
+export interface Size {
     width: number;
     height: number;
 }
@@ -24,7 +24,8 @@ export declare function calculateConcreteRect(style: {
     /** @see https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit */
     objectFit?: ObjectFit;
     /** @see https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-position */
-    objectPosition?: ObjectPosition;
+    intrinsicPosition?: ObjectPosition;
+    specifiedPosition?: [number, number];
 }, intrinsicSize: Size, specifiedSize: Size): {
     sx: number;
     sy: number;
@@ -35,4 +36,3 @@ export declare function calculateConcreteRect(style: {
     dw: number;
     dh: number;
 };
-export {};

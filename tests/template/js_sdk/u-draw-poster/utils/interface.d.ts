@@ -1,5 +1,6 @@
 /// <reference types="@dcloudio/types" />
 import DrawPoster from "../draw-poster";
+import { DrawImageFitOpts } from '../extends/draw-function/draw-image-fit';
 /** 绘制容器 */
 export declare type Execute = Array<() => Promise<boolean>>;
 /** 构建器配置 */
@@ -65,12 +66,22 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     existDrawImage: boolean;
     /** 等待绘制图片
      *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#绘制图片
+     * 说明文档:
      */
-    drawImage(url: string, x: number, y: number, w: number, h: number): Promise<boolean>;
+    drawImage(url: string, dx?: number | undefined, dy?: number | undefined, dWidth?: number | undefined, dHeigt?: number | undefined, sx?: number | undefined, sy?: number | undefined, sWidth?: number | undefined, sHeight?: number | undefined): Promise<boolean>;
+    /** 绘制圆角图片
+     *
+     * 说明文档:
+     */
+    drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number): Promise<boolean>;
+    /** 绘制 Object-Fit 模式图片
+     *
+     * 说明文档:
+     */
+    drawImageFit(url: string, opts?: DrawImageFitOpts): Promise<boolean>;
     /** 绘制换行字体
      *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#换行字体
+     * 说明文档:
      */
     fillWarpText(options: FillWarpTextOpts): Array<FillWarpTextItemInfo>;
     /** 绘制圆角矩形（原型）
@@ -79,22 +90,17 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     roundRect(x: number, y: number, w: number, h: number, r: number, fill?: boolean, stroke?: boolean): void;
     /** 绘制圆角矩形（填充）
      *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
+     * 说明文档:
      */
     fillRoundRect(x: number, y: number, w: number, h: number, r: number): void;
     /** 绘制圆角矩形（边框）
      *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角矩形
+     * 说明文档:
      */
     strokeRoundRect(x: number, y: number, w: number, h: number, r: number): void;
-    /** 绘制圆角图片
-     *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#圆角图片
-     */
-    drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number): Promise<boolean>;
     /** 绘制二维码
      *
-     * 说明文档: https://github.com/TuiMao233/uni-draw-poster#二维码
+     * 说明文档:
      */
     drawQrCode(options: DrawQrCodeOpts): void;
 }

@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-12-31 13:57:35
+ * @LastEditTime: 2021-01-03 12:00:11
+ * @Description: 二维码测试案例
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
     <!-- <image :src="imgUrl" style="width: 100px; height: 100px" /> -->
@@ -5,17 +13,13 @@
     <canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
     <!-- #endif -->
     <!-- #ifndef MP-WEIXIN -->
-    <canvas
-      canvas-id="canvas"
-      id="canvas"
-      style="width: 300px; height: 300px"
-    />
+    <canvas canvas-id="canvas" id="canvas" style="width: 300px; height: 300px" />
     <!-- #endif -->
   </div>
 </template>
 <script>
 import DrawPoster from "@/js_sdk/u-draw-poster";
-import drawQrCode from "@/js_sdk/u-draw-poster/extends/draw-qr-code";
+import { drawQrCode } from "@/js_sdk/u-draw-poster";
 DrawPoster.useCtx(drawQrCode);
 export default {
   data: () => ({

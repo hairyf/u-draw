@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2020-11-28 12:07:51
- * @LastEditTime: 2021-01-02 00:03:32
+ * @LastEditTime: 2021-01-03 11:38:39
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
  */
@@ -42,12 +42,3 @@ export default {
     return result
   }
 } as DrawPosterUseCtxOpts
-
-
-// ctx.drawImageFit(url, {
-//   round: 15,
-//   objectFit: 'cover',
-//   intrinsicSize: {width: 100, height: 100}, 
-//   specifiedSize: {width: 100, height: 100},
-//   position: ['left', 'center']
-// })

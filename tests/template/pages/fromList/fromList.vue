@@ -2,8 +2,8 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2020-11-28 19:00:39
- * @LastEditTime: 2020-12-31 03:14:50
- * @Description: 
+ * @LastEditTime: 2021-01-03 12:00:50
+ * @Description: 测试表单绘制扩展
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
 <template>
@@ -20,8 +20,8 @@
 <script>
 import { setTimeout } from 'timers';
 import DrawPoster from "../../js_sdk/u-draw-poster";
-import DreateLayer from "../../js_sdk/u-draw-poster/extends/create-from-list";
-DrawPoster.use(DreateLayer)
+import { createFromList } from "../../js_sdk/u-draw-poster";
+DrawPoster.use(createFromList)
 export default {
   data: () => ({
     imgUrl: "",

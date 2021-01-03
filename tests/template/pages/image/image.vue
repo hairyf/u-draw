@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-12-31 13:57:35
+ * @LastEditTime: 2021-01-03 12:00:40
+ * @Description: 测试图片绘制
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
     <image :src="imgUrl" style="width: 100px; height: 100px" />
@@ -28,16 +36,14 @@ export default {
       ctx.fillStyle = '#F4F4F4';
       ctx.fillRect(0, 0, 300, 300);
     });
-    // 测试本地地址
-    // const url = '/static/logo.png';
-    // 测试网络地址
-    const url = '/static/logo.png';
-    // 绘制图片(矩形)
+    // 测试本地/网络地址
+    const url = '/static/logo.png' /* 网络图片 */;
+    // 测试案例一：绘制图片(矩形)
     dp.draw(async (ctx) => {
       await ctx.drawImage(url, 0, 150, 150, 150);
       await ctx.drawImage(url, 150, 150, 150, 150);
     });
-    // 绘制图片(圆角)
+    // 测试案例二：绘制图片(圆角)
     dp.draw(async (ctx) => {
       await ctx.drawRoundImage(url, 0, 0, 150, 150, 100);
       await ctx.drawRoundImage(url, 150, 0, 150, 150, 100);

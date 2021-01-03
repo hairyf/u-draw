@@ -2,8 +2,8 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2021-01-02 00:11:21
- * @LastEditTime: 2021-01-02 12:05:49
- * @Description: 
+ * @LastEditTime: 2021-01-03 12:00:31
+ * @Description: 测试图片裁剪方式绘制
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
 <template>
@@ -68,7 +68,7 @@ export default {
         specifiedPosition: [0, 150],
         intrinsicPosition: ['right', 'center'],
       })
-      // 测试案例三：居中裁剪方式
+      // 测试案例四：居中裁剪方式
       await ctx.drawImageFit(url, {
         round: 150,
         objectFit: 'cover',

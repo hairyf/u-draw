@@ -9,7 +9,7 @@ import {
 } from "./utils/interface"
 import { handleBuildOpts, extendMount } from "./utils/utils"
 import { getCanvas2dContext } from "./utils/wx-utils"
-
+global
 // 扩展挂载储存
 let drawPosterExtend: Record<any, any> = {}
 let drawCtxPosterExtend: Record<any, any> = {}
@@ -38,12 +38,12 @@ class DrawPoster {
     ctx.drawType = this.drawType = (ctx.draw) ? 'context' : 'type2d'
 
     // 挂载全局实例, 绘画扩展
-    extendMount(this.ctx, drawCtxPosterExtend, (extend, init) => {
-      init?.(this.canvas, this.ctx)
+    extendMount(this.ctx, drawCtxPosterExtend, (extend, target) => {
+      target?.init?.(this.canvas, this.ctx)
       return (...args: any[]) => extend(this.canvas, this.ctx, ...args)
     })
-    extendMount(this, drawPosterExtend, (extend, init) => {
-      init?.(this)
+    extendMount(this, drawPosterExtend, (extend, target) => {
+      target?.init?.(this)
       return (...args: any[]) => extend(this, ...args)
     })
 
@@ -127,7 +127,7 @@ class DrawPoster {
   }
 
   /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
-  draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
+  public draw = (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => {
     const length = this.executeOnions.length
     this.executeOnions.push(async () => {
       try {
@@ -144,7 +144,7 @@ class DrawPoster {
   }
 
   /** 等待创建绘画, 成功后清空绘制器容器 */
-  awaitCreate = async (): Promise<boolean[]> => {
+  public awaitCreate = async (): Promise<boolean[]> => {
     this.debuggingLog('绘制海报中...')
     this.loading && gbl.showLoading({ title: this.loadingText })
 
@@ -180,7 +180,7 @@ class DrawPoster {
   }
 
   /** 创建canvas本地地址 @returns {string} 本地地址 */
-  createImagePath = async (baseOptions: CreateImagePathOptions = {}): Promise<string> => {
+  public createImagePath = async (baseOptions: CreateImagePathOptions = {}): Promise<string> => {
     const { canvas, canvasId, executeOnions, awaitCreate } = this
     executeOnions.length && await awaitCreate()
     // 如果当前为停止状态
@@ -219,7 +219,7 @@ class DrawPoster {
   }
 
   /** 停止当前绘画, 调用则停止当前绘画堆栈的绘画 */
-  stop = () => {
+  public stop = () => {
     this.executeOnions = []
     this.stopStatus = true
   }

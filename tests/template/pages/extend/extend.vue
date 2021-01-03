@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-12-31 13:57:35
+ * @LastEditTime: 2021-01-03 12:01:03
+ * @Description: 测试自定义扩展使用
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
     <image :src="imgUrl" style="width: 100px; height: 100px" />
@@ -14,9 +22,9 @@
   </div>
 </template>
 <script>
-import {DrawPoster} from "@/js_sdk/u-draw-poster";
+import { DrawPoster } from "@/js_sdk/u-draw-poster";
 
-// 添加一个绘制个人海报的扩展实现
+// 测试案例一：添加一个绘制个人海报的扩展实现
 DrawPoster.use({
   name: "createMyCardImagePath",
   handle: async (dp, opts) => {
@@ -25,7 +33,7 @@ DrawPoster.use({
   },
 });
 
-// 添加一个绘制二维码的绘画扩展实现
+// 测试案例二：添加一个绘制二维码的绘画扩展实现
 DrawPoster.useCtx({
   name: "drawMyQrCode",
   handle: (canvas, ctx, url, x, y, w, h) => {

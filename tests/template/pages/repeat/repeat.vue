@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-12-31 13:57:35
+ * @LastEditTime: 2021-01-03 11:58:43
+ * @Description: 测试重复绘制
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
   <div class="index">
     <image :src="imgUrl" style="width: 100px; height: 100px" />

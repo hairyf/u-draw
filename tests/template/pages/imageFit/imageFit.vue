@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2021-01-02 00:11:21
- * @LastEditTime: 2021-01-03 12:00:31
+ * @LastEditTime: 2021-01-03 12:34:59
  * @Description: 测试图片裁剪方式绘制
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
@@ -45,7 +45,6 @@ export default {
       await ctx.drawImageFit(url, {
         round: 15,
         objectFit: 'cover',
-        intrinsicSize: { width: 1000, height: 707 },
         specifiedSize: { width: 150, height: 150 },
         intrinsicPosition: ['left', 'top'],
         specifiedPosition: [0, 0],
@@ -54,7 +53,6 @@ export default {
       await ctx.drawImageFit(url, {
         round: 15,
         objectFit: 'cover',
-        intrinsicSize: { width: 1000, height: 707 },
         specifiedSize: { width: 150, height: 150 },
         intrinsicPosition: ['right', 'top'],
         specifiedPosition: [150, 0],
@@ -63,7 +61,6 @@ export default {
       await ctx.drawImageFit(url, {
         round: 50,
         objectFit: 'contain',
-        intrinsicSize: { width: 1000, height: 707 },
         specifiedSize: { width: 150, height: 150 },
         specifiedPosition: [0, 150],
         intrinsicPosition: ['right', 'center'],
@@ -72,7 +69,6 @@ export default {
       await ctx.drawImageFit(url, {
         round: 150,
         objectFit: 'cover',
-        intrinsicSize: { width: 1000, height: 707 },
         specifiedSize: { width: 150, height: 150 },
         specifiedPosition: [150, 150],
         intrinsicPosition: ['center', 'center'],

@@ -2,12 +2,13 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2021-01-01 23:45:33
- * @LastEditTime: 2021-01-02 00:53:50
+ * @LastEditTime: 2021-01-03 12:31:34
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
  */
 import { DrawPosterUseCtxOpts } from '../../utils/interface'
 import { calculateConcreteRect, ObjectFit, ObjectPosition, Size } from "../../utils/object-sizing"
+import gbl from "../../utils/global"
 export interface DrawImageFitOpts {
   round?: number
   objectFit?: ObjectFit
@@ -19,11 +20,12 @@ export interface DrawImageFitOpts {
 export default {
   name: 'drawImageFit',
   handle: async (canvas, ctx, url: string, opts?: DrawImageFitOpts) => {
+    const [error, imageInfo] = await (gbl.getImageInfo({ src: url }) as any) as [any, UniApp.GetImageInfoSuccessData]
     // 配置默认值
     const style: Required<DrawImageFitOpts> = {
       round: 0,
       objectFit: 'cover',
-      intrinsicSize: { width: 100, height: 100 },
+      intrinsicSize: { width: imageInfo?.width ?? 100, height: imageInfo?.height ?? 100 },
       specifiedSize: { width: 100, height: 100 },
       intrinsicPosition: ['left', 'top'],
       specifiedPosition: [0, 0],

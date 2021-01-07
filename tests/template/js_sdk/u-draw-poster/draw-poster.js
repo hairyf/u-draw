@@ -1,7 +1,6 @@
 import gbl, { PLATFORM } from "./utils/global";
 import { handleBuildOpts, extendMount } from "./utils/utils";
 import { getCanvas2dContext } from "./utils/wx-utils";
-global;
 // 扩展挂载储存
 let drawPosterExtend = {};
 let drawCtxPosterExtend = {};

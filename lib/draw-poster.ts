@@ -9,7 +9,6 @@ import {
 } from "./utils/interface"
 import { handleBuildOpts, extendMount } from "./utils/utils"
 import { getCanvas2dContext } from "./utils/wx-utils"
-global
 // 扩展挂载储存
 let drawPosterExtend: Record<any, any> = {}
 let drawCtxPosterExtend: Record<any, any> = {}

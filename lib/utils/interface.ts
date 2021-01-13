@@ -1,8 +1,22 @@
 import DrawPoster from "../draw-poster"
 import { DrawImageFitOpts } from '../extends/draw-function/draw-image-fit'
+import { CreateLayerOpts, DrawRowOpt } from "../extends/create-from-list"
 /** 绘制容器 */
 export type Execute = Array<() => Promise<boolean>>
 
+export interface drawPosterExtends {
+ from: {
+    height: number
+    padding: number
+    margin: number
+  }
+  createLayer: (afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => number
+  setFromOptions: (opts:Partial<{
+    height: number
+    padding: number
+    margin: number
+  }>) => void
+}
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
   /** 查询选择器; 注意不需要加# */

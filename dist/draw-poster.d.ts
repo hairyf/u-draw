@@ -1,4 +1,5 @@
 import { Canvas, DrawPosterCanvasCtx, CreateImagePathOptions, DrawPosterBuildOpts, DrawPosterUseOpts, DrawPosterUseCtxOpts } from "./utils/interface";
+import { CreateLayerOpts, DrawRowOpt } from "./extends/create-from-list"
 declare class DrawPoster {
     canvas: Canvas;
     ctx: DrawPosterCanvasCtx;
@@ -34,5 +35,17 @@ declare class DrawPoster {
     createImagePath: (baseOptions?: CreateImagePathOptions) => Promise<string>;
     /** 停止当前绘画, 调用则停止当前绘画堆栈的绘画 */
     stop: () => void;
+
+    from: {
+      height: number
+      padding: number
+      margin: number
+    }
+    createLayer: (afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => number
+    setFromOptions: (opts:Partial<{
+      height: number
+      padding: number
+      margin: number
+    }>) => void
 }
 export default DrawPoster;

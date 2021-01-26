@@ -5,13 +5,19 @@ import {
   CreateImagePathOptions,
   DrawPosterBuildOpts,
   DrawPosterUseOpts,
+  drawPosterExtends,
   DrawPosterUseCtxOpts
 } from "./utils/interface"
 import { handleBuildOpts, extendMount } from "./utils/utils"
 import { getCanvas2dContext } from "./utils/wx-utils"
+
+// 实例类型添加上扩展类型
+type DrawPosterInstanceType = InstanceType<typeof DrawPoster> & drawPosterExtends
+
 // 扩展挂载储存
 let drawPosterExtend: Record<any, any> = {}
 let drawCtxPosterExtend: Record<any, any> = {}
+
 class DrawPoster {
   [key: string]: any
   private executeOnions = [] as Execute
@@ -87,7 +93,7 @@ class DrawPoster {
 
     // 初始化监测当前页面绘制对象
     const pages = getCurrentPages()
-    const page = pages[pages.length - 1] as Record<string, InstanceType<typeof DrawPoster>>
+    const page = pages[pages.length - 1] as Record<string, DrawPosterInstanceType>
     if (page[config.selector + '__dp']) {
       return page[config.selector + '__dp']
     }
@@ -110,8 +116,8 @@ class DrawPoster {
       config.createText
     )
     // 储存当前绘制对象
-    page[config.selector + '__dp'] = dp;
-    return dp
+    page[config.selector + '__dp'] = dp as DrawPosterInstanceType;
+    return page[config.selector + '__dp']
   }
 
   /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */

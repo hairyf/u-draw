@@ -10,7 +10,6 @@ export const drawImage = async (
   w: number, h: number,
 ): Promise<boolean> => {
   const path = await downloadImgUrl(url)
-  ctx.existDrawImage = true
   let result = false
   if (!canvas?.createImage) {
     ctx.oldDrawImage(path, x, y, w, h)

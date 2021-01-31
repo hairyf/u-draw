@@ -30,7 +30,6 @@ class DrawPoster {
     public ctx: DrawPosterCanvasCtx,
     public canvasId: string,
     public loading: boolean,
-    public drawImageTime: number,
     public debugging: boolean,
     public loadingText: string,
     public createText: string
@@ -110,7 +109,6 @@ class DrawPoster {
       canvas, ctx,
       config.selector,
       config.loading,
-      config.drawImageTime,
       config.debugging,
       config.loadingText,
       config.createText
@@ -172,15 +170,6 @@ class DrawPoster {
         resolve(tips)
         this.loading && gbl.hideLoading()
       })
-      // 当环境是app时，ctx.draw 回调不触发, 手动定时器触发
-      if (PLATFORM === "app-plus") {
-        const time = this.ctx.existDrawImage ? this.drawImageTime : 0
-        this.ctx.existDrawImage = false
-        setTimeout(() => {
-          resolve(tips)
-          this.loading && gbl.hideLoading()
-        }, time)
-      }
     })
   }
 

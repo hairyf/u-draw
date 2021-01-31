@@ -38,7 +38,6 @@ export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
     componentThis: undefined,
     type2d: true,
     loading: false,
-    drawImageTime: 100,
     debugging: false,
     loadingText: '绘制海报中...',
     createText: '生成图片中...',

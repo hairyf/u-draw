@@ -1,4 +1,4 @@
-import gbl, { PLATFORM } from "./utils/global";
+import gbl from "./utils/global";
 import { handleBuildOpts, extendMount } from "./utils/utils";
 import { getCanvas2dContext } from "./utils/wx-utils";
 // 扩展挂载储存
@@ -6,13 +6,12 @@ let drawPosterExtend = {};
 let drawCtxPosterExtend = {};
 class DrawPoster {
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
-    constructor(canvas, ctx, canvasId, loading, drawImageTime, debugging, loadingText, createText) {
+    constructor(canvas, ctx, canvasId, loading, debugging, loadingText, createText) {
         var _a;
         this.canvas = canvas;
         this.ctx = ctx;
         this.canvasId = canvasId;
         this.loading = loading;
-        this.drawImageTime = drawImageTime;
         this.debugging = debugging;
         this.loadingText = loadingText;
         this.createText = createText;
@@ -69,15 +68,6 @@ class DrawPoster {
                     resolve(tips);
                     this.loading && gbl.hideLoading();
                 });
-                // 当环境是app时，ctx.draw 回调不触发, 手动定时器触发
-                if (PLATFORM === "app-plus") {
-                    const time = this.ctx.existDrawImage ? this.drawImageTime : 0;
-                    this.ctx.existDrawImage = false;
-                    setTimeout(() => {
-                        resolve(tips);
-                        this.loading && gbl.hideLoading();
-                    }, time);
-                }
             });
         };
         /** 创建canvas本地地址 @returns {string} 本地地址 */
@@ -167,10 +157,10 @@ DrawPoster.build = async (options, tips = true) => {
     const canvas = await getCanvas2dContext(config.selector, config.componentThis);
     const ctx = (((_a = canvas.getContext) === null || _a === void 0 ? void 0 : _a.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
     tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector });
-    const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.drawImageTime, config.debugging, config.loadingText, config.createText);
+    const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText);
     // 储存当前绘制对象
     page[config.selector + '__dp'] = dp;
-    return dp;
+    return page[config.selector + '__dp'];
 };
 /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
 DrawPoster.buildAll = async (optionsAll) => {

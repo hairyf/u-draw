@@ -1,10 +1,10 @@
-import { Canvas, DrawPosterCanvasCtx, CreateImagePathOptions, DrawPosterBuildOpts, DrawPosterUseOpts, DrawPosterUseCtxOpts } from "./utils/interface";
+import { Canvas, DrawPosterCanvasCtx, CreateImagePathOptions, DrawPosterBuildOpts, DrawPosterUseOpts, drawPosterExtends, DrawPosterUseCtxOpts } from "./utils/interface";
+declare type DrawPosterInstanceType = InstanceType<typeof DrawPoster> & drawPosterExtends;
 declare class DrawPoster {
     canvas: Canvas;
     ctx: DrawPosterCanvasCtx;
     canvasId: string;
     loading: boolean;
-    drawImageTime: number;
     debugging: boolean;
     loadingText: string;
     createText: string;
@@ -13,7 +13,7 @@ declare class DrawPoster {
     private stopStatus;
     private drawType;
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
-    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, drawImageTime: number, debugging: boolean, loadingText: string, createText: string);
+    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, debugging: boolean, loadingText: string, createText: string);
     /** 提示器, 传入消息与数据 */
     private debuggingLog;
     /** 传入挂载配置对象, 添加扩展方法 */
@@ -21,10 +21,10 @@ declare class DrawPoster {
     /** 传入挂载配置对象, 添加绘画扩展方法 */
     static useCtx: (opts: DrawPosterUseCtxOpts) => void;
     /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
-    static build: (options: string | DrawPosterBuildOpts, tips?: boolean) => Promise<DrawPoster>;
+    static build: (options: string | DrawPosterBuildOpts, tips?: boolean) => Promise<DrawPosterInstanceType>;
     /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
     static buildAll: (optionsAll: (string | DrawPosterBuildOpts)[]) => Promise<{
-        [key: string]: DrawPoster;
+        [key: string]: DrawPosterInstanceType;
     }>;
     /** 绘制器, 接收执行器函数, 添加到绘制容器中 */
     draw: (execute: (ctx: DrawPosterCanvasCtx) => Promise<any> | void) => void;

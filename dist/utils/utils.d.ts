@@ -13,7 +13,6 @@ export declare const handleBuildOpts: (options: string | DrawPosterBuildOpts) =>
     componentThis: undefined;
     type2d: boolean;
     loading: boolean;
-    drawImageTime: number;
     debugging: boolean;
     loadingText: string;
     createText: string;

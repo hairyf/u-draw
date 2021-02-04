@@ -1,8 +1,22 @@
 /// <reference types="@dcloudio/types" />
 import DrawPoster from "../draw-poster";
 import { DrawImageFitOpts } from '../extends/draw-function/draw-image-fit';
+import { CreateLayerOpts, DrawRowOpt } from "../extends/create-from-list";
 /** 绘制容器 */
 export declare type Execute = Array<() => Promise<boolean>>;
+export interface drawPosterExtends {
+    from: {
+        height: number;
+        padding: number;
+        margin: number;
+    };
+    createLayer: (afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => number;
+    setFromOptions: (opts: Partial<{
+        height: number;
+        padding: number;
+        margin: number;
+    }>) => void;
+}
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
     /** 查询选择器; 注意不需要加# */
@@ -59,29 +73,28 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     textAlign: CanvasTextDrawingStyles["textAlign"];
     textBaseline: CanvasTextDrawingStyles["textBaseline"];
     transform: CanvasTransform["transform"];
-    oldDrawImage: UniApp.CanvasContext['drawImage'];
+    /** 绘制图片原型 */
+    drawImageProto: UniApp.CanvasContext['drawImage'];
     /** 当前绘制类型 */
     drawType: 'context' | 'type2d';
-    /** 该次绘画是否存在绘制图片 */
-    existDrawImage: boolean;
     /** 等待绘制图片
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     drawImage(url: string, dx?: number | undefined, dy?: number | undefined, dWidth?: number | undefined, dHeigt?: number | undefined, sx?: number | undefined, sy?: number | undefined, sWidth?: number | undefined, sHeight?: number | undefined): Promise<boolean>;
     /** 绘制圆角图片
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     drawRoundImage(url: string, x: number, y: number, w: number, h: number, r?: number): Promise<boolean>;
     /** 绘制 Object-Fit 模式图片
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     drawImageFit(url: string, opts?: DrawImageFitOpts): Promise<boolean>;
     /** 绘制换行字体
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     fillWarpText(options: FillWarpTextOpts): Array<FillWarpTextItemInfo>;
     /** 绘制圆角矩形（原型）
@@ -90,17 +103,17 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
     roundRect(x: number, y: number, w: number, h: number, r: number, fill?: boolean, stroke?: boolean): void;
     /** 绘制圆角矩形（填充）
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     fillRoundRect(x: number, y: number, w: number, h: number, r: number): void;
     /** 绘制圆角矩形（边框）
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     strokeRoundRect(x: number, y: number, w: number, h: number, r: number): void;
     /** 绘制二维码
      *
-     * 说明文档:
+     * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
     drawQrCode(options: DrawQrCodeOpts): void;
 }

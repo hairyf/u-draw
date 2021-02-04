@@ -13,7 +13,7 @@ import { downloadImgUrl } from '../../utils/wx-utils'
 export default {
   name: 'drawImage',
   init: (canvas, ctx) => {
-    ctx.oldDrawImage = ctx.drawImage
+    ctx.drawImageProto = ctx.drawImage
   },
   handle: async (
     canvas: Canvas,
@@ -27,15 +27,14 @@ export default {
     // 下载路径
     const path = await downloadImgUrl(url)
     // 标记当前绘画存在图片绘制
-    ctx.existDrawImage = true
     let result = false
     // 基本绘制方法, 如果是 fit 方式, 则传入所有参数, 不然则只传入四个参数
     const baseDrawImage = (imageResource: string) => {
       const isFit = typeof dx === 'number' && typeof dw === 'number'
       if (isFit) {
-        ctx.oldDrawImage(imageResource, sx, sy, sh, sw, dx, dy, dh, dw)
+        ctx.drawImageProto(imageResource, sx, sy, sh, sw, dx, dy, dh, dw)
       } else {
-        ctx.oldDrawImage(imageResource, sx, sy, sh, sw)
+        ctx.drawImageProto(imageResource, sx, sy, sh, sw)
       }
     }
     // 如果是 context 绘制方式, 则直接绘制

@@ -147,30 +147,45 @@ class DrawPoster {
 }
 /** 传入挂载配置对象, 添加扩展方法 */
 DrawPoster.use = (opts) => {
-    drawPosterExtend[opts.name] = opts;
+    if (opts.name)
+        drawPosterExtend[opts.name] = opts;
 };
 /** 传入挂载配置对象, 添加绘画扩展方法 */
 DrawPoster.useCtx = (opts) => {
-    drawCtxPosterExtend[opts.name] = opts;
+    if (opts.name)
+        drawCtxPosterExtend[opts.name] = opts;
 };
 /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
 DrawPoster.build = async (options, tips = true) => {
-    var _a;
+    var _a, _b, _c, _d, _e;
     const config = handleBuildOpts(options);
     // 初始化监测当前页面绘制对象
     const pages = getCurrentPages();
     const page = pages[pages.length - 1];
+    const gcanvas = DrawPoster.prototype['gcanvas'];
     if (page[config.selector + '__dp']) {
         return page[config.selector + '__dp'];
     }
+    if (config.gcanvas) {
+        if (!gcanvas) {
+            console.error('--- 当前未引入gcanvas扩展, 将自动切换为普通 canvas ---');
+        }
+        gcanvas.enable((_b = (_a = config.componentThis) === null || _a === void 0 ? void 0 : _a.$refs) === null || _b === void 0 ? void 0 : _b[config.selector], {
+            bridge: gcanvas.WeexBridge
+        });
+    }
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(config.selector, config.componentThis);
-    const ctx = (((_a = canvas.getContext) === null || _a === void 0 ? void 0 : _a.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
+    const canvas = config.gcanvas && gcanvas ?
+        gcanvas.enable((_d = (_c = config.componentThis) === null || _c === void 0 ? void 0 : _c.$refs) === null || _d === void 0 ? void 0 : _d[config.selector], {
+            bridge: gcanvas.WeexBridge
+        }) :
+        await getCanvas2dContext(config.selector, config.componentThis);
+    const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
     tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector });
     const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.drawImageTime, config.debugging, config.loadingText, config.createText);
     // 储存当前绘制对象
     page[config.selector + '__dp'] = dp;
-    return dp;
+    return page[config.selector + '__dp'];
 };
 /** 构建多个绘制海报矩形方法, 传入选择器或配置对象的数组, 返回多个绘制对象 */
 DrawPoster.buildAll = async (optionsAll) => {

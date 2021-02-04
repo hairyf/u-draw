@@ -35,13 +35,14 @@ export const extendMount = (
 export const handleBuildOpts = (options: string | DrawPosterBuildOpts) => {
   let defaultOpts = {
     selector: '',
-    componentThis: undefined,
+    componentThis: undefined as any,
     type2d: true,
     loading: false,
     drawImageTime: 100,
     debugging: false,
     loadingText: '绘制海报中...',
     createText: '生成图片中...',
+    gcanvas: false
   }
   if (typeof options === "string") {
     defaultOpts.selector = options

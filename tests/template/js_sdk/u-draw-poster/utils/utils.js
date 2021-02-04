@@ -28,6 +28,7 @@ export const handleBuildOpts = (options) => {
         debugging: false,
         loadingText: '绘制海报中...',
         createText: '生成图片中...',
+        gcanvas: false
     };
     if (typeof options === "string") {
         defaultOpts.selector = options;

@@ -1,8 +1,32 @@
 /// <reference types="@dcloudio/types" />
 import DrawPoster from "../draw-poster";
 import { DrawImageFitOpts } from '../extends/draw-function/draw-image-fit';
+import { CreateLayerOpts, DrawRowOpt } from "../extends/create-from-list";
 /** 绘制容器 */
 export declare type Execute = Array<() => Promise<boolean>>;
+export interface drawPosterExtends {
+    from: {
+        height: number;
+        padding: number;
+        margin: number;
+    };
+    createLayer: (afferOpts: CreateLayerOpts, rowList: DrawRowOpt[]) => number;
+    setFromOptions: (opts: Partial<{
+        height: number;
+        padding: number;
+        margin: number;
+    }>) => void;
+    gcanvas: {
+        WeexBridge: any;
+        Image: any;
+        enable: (el: Vue | Element | Vue[] | Element[], options: {
+            bridge?: any;
+            debug?: boolean;
+            disableAutoSwap?: any;
+            disableComboCommands?: any;
+        }) => Canvas;
+    };
+}
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
     /** 查询选择器; 注意不需要加# */
@@ -24,6 +48,8 @@ export interface DrawPosterBuildOpts {
     loadingText?: string;
     /** 创建图片提示文字 */
     createText?: string;
+    /** 是否启动gcanvas(nvue) */
+    gcanvas?: boolean;
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {

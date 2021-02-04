@@ -14,12 +14,14 @@
   "license": "ISC",
   "dependencies": {
     "@dcloudio/types": "^2.0.16",
-    "miniprogram-api-typings": "^3.1.3"
+    "miniprogram-api-typings": "^3.1.3",
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "@types/archiver": "^5.1.0",
     "@types/node": "^14.14.9",
     "archiver": "^5.1.0",
+    "tern": "^0.24.3",
     "ts-loader": "^8.0.11",
     "typescript": "^4.0.5",
     "webpack": "^5.4.0",

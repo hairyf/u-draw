@@ -79,12 +79,12 @@ class DrawPoster {
 
   /** 传入挂载配置对象, 添加扩展方法 */
   static use = (opts: DrawPosterUseOpts) => {
-    drawPosterExtend[opts.name] = opts
+    if (opts.name) drawPosterExtend[opts.name] = opts
   }
 
   /** 传入挂载配置对象, 添加绘画扩展方法 */
   static useCtx = (opts: DrawPosterUseCtxOpts) => {
-    drawCtxPosterExtend[opts.name] = opts
+    if (opts.name) drawCtxPosterExtend[opts.name] = opts
   }
 
   /** 构建绘制海报矩形方法, 传入canvas选择器或配置对象, 返回绘制对象 */
@@ -94,12 +94,26 @@ class DrawPoster {
     // 初始化监测当前页面绘制对象
     const pages = getCurrentPages()
     const page = pages[pages.length - 1] as Record<string, DrawPosterInstanceType>
+    const gcanvas: drawPosterExtends['gcanvas'] = DrawPoster.prototype['gcanvas']
     if (page[config.selector + '__dp']) {
       return page[config.selector + '__dp']
     }
 
+    if (config.gcanvas) {
+      if (!gcanvas) {
+        console.error('--- 当前未引入gcanvas扩展, 将自动切换为普通 canvas ---')
+      }
+      gcanvas.enable(config.componentThis?.$refs?.[config.selector], {
+        bridge: gcanvas.WeexBridge
+      })
+    }
     // 获取canvas实例
-    const canvas = await getCanvas2dContext(config.selector, config.componentThis) as Canvas
+    const canvas = config.gcanvas && gcanvas ?
+      gcanvas.enable(config.componentThis?.$refs?.[config.selector], {
+        bridge: gcanvas.WeexBridge
+      }) :
+      await getCanvas2dContext(config.selector, config.componentThis) as Canvas
+
     const ctx = (
       canvas.getContext?.("2d") || gbl.createCanvasContext(config.selector, config.componentThis)
     ) as DrawPosterCanvasCtx
@@ -207,7 +221,7 @@ class DrawPoster {
       options.canvasId = canvasId
     if (this.drawType === 'type2d')
       options.canvas = canvas
-    
+
     return new Promise((resolve, reject) => {
       options.success = (res) => {
         resolve(res.tempFilePath)

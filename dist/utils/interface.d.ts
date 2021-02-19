@@ -16,6 +16,16 @@ export interface drawPosterExtends {
         padding: number;
         margin: number;
     }>) => void;
+    gcanvas: {
+        WeexBridge: any;
+        Image: any;
+        enable: (el: Vue | Element | Vue[] | Element[], options: {
+            bridge?: any;
+            debug?: boolean;
+            disableAutoSwap?: any;
+            disableComboCommands?: any;
+        }) => Canvas;
+    };
 }
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
@@ -38,6 +48,8 @@ export interface DrawPosterBuildOpts {
     loadingText?: string;
     /** 创建图片提示文字 */
     createText?: string;
+    /** 是否启动gcanvas(nvue) */
+    gcanvas?: boolean;
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOpts {

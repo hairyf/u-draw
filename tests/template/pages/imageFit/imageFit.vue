@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2021-01-02 00:11:21
- * @LastEditTime: 2021-01-03 12:34:59
+ * @LastEditTime: 2021-02-19 10:29:04
  * @Description: 测试图片裁剪方式绘制
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
@@ -75,8 +75,8 @@ export default {
       })
     });
     // 创建本地地址
-    await await dp.awaitCreate()
-    // this.imgUrl = await dp.createImagePath();
+    // await await dp.awaitCreate()
+    this.imgUrl = await dp.createImagePath();
   },
 };
 </script>

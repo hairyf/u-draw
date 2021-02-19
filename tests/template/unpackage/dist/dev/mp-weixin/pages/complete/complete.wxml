@@ -1,1 +1,0 @@
-<view class="index _div"><image style="width:650rpx;height:920rpx;" src="{{imgUrl}}"></image><view style="position:fixed;top:999999999999999999999rpx;" class="_div"><canvas style="width:650px;height:920px;" id="canvas" type="2d"></canvas></view></view>

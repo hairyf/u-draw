@@ -10,10 +10,11 @@ export declare const extendMount: (current: Record<any, any>, target: Record<any
 /** 处理构建配置 */
 export declare const handleBuildOpts: (options: string | DrawPosterBuildOpts) => {
     selector: string;
-    componentThis: undefined;
+    componentThis: any;
     type2d: boolean;
     loading: boolean;
     debugging: boolean;
     loadingText: string;
     createText: string;
+    gcanvas: boolean;
 };

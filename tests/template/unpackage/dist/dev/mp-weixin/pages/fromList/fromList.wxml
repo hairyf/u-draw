@@ -1,1 +1,0 @@
-<view class="index _div"><canvas style="{{'width:300px;'+('height:'+(height+'px')+';')}}" id="canvas" type="2d"></canvas></view>

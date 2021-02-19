@@ -80,7 +80,7 @@ class DrawPoster {
                 return '---stop createImagePath---';
             }
             this.loading && gbl.showLoading({ title: this.createText });
-            const options = Object.assign({ x: 0, y: 0, width: canvas.width, height: canvas.height, destWidth: canvas.width * 2, destHeight: canvas.height * 2 }, baseOptions);
+            const options = Object.assign({}, baseOptions);
             if (this.drawType === 'context')
                 options.canvasId = canvasId;
             if (this.drawType === 'type2d')

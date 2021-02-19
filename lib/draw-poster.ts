@@ -198,19 +198,17 @@ class DrawPoster {
     }
     this.loading && gbl.showLoading({ title: this.createText })
     const options: WechatMiniprogram.CanvasToTempFilePathOption = {
-      x: 0, y: 0,
-      width: canvas.width,
-      height: canvas.height,
-      destWidth: canvas.width * 2,
-      destHeight: canvas.height * 2,
+      // x: 0, y: 0,
+      // width: canvas.width,
+      // height: canvas.height,
+      // destWidth: canvas.width * 2,
+      // destHeight: canvas.height * 2,
       ...baseOptions
     };
-
     if (this.drawType === 'context')
       options.canvasId = canvasId
     if (this.drawType === 'type2d')
       options.canvas = canvas
-
     return new Promise((resolve, reject) => {
       options.success = (res) => {
         resolve(res.tempFilePath)

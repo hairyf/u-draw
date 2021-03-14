@@ -99,12 +99,12 @@ class DrawPoster {
     }
 
     if (config.gcanvas) {
-      if (!gcanvas) {
+      if (!gcanvas)
         console.error('--- 当前未引入gcanvas扩展, 将自动切换为普通 canvas ---')
-      }
-      gcanvas.enable(config.componentThis?.$refs?.[config.selector], {
-        bridge: gcanvas.WeexBridge
-      })
+      else
+        gcanvas.enable(config.componentThis?.$refs?.[config.selector], {
+          bridge: gcanvas.WeexBridge
+        })
     }
     // 获取canvas实例
     const canvas = config.gcanvas && gcanvas ?

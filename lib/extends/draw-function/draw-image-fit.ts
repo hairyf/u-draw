@@ -9,7 +9,7 @@
 import { DrawPosterUseCtxOpts } from '../../utils/interface'
 import { calculateConcreteRect, ObjectFit, ObjectPosition, Size } from "../../utils/object-sizing"
 import gbl from "../../utils/global"
-export interface DrawImageFitOpts {
+export interface ImageFitOption {
   round?: number
   objectFit?: ObjectFit
   intrinsicSize?: Size
@@ -19,17 +19,17 @@ export interface DrawImageFitOpts {
 }
 export default {
   name: 'drawImageFit',
-  handle: async (canvas, ctx, url: string, opts?: DrawImageFitOpts) => {
+  handle: async (canvas, ctx, url: string, options?: ImageFitOption) => {
     const [error, imageInfo] = await (gbl.getImageInfo({ src: url }) as any) as [any, UniApp.GetImageInfoSuccessData]
     // 配置默认值
-    const style: Required<DrawImageFitOpts> = {
+    const style: Required<ImageFitOption> = {
       round: 0,
       objectFit: 'cover',
       intrinsicSize: { width: imageInfo?.width ?? 100, height: imageInfo?.height ?? 100 },
       specifiedSize: { width: 100, height: 100 },
       intrinsicPosition: ['left', 'top'],
       specifiedPosition: [0, 0],
-      ...opts
+      ...options
     }
     // 计算图片尺寸
     const drawImageInfo = calculateConcreteRect(

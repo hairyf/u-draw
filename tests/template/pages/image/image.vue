@@ -39,7 +39,7 @@ export default {
       ctx.fillRect(0, 0, 300, 300);
     });
     // 测试本地/网络地址
-    const url = '/static/logo.png' /* 网络图片 */;
+    const url = '/static/logo.jpg' /* 网络图片 */;
     // 测试案例一：绘制图片(矩形)
     dp.draw(async (ctx) => {
       await ctx.drawImage(url, 0, 150, 150, 150);

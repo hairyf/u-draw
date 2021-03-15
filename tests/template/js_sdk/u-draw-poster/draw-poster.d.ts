@@ -13,7 +13,7 @@ declare class DrawPoster {
     private stopStatus;
     private drawType;
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
-    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, debugging: boolean, loadingText: string, createText: string);
+    constructor(canvas: Canvas, ctx: DrawPosterCanvasCtx, canvasId: string, loading: boolean, debugging: boolean, loadingText: string, createText: string, tips: boolean);
     /** 提示器, 传入消息与数据 */
     private debuggingLog;
     /** 传入挂载配置对象, 添加扩展方法 */

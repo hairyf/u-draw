@@ -84,10 +84,32 @@ interface PainterLineFeedTextInfo extends
   /** 文本内容 */
   content: string
 }
+/** 绘制二维码信息 */
+interface PainterQrCodeInfo extends
+  PainterItemSite {
+  /** 绘制换行文本元素 */
+  type: "qr-code"
+  /** 二维码尺寸 */
+  size: number
+  /** 二维码内容 */
+  content: string
+  /** 边距，二维码实际尺寸会根据所设边距值进行缩放调整（默认：5） */
+  margin?: number
+  /** 背景色（默认：'#ffffff'）*/
+  backgroundColor?: string
+  /** 前景色（默认：'#000000'） */
+  foregroundColor?: string
+}
 export interface PainterContainerOption extends
   PainterItemSize {
   /** 绘制项的数组 */
-  contents: (PainterImageInfo | PainterRectInfo | PainterTextInfo | PainterLineFeedTextInfo)[]
+  contents: (
+    PainterImageInfo |
+    PainterRectInfo |
+    PainterTextInfo |
+    PainterLineFeedTextInfo |
+    PainterQrCodeInfo
+  )[]
 }
 
 export default {
@@ -99,56 +121,74 @@ export default {
       for (let i = 0; i < option.contents.length; i++) {
         ctx.save()
         const drawInfo = option.contents[i]
+        const { left = 0, top = 0 } = drawInfo
         if (drawInfo.type === 'rect') {
-          ctx.fillStyle = drawInfo.background ?? '#000000'
+          ctx.fillStyle = drawInfo.background || '#000000'
           ctx.fillRoundRect(
-            drawInfo.left ?? 0,
-            drawInfo.top ?? 0,
+            left,
+            top,
             drawInfo.width,
             drawInfo.height,
-            drawInfo.radius ?? 0
+            drawInfo.radius || 0
           )
         }
         if (drawInfo.type === 'image') {
           await ctx.drawImageFit(drawInfo.src, {
-            objectFit: drawInfo.objectFit ?? 'cover',
-            intrinsicPosition: drawInfo.position ?? ['center', 'center'],
+            objectFit: drawInfo.objectFit || 'cover',
+            intrinsicPosition: drawInfo.position || ['center', 'center'],
+            specifiedPosition: [left, top],
             specifiedSize: {
               width: drawInfo.width,
               height: drawInfo.height
             },
-            radius: drawInfo.radius,
+            radius: drawInfo.radius
           })
         }
         if (drawInfo.type === 'text') {
-          ctx.fillStyle = drawInfo.color ?? '#000000'
+          ctx.fillStyle = drawInfo.color || '#000000'
           ctx.font = `\
-          ${drawInfo.fontStyle ?? 'normal'} \
-          ${drawInfo.fontWeight ?? 'normal'} \
-          ${uni.upx2px(drawInfo.fontSize ?? 30)} \
-          ${drawInfo.fontFamily ?? 'serial'}\
+          ${drawInfo.fontStyle || 'normal'} \
+          ${drawInfo.fontWeight || 'normal'} \
+          ${drawInfo.fontSize || 30} \
+          ${drawInfo.fontFamily || 'serial'}\
           `
           ctx.fillText(
             drawInfo.content,
-            drawInfo.left ?? 0,
-            drawInfo.top ?? 0,
+            left,
+            top,
             drawInfo.width
           )
         }
         if (drawInfo.type === 'line-feed-text') {
-          ctx.fillStyle = drawInfo.color ?? '#000000'
+          ctx.fillStyle = drawInfo.color || '#000000'
           ctx.font = `\
-          ${drawInfo.fontStyle ?? 'normal'} \
-          ${drawInfo.fontWeight ?? 'normal'} \
-          ${uni.upx2px(drawInfo.fontSize ?? 30)} \
-          ${drawInfo.fontFamily ?? 'serial'}\
+          ${drawInfo.fontStyle || 'normal'} \
+          ${drawInfo.fontWeight || 'normal'} \
+          ${drawInfo.fontSize || 30} \
+          ${drawInfo.fontFamily || 'serial'}\
           `
           ctx.fillWarpText({
             x: drawInfo.left,
             y: drawInfo.top,
             layer: drawInfo.lineClamp,
+            lineHeight: drawInfo.lineHeight,
             maxWidth: drawInfo.width,
             text: drawInfo.content
+          })
+        }
+        if (drawInfo.type === 'qr-code') {
+          if (typeof ctx.drawQrCode !== 'function') {
+            console.error('--- 当前未引入qr-code扩展, 将自动省略该二维码绘制 ---')
+            return false;
+          }
+          ctx.drawQrCode({
+            x: left,
+            y: top,
+            size: drawInfo.size,
+            text: drawInfo.content,
+            margin: drawInfo.margin || 5,
+            backgroundColor: drawInfo.backgroundColor || '#ffffff',
+            foregroundColor: drawInfo.foregroundColor || '#000000',
           })
         }
         ctx.restore()

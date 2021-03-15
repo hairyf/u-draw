@@ -1,7 +1,8 @@
 /// <reference types="@dcloudio/types" />
 import DrawPoster from "../draw-poster";
-import { DrawImageFitOpts } from '../extends/draw-function/draw-image-fit';
+import { ImageFitOption } from '../extends/draw-function/draw-image-fit';
 import { CreateLayerOpts, DrawRowOpt } from "../extends/create-from-list";
+import { PainterContainerOption } from "../extends/draw-painter";
 /** 绘制容器 */
 export declare type Execute = Array<() => Promise<boolean>>;
 export interface drawPosterExtends {
@@ -19,13 +20,14 @@ export interface drawPosterExtends {
     gcanvas: {
         WeexBridge: any;
         Image: any;
-        enable: (el: Vue | Element | Vue[] | Element[], options: {
+        enable: (el: any, options: {
             bridge?: any;
             debug?: boolean;
             disableAutoSwap?: any;
             disableComboCommands?: any;
         }) => Canvas;
     };
+    painter: (option: PainterContainerOption) => void;
 }
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {
@@ -103,7 +105,7 @@ export interface DrawPosterCanvasCtx extends UniApp.CanvasContext {
      *
      * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste
      */
-    drawImageFit(url: string, opts?: DrawImageFitOpts): Promise<boolean>;
+    drawImageFit(url: string, opts?: ImageFitOption): Promise<boolean>;
     /** 绘制换行字体
      *
      * 说明文档: https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poste

@@ -6,7 +6,7 @@ let drawPosterExtend = {};
 let drawCtxPosterExtend = {};
 class DrawPoster {
     /** 构建器, 构建返回当前实例, 并挂载多个方法 */
-    constructor(canvas, ctx, canvasId, loading, debugging, loadingText, createText) {
+    constructor(canvas, ctx, canvasId, loading, debugging, loadingText, createText, tips) {
         var _a;
         this.canvas = canvas;
         this.ctx = ctx;
@@ -18,13 +18,13 @@ class DrawPoster {
         this.executeOnions = [];
         this.stopStatus = false;
         /** 提示器, 传入消息与数据 */
-        this.debuggingLog = (message, data) => {
+        this.debuggingLog = (message, data, color = "#3489fd") => {
             if (this.debugging) {
                 if (data) {
-                    console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd", data);
+                    console.log(`%c${this.canvasId} -> ${message}`, `color: ${color}`, data);
                 }
                 else {
-                    console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd");
+                    console.log(`%c${this.canvasId} -> ${message}`, `color: ${color}`);
                 }
             }
         };
@@ -89,12 +89,12 @@ class DrawPoster {
                 options.success = (res) => {
                     resolve(res.tempFilePath);
                     this.loading && gbl.hideLoading();
-                    this.debuggingLog('绘制成功 🎉', res);
+                    this.debuggingLog('绘制成功 🎉', res, '#19be6b');
                 };
                 options.fail = (err) => {
                     reject(err);
                     this.loading && gbl.hideLoading();
-                    this.debuggingLog('绘制失败 🌟', err);
+                    this.debuggingLog('绘制失败 🌟', err, '#fa3534');
                 };
                 gbl.canvasToTempFilePath(options);
             });
@@ -133,6 +133,7 @@ class DrawPoster {
             };
             page.onUnload.identification = true;
         }
+        tips && this.debuggingLog('构建完成', { canvas, ctx, selector: canvasId }, '#19be6b');
     }
 }
 /** 传入挂载配置对象, 添加扩展方法 */
@@ -157,12 +158,12 @@ DrawPoster.build = async (options, tips = true) => {
         return page[config.selector + '__dp'];
     }
     if (config.gcanvas) {
-        if (!gcanvas) {
+        if (!gcanvas)
             console.error('--- 当前未引入gcanvas扩展, 将自动切换为普通 canvas ---');
-        }
-        gcanvas.enable((_b = (_a = config.componentThis) === null || _a === void 0 ? void 0 : _a.$refs) === null || _b === void 0 ? void 0 : _b[config.selector], {
-            bridge: gcanvas.WeexBridge
-        });
+        else
+            gcanvas.enable((_b = (_a = config.componentThis) === null || _a === void 0 ? void 0 : _a.$refs) === null || _b === void 0 ? void 0 : _b[config.selector], {
+                bridge: gcanvas.WeexBridge
+            });
     }
     // 获取canvas实例
     const canvas = config.gcanvas && gcanvas ?
@@ -171,8 +172,7 @@ DrawPoster.build = async (options, tips = true) => {
         }) :
         await getCanvas2dContext(config.selector, config.componentThis);
     const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
-    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector });
-    const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText);
+    const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText, tips);
     // 储存当前绘制对象
     page[config.selector + '__dp'] = dp;
     return page[config.selector + '__dp'];

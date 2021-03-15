@@ -20,7 +20,7 @@ export interface drawPosterExtends {
   gcanvas: {
     WeexBridge: any
     Image: any
-    enable: (el: Vue | Element | Vue[] | Element[], options: {
+    enable: (el: any, options: {
       bridge?: any
       debug?: boolean
       disableAutoSwap?: any

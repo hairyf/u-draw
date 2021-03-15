@@ -65,6 +65,12 @@
 			"style": {
 				"navigationBarTitleText": "fromList"
 			}
+		},
+    {
+			"path": "pages/painter/painter",
+			"style": {
+				"navigationBarTitleText": "painter"
+			}
 		}
 	],
 	"globalStyle": {

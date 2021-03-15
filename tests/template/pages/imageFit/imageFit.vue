@@ -43,7 +43,7 @@ export default {
       const url = '/static/bg.jpeg';
       // 测试案例一：以左偏移裁剪方式
       await ctx.drawImageFit(url, {
-        round: 15,
+        radius: 15,
         objectFit: 'cover',
         specifiedSize: { width: 150, height: 150 },
         intrinsicPosition: ['left', 'top'],
@@ -51,7 +51,7 @@ export default {
       })
       // 测试案例二：以右裁剪方式
       await ctx.drawImageFit(url, {
-        round: 15,
+        radius: 15,
         objectFit: 'cover',
         specifiedSize: { width: 150, height: 150 },
         intrinsicPosition: ['right', 'top'],
@@ -59,7 +59,7 @@ export default {
       })
       // 测试案例三：图片完全展示
       await ctx.drawImageFit(url, {
-        round: 50,
+        radius: 50,
         objectFit: 'contain',
         specifiedSize: { width: 150, height: 150 },
         specifiedPosition: [0, 150],
@@ -67,7 +67,7 @@ export default {
       })
       // 测试案例四：居中裁剪方式
       await ctx.drawImageFit(url, {
-        round: 150,
+        radius: 150,
         objectFit: 'cover',
         specifiedSize: { width: 150, height: 150 },
         specifiedPosition: [150, 150],

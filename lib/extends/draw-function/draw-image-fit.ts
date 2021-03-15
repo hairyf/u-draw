@@ -10,7 +10,7 @@ import { DrawPosterUseCtxOpts } from '../../utils/interface'
 import { calculateConcreteRect, ObjectFit, ObjectPosition, Size } from "../../utils/object-sizing"
 import gbl from "../../utils/global"
 export interface ImageFitOption {
-  round?: number
+  radius?: number
   objectFit?: ObjectFit
   intrinsicSize?: Size
   specifiedSize?: Size
@@ -23,7 +23,7 @@ export default {
     const [error, imageInfo] = await (gbl.getImageInfo({ src: url }) as any) as [any, UniApp.GetImageInfoSuccessData]
     // 配置默认值
     const style: Required<ImageFitOption> = {
-      round: 0,
+      radius: 0,
       objectFit: 'cover',
       intrinsicSize: { width: imageInfo?.width ?? 100, height: imageInfo?.height ?? 100 },
       specifiedSize: { width: 100, height: 100 },
@@ -38,7 +38,7 @@ export default {
       style.specifiedSize
     )
     // 如有圆角, 则进行裁剪
-    if (style.round > 0) {
+    if (style.radius > 0) {
       ctx.save()
       ctx.setFillStyle?.('transparent')
       ctx.fillStyle = 'transparent'
@@ -47,12 +47,12 @@ export default {
         style.specifiedPosition[1],
         style.specifiedSize.width,
         style.specifiedSize.height,
-        style.round
+        style.radius
       )
       ctx.clip()
     }
     const result = await ctx.drawImage(url, ...Object.values(drawImageInfo))
-    if (style.round > 0)
+    if (style.radius > 0)
       ctx.restore()
     return result
   }

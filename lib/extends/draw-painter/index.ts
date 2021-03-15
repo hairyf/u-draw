@@ -23,9 +23,9 @@ interface PainterImageInfo extends
   /** 图片地址 */
   src: string
   /** 图片自适应, 可参考 css 属性 object-fit */
-  objectFit: ImageFitOption['objectFit']
+  objectFit?: ImageFitOption['objectFit']
   /** 图片在元素容器中显示的位置，可参考 css 属性 object-position */
-  position: ImageFitOption['intrinsicPosition']
+  position?: ImageFitOption['intrinsicPosition']
   /** 圆角尺寸; 默认: 0 */
   radius?: number
 }
@@ -84,7 +84,7 @@ interface PainterLineFeedTextInfo extends
   /** 文本内容 */
   content: string
 }
-interface PainterContainerOption extends
+export interface PainterContainerOption extends
   PainterItemSize {
   /** 绘制项的数组 */
   contents: (PainterImageInfo | PainterRectInfo | PainterTextInfo | PainterLineFeedTextInfo)[]
@@ -154,6 +154,5 @@ export default {
         ctx.restore()
       }
     })
-
   }
 } as DrawPosterUseOpts

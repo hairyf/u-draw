@@ -1,6 +1,7 @@
 import DrawPoster from "../draw-poster"
 import { ImageFitOption } from '../extends/draw-function/draw-image-fit'
 import { CreateLayerOpts, DrawRowOpt } from "../extends/create-from-list"
+import { PainterContainerOption } from "../extends/draw-painter"
 /** 绘制容器 */
 export type Execute = Array<() => Promise<boolean>>
 
@@ -26,6 +27,7 @@ export interface drawPosterExtends {
       disableComboCommands?: any
     }) => Canvas
   }
+  painter: (option: PainterContainerOption) => void
 }
 /** 构建器配置 */
 export interface DrawPosterBuildOpts {

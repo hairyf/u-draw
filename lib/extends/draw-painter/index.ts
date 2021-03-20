@@ -103,13 +103,18 @@ interface PainterQrCodeInfo extends
 export interface PainterContainerOption extends
   PainterItemSize {
   /** 绘制项的数组 */
-  contents: (
+  contents: Array<
+    // 绘制图片信息
     PainterImageInfo |
+    // 绘制矩形信息
     PainterRectInfo |
+    // 绘制文字信息
     PainterTextInfo |
+    // 绘制换行文字信息
     PainterLineFeedTextInfo |
+    // 绘制扩展二维码信息
     PainterQrCodeInfo
-  )[]
+  >
 }
 
 export default {

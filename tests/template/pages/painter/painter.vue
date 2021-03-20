@@ -2,7 +2,7 @@
  * @Author: Mr.Mao
  * @LastEditors: Mr.Mao
  * @Date: 2020-12-31 13:57:34
- * @LastEditTime: 2021-01-03 12:01:18
+ * @LastEditTime: 2021-03-20 09:51:24
  * @Description: 测试基本绘制
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
 -->
@@ -21,7 +21,10 @@
 import DrawPoster from "@/js_sdk/u-draw-poster";
 import drawPainter from "@/js_sdk/u-draw-poster/extends/draw-painter";
 import drawQrCode from "@/js_sdk/u-draw-poster/extends/draw-qr-code";
+// 引入插件
 DrawPoster.use(drawPainter)
+// 如果需要绘制二维码, 需要另外引入二维码扩展
+DrawPoster.use(drawQrCode)
 export default {
   data: () => ({
     imgUrl: "",
@@ -29,11 +32,12 @@ export default {
     height: 380
   }),
   async onReady() {
-    // 1. 创建绘制工具
+    // 创建绘制工具
     const dp = await DrawPoster.build({
       selector: "canvas",
       debugging: true,
     });
+    // 插入绘制描述信息
     dp.painter({
       width: 200,
       height: 380,
@@ -77,6 +81,7 @@ export default {
         }
       ]
     })
+    // 创建图像
     console.log(await dp.createImagePath());
   },
 };

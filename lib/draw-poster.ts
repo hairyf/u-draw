@@ -1,4 +1,4 @@
-import gbl, { PLATFORM } from "./utils/global"
+import uni from "./utils/global"
 import {
   Canvas, Execute,
   DrawPosterCanvasCtx,
@@ -114,7 +114,7 @@ class DrawPoster {
       await getCanvas2dContext(config.selector, config.componentThis) as Canvas
 
     const ctx = (
-      canvas.getContext?.("2d") || gbl.createCanvasContext(config.selector, config.componentThis)
+      canvas.getContext?.("2d") || uni.createCanvasContext(config.selector, config.componentThis)
     ) as DrawPosterCanvasCtx
 
     tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector })
@@ -163,7 +163,7 @@ class DrawPoster {
   /** 等待创建绘画, 成功后清空绘制器容器 */
   public awaitCreate = async (): Promise<boolean[]> => {
     this.debuggingLog('绘制海报中...')
-    this.loading && gbl.showLoading({ title: this.loadingText })
+    this.loading && uni.showLoading({ title: this.loadingText })
 
     const tips: Array<boolean> = []
     for (let i = 0; i < this.executeOnions.length; i++) {
@@ -175,14 +175,14 @@ class DrawPoster {
 
     // 当前绘制为 type2 绘制
     if (this.drawType === 'type2d') {
-      this.loading && gbl.hideLoading()
+      this.loading && uni.hideLoading()
       return tips
     }
     // 当前绘制为 context 绘制
     return await new Promise((resolve) => {
       this.ctx.draw(true, () => {
         resolve(tips)
-        this.loading && gbl.hideLoading()
+        this.loading && uni.hideLoading()
       })
     })
   }
@@ -196,7 +196,7 @@ class DrawPoster {
       this.stopStatus = false
       return '---stop createImagePath---'
     }
-    this.loading && gbl.showLoading({ title: this.createText })
+    this.loading && uni.showLoading({ title: this.createText })
     const options: WechatMiniprogram.CanvasToTempFilePathOption = {
       // x: 0, y: 0,
       // width: canvas.width,
@@ -212,15 +212,15 @@ class DrawPoster {
     return new Promise((resolve, reject) => {
       options.success = (res) => {
         resolve(res.tempFilePath)
-        this.loading && gbl.hideLoading();
+        this.loading && uni.hideLoading();
         this.debuggingLog('绘制成功 🎉', res)
       }
       options.fail = (err) => {
         reject(err)
-        this.loading && gbl.hideLoading();
+        this.loading && uni.hideLoading();
         this.debuggingLog('绘制失败 🌟', err)
       }
-      gbl.canvasToTempFilePath(options as any)
+      uni.canvasToTempFilePath(options as any)
     })
   }
 

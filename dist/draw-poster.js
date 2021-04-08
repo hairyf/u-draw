@@ -1,4 +1,4 @@
-import gbl from "./utils/global";
+import uni from "./utils/global";
 import { handleBuildOpts, extendMount } from "./utils/utils";
 import { getCanvas2dContext } from "./utils/wx-utils";
 // 扩展挂载储存
@@ -49,7 +49,7 @@ class DrawPoster {
         /** 等待创建绘画, 成功后清空绘制器容器 */
         this.awaitCreate = async () => {
             this.debuggingLog('绘制海报中...');
-            this.loading && gbl.showLoading({ title: this.loadingText });
+            this.loading && uni.showLoading({ title: this.loadingText });
             const tips = [];
             for (let i = 0; i < this.executeOnions.length; i++) {
                 const execute = this.executeOnions[i];
@@ -59,14 +59,14 @@ class DrawPoster {
             this.debuggingLog('绘制状况', tips);
             // 当前绘制为 type2 绘制
             if (this.drawType === 'type2d') {
-                this.loading && gbl.hideLoading();
+                this.loading && uni.hideLoading();
                 return tips;
             }
             // 当前绘制为 context 绘制
             return await new Promise((resolve) => {
                 this.ctx.draw(true, () => {
                     resolve(tips);
-                    this.loading && gbl.hideLoading();
+                    this.loading && uni.hideLoading();
                 });
             });
         };
@@ -79,7 +79,7 @@ class DrawPoster {
                 this.stopStatus = false;
                 return '---stop createImagePath---';
             }
-            this.loading && gbl.showLoading({ title: this.createText });
+            this.loading && uni.showLoading({ title: this.createText });
             const options = Object.assign({}, baseOptions);
             if (this.drawType === 'context')
                 options.canvasId = canvasId;
@@ -88,15 +88,15 @@ class DrawPoster {
             return new Promise((resolve, reject) => {
                 options.success = (res) => {
                     resolve(res.tempFilePath);
-                    this.loading && gbl.hideLoading();
+                    this.loading && uni.hideLoading();
                     this.debuggingLog('绘制成功 🎉', res);
                 };
                 options.fail = (err) => {
                     reject(err);
-                    this.loading && gbl.hideLoading();
+                    this.loading && uni.hideLoading();
                     this.debuggingLog('绘制失败 🌟', err);
                 };
-                gbl.canvasToTempFilePath(options);
+                uni.canvasToTempFilePath(options);
             });
         };
         /** 停止当前绘画, 调用则停止当前绘画堆栈的绘画 */
@@ -157,12 +157,12 @@ DrawPoster.build = async (options, tips = true) => {
         return page[config.selector + '__dp'];
     }
     if (config.gcanvas) {
-        if (!gcanvas) {
+        if (!gcanvas)
             console.error('--- 当前未引入gcanvas扩展, 将自动切换为普通 canvas ---');
-        }
-        gcanvas.enable((_b = (_a = config.componentThis) === null || _a === void 0 ? void 0 : _a.$refs) === null || _b === void 0 ? void 0 : _b[config.selector], {
-            bridge: gcanvas.WeexBridge
-        });
+        else
+            gcanvas.enable((_b = (_a = config.componentThis) === null || _a === void 0 ? void 0 : _a.$refs) === null || _b === void 0 ? void 0 : _b[config.selector], {
+                bridge: gcanvas.WeexBridge
+            });
     }
     // 获取canvas实例
     const canvas = config.gcanvas && gcanvas ?
@@ -170,7 +170,7 @@ DrawPoster.build = async (options, tips = true) => {
             bridge: gcanvas.WeexBridge
         }) :
         await getCanvas2dContext(config.selector, config.componentThis);
-    const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
+    const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || uni.createCanvasContext(config.selector, config.componentThis));
     tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector });
     const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText);
     // 储存当前绘制对象

@@ -8,7 +8,7 @@
  */
 import { DrawPosterUseCtxOpts } from '../../utils/interface'
 import { calculateConcreteRect, ObjectFit, ObjectPosition, Size } from "../../utils/object-sizing"
-import gbl from "../../utils/global"
+import uni from "../../utils/global"
 export interface ImageFitOption {
   radius?: number
   objectFit?: ObjectFit
@@ -20,7 +20,7 @@ export interface ImageFitOption {
 export default {
   name: 'drawImageFit',
   handle: async (canvas, ctx, url: string, options?: ImageFitOption) => {
-    const [error, imageInfo] = await (gbl.getImageInfo({ src: url }) as any) as [any, UniApp.GetImageInfoSuccessData]
+    const [error, imageInfo] = await (uni.getImageInfo({ src: url }) as any) as [any, UniApp.GetImageInfoSuccessData]
     // 配置默认值
     const style: Required<ImageFitOption> = {
       radius: 0,

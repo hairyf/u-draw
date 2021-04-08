@@ -6,7 +6,7 @@
  * @Description: 
  * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
  */
-import gbl from "./global"
+import uni from "./global"
 import { Canvas } from "./interface"
 import { isBaseUrl, isNetworkUrl, isTmpUrl } from './utils'
 // 下载指定地址图片, 如果不符合下载图片, 则直接返回
@@ -16,7 +16,7 @@ export const downloadImgUrl = (url: string): Promise<string> => {
     if (isLocalFile) {
       return resolve(url);
     }
-    gbl.downloadFile({
+    uni.downloadFile({
       url,
       success: (res) => resolve(res.tempFilePath),
       fail: reject
@@ -28,8 +28,8 @@ export const getCanvas2dContext = (selector: string, componentThis?: any): Promi
   return new Promise(resolve => {
     const query = (
       componentThis ?
-        gbl.createSelectorQuery().in(componentThis) :
-        gbl.createSelectorQuery()
+        uni.createSelectorQuery().in(componentThis) :
+        uni.createSelectorQuery()
     ) as WechatMiniprogram.SelectorQuery;
     query.select(selector)
       .fields({ node: true }, res => {

@@ -2,6 +2,13 @@
 export default {
     name: 'roundRect',
     handle: (canvas, ctx, x, y, w, h, r = 15, fill = false, stroke = false) => {
+        if (r === 0) {
+            if (stroke)
+                ctx.strokeRect(x, y, w, h);
+            if (fill)
+                ctx.fillRect(x, y, w, h);
+            return;
+        }
         if (w < 2 * r) {
             r = w / 2;
         }

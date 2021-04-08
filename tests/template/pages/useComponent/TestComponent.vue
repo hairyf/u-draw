@@ -28,7 +28,7 @@ export default {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, 300, 300);
     });
-		const url = '/static/logo.png';
+		const url = '/static/logo.jpg';
 		// 绘制图片(矩形)
 		dp.draw(async (ctx) => {
 		  await ctx.drawImage(url, 0, 150, 150, 150);

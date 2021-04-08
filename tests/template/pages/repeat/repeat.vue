@@ -45,7 +45,7 @@ export default {
         ctx.fillRect(0, 0, 300, 300);
       });
       dp.draw(async (ctx) => {
-        const url = '/static/logo.png';
+        const url = '/static/logo.jpg';
         await ctx.drawImage(url, this.xy, this.xy, w, h);
         this.xy = 100;
       });

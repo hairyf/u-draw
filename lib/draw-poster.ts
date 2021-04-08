@@ -32,7 +32,8 @@ class DrawPoster {
     public loading: boolean,
     public debugging: boolean,
     public loadingText: string,
-    public createText: string
+    public createText: string,
+    tips: boolean,
   ) {
     if (!canvas || !ctx || !canvasId) {
       throw new Error("DrawPoster Error: Use DrawPoster.build(string | ops) to build drawPoster instance objects")
@@ -64,14 +65,15 @@ class DrawPoster {
       }
       page.onUnload.identification = true
     }
+    tips && this.debuggingLog('构建完成', {canvas, ctx, selector: canvasId}, '#19be6b')
   }
   /** 提示器, 传入消息与数据 */
-  private debuggingLog = (message: string, data?: any) => {
+  private debuggingLog = (message: string, data?: any, color = "#3489fd") => {
     if (this.debugging) {
       if (data) {
-        console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd", data)
+        console.log(`%c${this.canvasId} -> ${message}`, `color: ${color}`, data)
       } else {
-        console.log(`%c${this.canvasId} -> ${message}`, "color: #3489fd")
+        console.log(`%c${this.canvasId} -> ${message}`, `color: ${color}`)
       }
     }
   }
@@ -117,7 +119,6 @@ class DrawPoster {
       canvas.getContext?.("2d") || uni.createCanvasContext(config.selector, config.componentThis)
     ) as DrawPosterCanvasCtx
 
-    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector })
 
     const dp = new DrawPoster(
       canvas, ctx,
@@ -125,7 +126,8 @@ class DrawPoster {
       config.loading,
       config.debugging,
       config.loadingText,
-      config.createText
+      config.createText,
+      tips
     )
     // 储存当前绘制对象
     page[config.selector + '__dp'] = dp as DrawPosterInstanceType;
@@ -213,12 +215,12 @@ class DrawPoster {
       options.success = (res) => {
         resolve(res.tempFilePath)
         this.loading && uni.hideLoading();
-        this.debuggingLog('绘制成功 🎉', res)
+        this.debuggingLog('绘制成功 🎉', res, '#19be6b')
       }
       options.fail = (err) => {
         reject(err)
         this.loading && uni.hideLoading();
-        this.debuggingLog('绘制失败 🌟', err)
+        this.debuggingLog('绘制失败 🌟', err, '#fa3534')
       }
       uni.canvasToTempFilePath(options as any)
     })

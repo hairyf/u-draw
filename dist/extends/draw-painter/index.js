@@ -4,6 +4,7 @@ export default {
         dp.canvas.width = option.width;
         dp.canvas.height = option.height;
         dp.draw(async (ctx) => {
+<<<<<<< HEAD
             var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
             for (let i = 0; i < option.contents.length; i++) {
                 ctx.save();
@@ -16,10 +17,26 @@ export default {
                     await ctx.drawImageFit(drawInfo.src, {
                         objectFit: (_e = drawInfo.objectFit) !== null && _e !== void 0 ? _e : 'cover',
                         intrinsicPosition: (_f = drawInfo.position) !== null && _f !== void 0 ? _f : ['center', 'center'],
+=======
+            for (let i = 0; i < option.contents.length; i++) {
+                ctx.save();
+                const drawInfo = option.contents[i];
+                const { left = 0, top = 0 } = drawInfo;
+                if (drawInfo.type === 'rect') {
+                    ctx.fillStyle = drawInfo.background || '#000000';
+                    ctx.fillRoundRect(left, top, drawInfo.width, drawInfo.height, drawInfo.radius || 0);
+                }
+                if (drawInfo.type === 'image') {
+                    await ctx.drawImageFit(drawInfo.src, {
+                        objectFit: drawInfo.objectFit || 'cover',
+                        intrinsicPosition: drawInfo.position || ['center', 'center'],
+                        specifiedPosition: [left, top],
+>>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
                         specifiedSize: {
                             width: drawInfo.width,
                             height: drawInfo.height
                         },
+<<<<<<< HEAD
                         radius: drawInfo.radius,
                     });
                 }
@@ -40,15 +57,59 @@ export default {
           ${(_r = drawInfo.fontWeight) !== null && _r !== void 0 ? _r : 'normal'} \
           ${uni.upx2px((_s = drawInfo.fontSize) !== null && _s !== void 0 ? _s : 30)} \
           ${(_t = drawInfo.fontFamily) !== null && _t !== void 0 ? _t : 'serial'}\
+=======
+                        radius: drawInfo.radius
+                    });
+                }
+                if (drawInfo.type === 'text') {
+                    ctx.fillStyle = drawInfo.color || '#000000';
+                    ctx.font = `\
+          ${drawInfo.fontStyle || 'normal'} \
+          ${drawInfo.fontWeight || 'normal'} \
+          ${drawInfo.fontSize || 30} \
+          ${drawInfo.fontFamily || 'serial'}\
+          `;
+                    ctx.fillText(drawInfo.content, left, top, drawInfo.width);
+                }
+                if (drawInfo.type === 'line-feed-text') {
+                    ctx.fillStyle = drawInfo.color || '#000000';
+                    ctx.font = `\
+          ${drawInfo.fontStyle || 'normal'} \
+          ${drawInfo.fontWeight || 'normal'} \
+          ${drawInfo.fontSize || 30} \
+          ${drawInfo.fontFamily || 'serial'}\
+>>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
           `;
                     ctx.fillWarpText({
                         x: drawInfo.left,
                         y: drawInfo.top,
                         layer: drawInfo.lineClamp,
+<<<<<<< HEAD
+=======
+                        lineHeight: drawInfo.lineHeight,
+>>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
                         maxWidth: drawInfo.width,
                         text: drawInfo.content
                     });
                 }
+<<<<<<< HEAD
+=======
+                if (drawInfo.type === 'qr-code') {
+                    if (typeof ctx.drawQrCode !== 'function') {
+                        console.error('--- 当前未引入qr-code扩展, 将自动省略该二维码绘制 ---');
+                        return false;
+                    }
+                    ctx.drawQrCode({
+                        x: left,
+                        y: top,
+                        size: drawInfo.size,
+                        text: drawInfo.content,
+                        margin: drawInfo.margin || 5,
+                        backgroundColor: drawInfo.backgroundColor || '#ffffff',
+                        foregroundColor: drawInfo.foregroundColor || '#000000',
+                    });
+                }
+>>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
                 ctx.restore();
             }
         });

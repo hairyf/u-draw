@@ -29,6 +29,7 @@ export default {
       { text: '二维码生成', path: 'qrcode' },
       { text: 'use|component方式引入', path: 'useComponent' },
       { text: '表单绘制插件', path: 'fromList' },
+      { text: '声明式绘制插件', path: 'painter' },
     ],
   }),
   methods: {

@@ -7,6 +7,7 @@
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
 - 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
 - 更加强大的图片绘制与裁剪方法（object-fit）
+- 支持声明式绘制扩展，自定义海报必备 具体使用参考 [draw-painter](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/07-draw-painter.html)
 
 api文档：[u-draw-poster](http://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster/01-base-desc.html)
 

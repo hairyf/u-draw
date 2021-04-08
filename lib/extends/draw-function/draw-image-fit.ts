@@ -27,7 +27,7 @@ export default {
       objectFit: 'cover',
       intrinsicSize: { width: imageInfo?.width ?? 100, height: imageInfo?.height ?? 100 },
       specifiedSize: { width: 100, height: 100 },
-      intrinsicPosition: ['left', 'top'],
+      intrinsicPosition: ['center', 'center'],
       specifiedPosition: [0, 0],
       ...options
     }

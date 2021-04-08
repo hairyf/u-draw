@@ -6,7 +6,11 @@ export default {
         var _a, _b, _c;
         const [error, imageInfo] = await uni.getImageInfo({ src: url });
         // 配置默认值
+<<<<<<< HEAD
         const style = Object.assign({ radius: 0, objectFit: 'cover', intrinsicSize: { width: (_a = imageInfo === null || imageInfo === void 0 ? void 0 : imageInfo.width) !== null && _a !== void 0 ? _a : 100, height: (_b = imageInfo === null || imageInfo === void 0 ? void 0 : imageInfo.height) !== null && _b !== void 0 ? _b : 100 }, specifiedSize: { width: 100, height: 100 }, intrinsicPosition: ['left', 'top'], specifiedPosition: [0, 0] }, options);
+=======
+        const style = Object.assign({ radius: 0, objectFit: 'cover', intrinsicSize: { width: (_a = imageInfo === null || imageInfo === void 0 ? void 0 : imageInfo.width) !== null && _a !== void 0 ? _a : 100, height: (_b = imageInfo === null || imageInfo === void 0 ? void 0 : imageInfo.height) !== null && _b !== void 0 ? _b : 100 }, specifiedSize: { width: 100, height: 100 }, intrinsicPosition: ['center', 'center'], specifiedPosition: [0, 0] }, options);
+>>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
         // 计算图片尺寸
         const drawImageInfo = calculateConcreteRect(style, style.intrinsicSize, style.specifiedSize);
         // 如有圆角, 则进行裁剪

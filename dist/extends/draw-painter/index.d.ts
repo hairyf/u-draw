@@ -78,11 +78,6 @@ interface PainterLineFeedTextInfo extends PainterItemSite {
     /** 文本内容 */
     content: string;
 }
-<<<<<<< HEAD
-export interface PainterContainerOption extends PainterItemSize {
-    /** 绘制项的数组 */
-    contents: (PainterImageInfo | PainterRectInfo | PainterTextInfo | PainterLineFeedTextInfo)[];
-=======
 /** 绘制二维码信息 */
 interface PainterQrCodeInfo extends PainterItemSite {
     /** 绘制换行文本元素 */
@@ -100,8 +95,7 @@ interface PainterQrCodeInfo extends PainterItemSite {
 }
 export interface PainterContainerOption extends PainterItemSize {
     /** 绘制项的数组 */
-    contents: (PainterImageInfo | PainterRectInfo | PainterTextInfo | PainterLineFeedTextInfo | PainterQrCodeInfo)[];
->>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
+    contents: Array<PainterImageInfo | PainterRectInfo | PainterTextInfo | PainterLineFeedTextInfo | PainterQrCodeInfo>;
 }
 declare const _default: DrawPosterUseOpts;
 export default _default;

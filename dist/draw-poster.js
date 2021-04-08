@@ -88,23 +88,13 @@ class DrawPoster {
             return new Promise((resolve, reject) => {
                 options.success = (res) => {
                     resolve(res.tempFilePath);
-<<<<<<< HEAD
                     this.loading && uni.hideLoading();
-                    this.debuggingLog('绘制成功 🎉', res);
-                };
-                options.fail = (err) => {
-                    reject(err);
-                    this.loading && uni.hideLoading();
-                    this.debuggingLog('绘制失败 🌟', err);
-=======
-                    this.loading && gbl.hideLoading();
                     this.debuggingLog('绘制成功 🎉', res, '#19be6b');
                 };
                 options.fail = (err) => {
                     reject(err);
-                    this.loading && gbl.hideLoading();
+                    this.loading && uni.hideLoading();
                     this.debuggingLog('绘制失败 🌟', err, '#fa3534');
->>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
                 };
                 uni.canvasToTempFilePath(options);
             });
@@ -181,14 +171,8 @@ DrawPoster.build = async (options, tips = true) => {
             bridge: gcanvas.WeexBridge
         }) :
         await getCanvas2dContext(config.selector, config.componentThis);
-<<<<<<< HEAD
     const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || uni.createCanvasContext(config.selector, config.componentThis));
-    tips && console.log("%cdraw-poster 构建完成：", "#E3712A", { canvas, ctx, selector: config.selector });
-    const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText);
-=======
-    const ctx = (((_e = canvas.getContext) === null || _e === void 0 ? void 0 : _e.call(canvas, "2d")) || gbl.createCanvasContext(config.selector, config.componentThis));
     const dp = new DrawPoster(canvas, ctx, config.selector, config.loading, config.debugging, config.loadingText, config.createText, tips);
->>>>>>> 1467b98c254a40af6577f0d527382bb7660287be
     // 储存当前绘制对象
     page[config.selector + '__dp'] = dp;
     return page[config.selector + '__dp'];

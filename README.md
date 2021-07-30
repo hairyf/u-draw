@@ -9,7 +9,7 @@
 - 更加强大的图片绘制与裁剪方法（object-fit）
 - 支持声明式绘制扩展，自定义海报必备 具体使用参考 [draw-painter](https://tuimao233.gitee.io/mao-blog/wo-de-kuo-zhan/u-draw-poster/01-base-desc.html)
 
-api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/wo-de-kuo-zhan/create-uniapp-view.html)
+api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/wo-de-kuo-zhan/u-draw-poster/01-base-desc.html)
 
 插件市场：[dcloud/u-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
 

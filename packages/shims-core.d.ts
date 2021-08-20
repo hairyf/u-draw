@@ -21,3 +21,9 @@ interface UseDrawPoster<R = void> {
   (selector: string, options?: Pick<DrawPosterOptions, 'selector'>): R
   (options: DrawPosterOptions): R
 }
+
+interface UseDrawPosterResult {
+  canvas: Canvas
+  ctx: CanvasCtx
+  _id: string
+}

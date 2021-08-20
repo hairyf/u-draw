@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+  },
+  "exclude": [
+    "**/__tests__/*.ts",
+    "**/__test__/*.ts"
+  ],
+  "include": [
+    "./**/*.ts",
+    "./**/*.d.ts",
+    "./**/*.tsx",
+    "./**/*.vue",
+    "types/**.d.ts",
+    "types/**/**.d.ts",
+  ]
+}

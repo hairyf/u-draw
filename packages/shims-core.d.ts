@@ -17,8 +17,13 @@ interface DrawPosterOptions {
   gcanvas?: boolean
 }
 
+type NonNullableCustom<T, N> = T extends N ? never : T
+type NonPick<T, K extends keyof T> = {
+  [P in NonNullableCustom<keyof T, K>]: T[P]
+}
+
 interface UseDrawPoster<R = void> {
-  (selector: string, options?: Pick<DrawPosterOptions, 'selector'>): R
+  (selector: string, options?: Partial<NonPick<DrawPosterOptions, 'selector'>>): R
   (options: DrawPosterOptions): R
 }
 
@@ -26,4 +31,8 @@ interface UseDrawPosterResult {
   canvas: Canvas
   ctx: CanvasCtx
   _id: string
+  use: DrawPosterUse
+  render(): Promise<boolean[]>
+  createImage(options: CreateImagePathOptions): Promise<string>
+  readonly plugins: DrawPosterPlugin[]
 }

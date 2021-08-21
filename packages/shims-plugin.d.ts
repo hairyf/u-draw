@@ -1,21 +1,30 @@
-interface LifeCycle {
-  (instance: UseDrawPosterResult, options?: Record<string, any>): void
+interface DrawPosterLifeCycle<I = UseDrawPosterResult, O = Record<string, any>> {
+  (instance: I, options?: O): void
+}
+
+interface DrawPosterLifeCycles {
+  /** 创建实例前 */
+  beforeMount?: DrawPosterLifeCycle<{ _id: string }>
+  /** 创建实例后 */
+  mounted?: DrawPosterLifeCycle
+  /** 卸载实例前 */
+  beforeUnmount?: DrawPosterLifeCycle
+  /** 卸载实例后 */
+  unmounted?: DrawPosterLifeCycle
+  /** 创建绘图前 */
+  beforeCreate?: DrawPosterLifeCycle
+  /** 创建绘图后 */
+  created?: DrawPosterLifeCycle
 }
 
 /** 绘制画笔实例扩展配置 */
-interface DrawPosterPlugin {
+interface DrawPosterPlugin extends DrawPosterLifeCycles {
   /** 扩展名称 */
   name: string
-  /** 创建实例前 */
-  beforeMount: LifeCycle
-  /** 创建实例后 */
-  mounted: LifeCycle
-  /** 卸载实例前 */
-  beforeUnmount: LifeCycle
-  /** 卸载实例后 */
-  unmounted: LifeCycle
-  /** 创建绘图前 */
-  beforeCreate: LifeCycle
-  /** 创建绘图后 */
-  created: LifeCycle
+}
+
+interface DrawPosterUse {
+  (name: string, lifeCycle: DrawPosterLifeCycle): void
+  (name: string, options: NonPick<DrawPosterPlugin, 'name'>): void
+  (options: DrawPosterPlugin): void
 }

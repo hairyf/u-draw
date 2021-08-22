@@ -1,13 +1,14 @@
 declare module '@/core' {
-  interface UseDrawPosterResult {
-    createLayer(afferOptions: CreateLayerOptions, rows: DrawRowOptions[]): void
-  }
   interface DrawPosterOptions {
     tableOptions?: {
       height?: number
       padding?: number
       margin?: number
     }
+  }
+  interface UseDrawPosterResult {
+    createLayer(afferOptions: CreateLayerOptions, rows: DrawRowOptions[]): void
+    tableOptions: DrawPosterOptions['tableOptions']
   }
 }
 export interface CreateLayerOptions {
@@ -27,16 +28,16 @@ const plugin: DrawPosterPlugin = {
   name: 'createLayer',
   beforeMount: (dp) => {
     if (!dp.tableOptions) dp.tableOptions = {}
-    dp.tableOptions.height = dp.tableOptions.height ?? 0
-    dp.tableOptions.padding = dp.tableOptions.padding ?? 8
-    dp.tableOptions.margin = dp.tableOptions.margin ?? 0
+    dp.tableOptions.height = dp.$options!.tableOptions!.height ?? 0
+    dp.tableOptions.padding = dp.$options!.tableOptions!.padding ?? 8
+    dp.tableOptions.margin = dp.$options!.tableOptions!.margin ?? 0
   },
   mounted: (dp) => {
     dp['createLayer'] = (afferOptions: CreateLayerOptions, rows: DrawRowOptions[]) => {
       // 当前配置(头部偏移量, 列内边距, 表单外边距)
-      const height = <number>dp.tableOptions.height
-      const margin = <number>dp.tableOptions.margin
-      const padding = <number>dp.tableOptions.padding
+      const height = dp.tableOptions!.height!
+      const margin = dp.tableOptions!.margin!
+      const padding = dp.tableOptions!.padding!
       // 当前层宽度
       const containerWidth = dp.canvas.width - margin * 2
       // 基本层配置
@@ -167,7 +168,7 @@ const plugin: DrawPosterPlugin = {
     }
   },
   created: (dp) => {
-    dp.tableOptions.height = 0
+    dp.tableOptions!.height = 0
   }
 }
 

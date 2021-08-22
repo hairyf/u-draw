@@ -16,12 +16,6 @@ interface DPOptions {
   /** 是否启动gcanvas(nvue) */
   gcanvas?: boolean
 }
-
-type NonNullableCustom<T, N> = T extends N ? never : T
-type NonPick<T, K extends keyof T> = {
-  [P in NonNullableCustom<keyof T, K>]: T[P]
-}
-
 interface DPResult {
   readonly _id: string
   readonly plugins: DrawPosterPlugin[]
@@ -34,4 +28,9 @@ interface DPResult {
   create(options: CreateImagePathOptions): Promise<string>
   $options: DPOptions
   [key: string]: any
+}
+
+type NonNullableCustom<T, N> = T extends N ? never : T
+type NonPick<T, K extends keyof T> = {
+  [P in NonNullableCustom<keyof T, K>]: T[P]
 }

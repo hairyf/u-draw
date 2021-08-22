@@ -5,7 +5,9 @@ import { DebuggingLog } from './debugginglog'
 import { Plugins, use } from './plugin'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface UseDrawPosterResult extends DPResult {}
+interface UseDrawPosterResult extends DPResult {
+  $options: DrawPosterOptions
+}
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface DrawPosterOptions extends DPOptions {}
 

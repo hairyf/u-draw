@@ -1,4 +1,4 @@
-interface DrawPosterOptions {
+interface DPOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */
   selector: string
   /** 选取组件范围 */
@@ -22,17 +22,16 @@ type NonPick<T, K extends keyof T> = {
   [P in NonNullableCustom<keyof T, K>]: T[P]
 }
 
-interface UseDrawPoster<R = void> {
-  (selector: string, options?: Partial<NonPick<DrawPosterOptions, 'selector'>>): R
-  (options: DrawPosterOptions): R
-}
-
-interface UseDrawPosterResult {
+interface DPResult {
+  readonly _id: string
+  readonly plugins: DrawPosterPlugin[]
   canvas: Canvas
   ctx: CanvasCtx
-  _id: string
   use: DrawPosterUse
+  stop(): void
+  draw(func: (ctx: CanvasCtx) => Promise<void> | void): void
   render(): Promise<boolean[]>
-  createImage(options: CreateImagePathOptions): Promise<string>
-  readonly plugins: DrawPosterPlugin[]
+  create(options: CreateImagePathOptions): Promise<string>
+  $options: DPOptions
+  [key: string]: any
 }

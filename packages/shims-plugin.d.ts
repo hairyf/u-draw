@@ -1,10 +1,10 @@
-interface DrawPosterLifeCycle<I = UseDrawPosterResult, O = Record<string, any>> {
+interface DrawPosterLifeCycle<I = DPResult, O = Record<string, any>> {
   (instance: I, options?: O): void
 }
 
 interface DrawPosterLifeCycles {
   /** 创建实例前 */
-  beforeMount?: DrawPosterLifeCycle<{ _id: string }>
+  beforeMount?: DrawPosterLifeCycle<{ _id: string; [key: string]: any }>
   /** 创建实例后 */
   mounted?: DrawPosterLifeCycle
   /** 卸载实例前 */

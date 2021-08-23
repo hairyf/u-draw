@@ -1,10 +1,10 @@
-import { UseDrawPosterResult, DrawPosterOptions } from '.'
+import { DrawPosterResult, DrawPosterOptions } from '.'
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 export class DebuggingLog {
   private $color = '#3489fd'
 
-  constructor(private dp: Partial<UseDrawPosterResult>, private $options: DrawPosterOptions) {}
+  constructor(private dp: Partial<DrawPosterResult>, private $options: DrawPosterOptions) {}
   log = (message: string, color = this.$color, ...args: any[]) => {
     if (!this.$options.debugging) return
     console.log(`%c${this.dp._id} -> ${message}`, `color: ${color}`, ...args)

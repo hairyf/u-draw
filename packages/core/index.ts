@@ -2,7 +2,7 @@ import { UNI_PLATFORM } from '@tuimao/uni-utils'
 import { isObject } from 'lodash'
 import { queryFields } from '../utils'
 import { DebuggingLog } from './debugginglog'
-import { Plugins, use, DrawPosterPlugin, DrawPosterUse } from './plugin'
+import { Plugins, globalUse, DrawPosterPlugin, DrawPosterUse } from './plugin'
 
 export type NonNullableCustom<T, N> = T extends N ? never : T
 export type NonPick<T, K extends keyof T> = {
@@ -25,8 +25,12 @@ export interface DrawPosterOptions {
   createText?: string
   /** 是否启动gcanvas(nvue) */
   gcanvas?: boolean
+  /** 画布宽度 */
+  width?: number
+  /** 画布高度 */
+  height?: number
 }
-export interface UseDrawPosterResult {
+export interface DrawPosterResult {
   readonly _id: string
   readonly plugins: DrawPosterPlugin[]
   canvas: Canvas
@@ -35,7 +39,7 @@ export interface UseDrawPosterResult {
   stop(): void
   draw(func: (ctx: CanvasCtx) => Promise<void> | void): void
   render(): Promise<boolean[]>
-  create(options: CreateImagePathOptions): Promise<string>
+  createImagePath(options?: CreateImagePathOptions): Promise<string>
   $options: DrawPosterOptions
   [key: string]: any
 }
@@ -47,8 +51,6 @@ export interface CanvasCtx extends UniApp.CanvasContext {
   transform: CanvasTransform['transform']
   /** 绘制图片原型 */
   drawImageProto: UniApp.CanvasContext['drawImage']
-  /** 当前绘制类型 */
-  drawType: 'context' | 'type2d'
 }
 export interface Canvas {
   width: number
@@ -70,17 +72,15 @@ export interface Canvas {
   toDataURL(type: string, encoderOptions: number): string
 }
 export type Stacks = Array<() => Promise<boolean>>
-export type CreateImagePathOptions<> = NonPick<
-  UniApp.CanvasToTempFilePathOptions,
-  'canvasId' | 'complete' | 'success' | 'fail'
+export type CreateImagePathOptions = Partial<
+  NonPick<UniApp.CanvasToTempFilePathOptions, 'canvasId' | 'complete' | 'success' | 'fail'>
 >
 
 function useDrawPoster(
   selector: string,
   options?: Partial<NonPick<DrawPosterOptions, 'selector'>>
-): Promise<UseDrawPosterResult>
-function useDrawPoster(options: DrawPosterOptions): Promise<UseDrawPosterResult>
-
+): Promise<DrawPosterResult>
+function useDrawPoster(options: DrawPosterOptions): Promise<DrawPosterResult>
 async function useDrawPoster(...args: any[]) {
   const $options = (() => {
     const _default: DrawPosterOptions = {
@@ -117,7 +117,7 @@ async function useDrawPoster(...args: any[]) {
 
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
-  const dp: Partial<UseDrawPosterResult> = { $options }
+  const dp: Partial<DrawPosterResult> = { $options }
   const ps = new Plugins(dp)
   const consola = new DebuggingLog(dp, $options)
   let stacks: Stacks = []
@@ -162,7 +162,7 @@ async function useDrawPoster(...args: any[]) {
     return tips
   }
 
-  dp.create = async (_options_: CreateImagePathOptions) => {
+  dp.createImagePath = async (_options_) => {
     if (stacks.length > 0) await dp.render!()
     if (isStop) {
       isStop = false
@@ -193,7 +193,7 @@ async function useDrawPoster(...args: any[]) {
     })
   }
 
-  dp.draw = async (func: Function) => {
+  dp.draw = async (func) => {
     const length = stacks.length
     stacks.push(async () => {
       try {
@@ -222,6 +222,9 @@ async function useDrawPoster(...args: any[]) {
 
   await build()
 
+  dp.canvas!.width = $options.width ?? 0
+  dp.canvas!.height = $options.height ?? 0
+
   page[`__dp_${dp._id}`] = dp
 
   if (!page?.onUnload?.__dp_unmount) {
@@ -238,4 +241,6 @@ async function useDrawPoster(...args: any[]) {
   return dp
 }
 
-export { useDrawPoster, use }
+useDrawPoster.use = globalUse
+
+export { useDrawPoster, DrawPosterPlugin }

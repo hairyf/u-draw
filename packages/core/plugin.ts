@@ -1,12 +1,12 @@
 import { isFunction, isObject, isString } from 'lodash'
-import { UseDrawPosterResult, NonPick } from '.'
-export interface DrawPosterLifeCycle<I = UseDrawPosterResult, O = Record<string, any>> {
+import { DrawPosterResult, NonPick } from '.'
+export interface DrawPosterLifeCycle<I = DrawPosterResult, O = Record<string, any>> {
   (instance: I, options?: O): void
 }
 
 export interface DrawPosterLifeCycles {
   /** 创建实例前 */
-  beforeMount?: DrawPosterLifeCycle<Partial<UseDrawPosterResult>>
+  beforeMount?: DrawPosterLifeCycle<Partial<DrawPosterResult>>
   /** 创建实例后 */
   mounted?: DrawPosterLifeCycle
   /** 卸载实例前 */
@@ -54,7 +54,7 @@ const usePluginOptions = (plugins: DrawPosterPlugin[], ...args: any[]) => {
 
 const globalPlugins: DrawPosterPlugin[] = []
 
-export const use: DrawPosterUse = (...args: any[]) => usePluginOptions(globalPlugins, ...args)
+export const globalUse: DrawPosterUse = (...args: any[]) => usePluginOptions(globalPlugins, ...args)
 
 export class Plugins {
   $plugins: DrawPosterPlugin[] = []
@@ -62,7 +62,7 @@ export class Plugins {
     return [...globalPlugins, ...this.$plugins]
   }
 
-  constructor(public dp: Partial<UseDrawPosterResult>) {}
+  constructor(public dp: Partial<DrawPosterResult>) {}
 
   use = (...args: any[]) => {
     usePluginOptions(this.$plugins, ...args)

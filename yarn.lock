@@ -217,10 +217,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@dcloudio/types@^2.0.16":
+"@dcloudio/types@^2.5.1":
   version "2.5.1"
-  resolved "https://registry.nlark.com/@dcloudio/types/download/@dcloudio/types-2.5.1.tgz?cache=0&sync_timestamp=1629270522176&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40dcloudio%2Ftypes%2Fdownload%2F%40dcloudio%2Ftypes-2.5.1.tgz#1aacead4158e2d7448e2585db1a68af28fccac1a"
-  integrity sha1-Gqzq1BWOLXRI4lhdsaaK8o/MrBo=
+  resolved "https://registry.yarnpkg.com/@dcloudio/types/-/types-2.5.1.tgz#1aacead4158e2d7448e2585db1a68af28fccac1a"
+  integrity sha512-tw+ELDxWJFG2/GoVlQuUuA8YATtXMmCP7AzRvb1syrdf1rVgrzCGJr3GVlGE8qLEl/lhhRKuufgcOp3h9VSEzA==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -2646,6 +2646,11 @@ vue-eslint-parser@^7.10.0:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^6.3.0"
+
+vue@^2.6.14:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"

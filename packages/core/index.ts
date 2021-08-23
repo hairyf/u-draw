@@ -2,14 +2,78 @@ import { UNI_PLATFORM } from '@tuimao/uni-utils'
 import { isObject } from 'lodash'
 import { queryFields } from '../utils'
 import { DebuggingLog } from './debugginglog'
-import { Plugins, use } from './plugin'
+import { Plugins, use, DrawPosterPlugin, DrawPosterUse } from './plugin'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface UseDrawPosterResult extends DPResult {
-  $options: DrawPosterOptions
+export type NonNullableCustom<T, N> = T extends N ? never : T
+export type NonPick<T, K extends keyof T> = {
+  [P in NonNullableCustom<keyof T, K>]: T[P]
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface DrawPosterOptions extends DPOptions {}
+export interface DrawPosterOptions {
+  /** 查询字符串(必须), 注意不要写错对应canvas id */
+  selector: string
+  /** 选取组件范围 */
+  componentThis?: string
+  /** 绘制类型, 微信小程序自动切换为 '2d' */
+  type?: '2d' | 'context' | 'webgl'
+  /** 是否在绘制与创建时提示文字信息 */
+  tips?: boolean
+  /** 是否开启调试模式 */
+  debugging?: boolean
+  /** 加载提示文字 */
+  loadingText?: string
+  /** 创建图片提示文字 */
+  createText?: string
+  /** 是否启动gcanvas(nvue) */
+  gcanvas?: boolean
+}
+export interface UseDrawPosterResult {
+  readonly _id: string
+  readonly plugins: DrawPosterPlugin[]
+  canvas: Canvas
+  ctx: CanvasCtx
+  use: DrawPosterUse
+  stop(): void
+  draw(func: (ctx: CanvasCtx) => Promise<void> | void): void
+  render(): Promise<boolean[]>
+  create(options: CreateImagePathOptions): Promise<string>
+  $options: DrawPosterOptions
+  [key: string]: any
+}
+export interface CanvasCtx extends UniApp.CanvasContext {
+  [key: string]: any
+  createImageData: () => ImageData
+  textAlign: CanvasTextDrawingStyles['textAlign']
+  textBaseline: CanvasTextDrawingStyles['textBaseline']
+  transform: CanvasTransform['transform']
+  /** 绘制图片原型 */
+  drawImageProto: UniApp.CanvasContext['drawImage']
+  /** 当前绘制类型 */
+  drawType: 'context' | 'type2d'
+}
+export interface Canvas {
+  width: number
+  height: number
+  getContext<K extends '2d' | 'webgl'>(
+    contextType: K
+  ): K extends '2d' ? CanvasCtx : WebGLRenderingContext
+  createImage(): {
+    src: string
+    width: number
+    height: number
+    onload: () => void
+    onerror: () => void
+  }
+  requestAnimationFrame(callback: Function): number
+  cancelAnimationFrame(requestID: number): void
+  createImageData(): ImageData
+  createPath2D(path: Path2D): Path2D
+  toDataURL(type: string, encoderOptions: number): string
+}
+export type Stacks = Array<() => Promise<boolean>>
+export type CreateImagePathOptions<> = NonPick<
+  UniApp.CanvasToTempFilePathOptions,
+  'canvasId' | 'complete' | 'success' | 'fail'
+>
 
 function useDrawPoster(
   selector: string,
@@ -106,13 +170,13 @@ async function useDrawPoster(...args: any[]) {
     }
     if ($options.tips) uni.showLoading({ title: $options.createText })
 
-    const options: WechatMiniprogram.CanvasToTempFilePathOption = _options_
+    const options: UniApp.CanvasToTempFilePathOptions = <any>_options_
 
     if ($options.type === '2d') {
-      options.canvas = dp.canvas
+      ;(<any>options).canvas = dp.canvas
     }
     if ($options.type === 'context') {
-      options.canvasId = dp._id
+      ;(<any>options).canvasId = dp._id
     }
     return new Promise<string>((resolve, reject) => {
       options.success = (res) => {
@@ -174,4 +238,4 @@ async function useDrawPoster(...args: any[]) {
   return dp
 }
 
-export { useDrawPoster, use, UseDrawPosterResult, DrawPosterOptions }
+export { useDrawPoster, use }

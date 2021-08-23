@@ -5,35 +5,21 @@
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,
-    "jsx": "preserve",
     "sourceMap": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "downlevelIteration": true,
-    "baseUrl": "./packages",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "outDir": "./dist",
+    "rootDir": "./packages",
     "types": [
       "@dcloudio/types",
       "node",
-      "miniprogram-api-typings",
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
+    ]
   },
   "exclude": [
     "**/__tests__/*.ts",
     "**/__test__/*.ts"
   ],
   "include": [
-    "./**/*.ts",
-    "./**/*.d.ts",
-    "./**/*.tsx",
-    "./**/*.vue",
-    "types/**.d.ts",
-    "types/**/**.d.ts",
+    "./packages/**/*.ts",
+    "./packages/**/*.d.ts",
   ]
 }

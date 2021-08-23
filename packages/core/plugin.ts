@@ -1,4 +1,33 @@
 import { isFunction, isObject, isString } from 'lodash'
+import { UseDrawPosterResult, NonPick } from '.'
+export interface DrawPosterLifeCycle<I = UseDrawPosterResult, O = Record<string, any>> {
+  (instance: I, options?: O): void
+}
+
+export interface DrawPosterLifeCycles {
+  /** 创建实例前 */
+  beforeMount?: DrawPosterLifeCycle<Partial<UseDrawPosterResult>>
+  /** 创建实例后 */
+  mounted?: DrawPosterLifeCycle
+  /** 卸载实例前 */
+  beforeUnmount?: DrawPosterLifeCycle
+  /** 卸载实例后 */
+  unmounted?: DrawPosterLifeCycle
+  /** 创建绘图前 */
+  beforeCreate?: DrawPosterLifeCycle
+  /** 创建绘图后 */
+  created?: DrawPosterLifeCycle
+}
+export interface DrawPosterPlugin extends DrawPosterLifeCycles {
+  /** 扩展名称 */
+  name: string
+}
+
+export interface DrawPosterUse {
+  (name: string, lifeCycle: DrawPosterLifeCycle): void
+  (name: string, options: NonPick<DrawPosterPlugin, 'name'>): void
+  (options: DrawPosterPlugin): void
+}
 
 /**
  * 对插件参数进行处理并引入
@@ -33,7 +62,7 @@ export class Plugins {
     return [...globalPlugins, ...this.$plugins]
   }
 
-  constructor(public dp: Partial<DPResult>) {}
+  constructor(public dp: Partial<UseDrawPosterResult>) {}
 
   use = (...args: any[]) => {
     usePluginOptions(this.$plugins, ...args)

@@ -3,6 +3,7 @@
   "version": "1.1.5",
   "description": "绘制uniapp海报工具类",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "ts-node scripts/build.ts"
   },
@@ -13,7 +14,7 @@
   "author": "Mr.Mao",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/types": "^2.0.16",
+    "@dcloudio/types": "^2.5.1",
     "@tuimao/uni-utils": "^0.3.0",
     "@types/lodash-es": "^4.17.4",
     "lodash": "^4.17.21",
@@ -27,6 +28,7 @@
     "archiver": "^5.1.0",
     "eslint": "^7.32.0",
     "tern": "^0.24.3",
-    "typescript": "^4.0.5"
+    "typescript": "^4.0.5",
+    "vue": "^2.6.14"
   }
 }

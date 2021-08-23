@@ -1,37 +1,89 @@
+<!--
+ * @Author: Mr.Mao
+ * @LastEditors: Mr.Mao
+ * @Date: 2020-11-28 19:00:39
+ * @LastEditTime: 2021-02-19 10:32:38
+ * @Description: 测试表单绘制扩展
+ * @任何一个傻子都能写出让电脑能懂的代码，而只有好的程序员可以写出让人能看懂的代码
+-->
 <template>
-  <div class="table">table</div>
+  <div class="index">
+    <!-- <image :src="imgUrl" style="width: 300px; height: height" /> -->
+    <!-- #ifdef MP-WEIXIN -->
+    <canvas id="canvas" type="2d" style="width: 300px" :style="{ height: height + 'px' }" />
+    <!-- #endif -->
+    <!-- #ifndef MP-WEIXIN -->
+    <canvas
+      id="canvas"
+      canvas-id="canvas"
+      style="width: 300px"
+      :style="{ height: height + 'px' }"
+    />
+    <!-- #endif -->
+  </div>
 </template>
-
 <script>
+  import { setTimeout } from 'timers'
+  import { useDrawPoster } from '../../js_sdk/u-draw-poster'
+  import table from '../../js_sdk/u-draw-poster/plugins/dp-table'
 
-export default {
-  components: {},
-  data: () => ({}),
-  computed: {},
-  methods: {},
-  watch: {},
-
-  // 页面周期函数--监听页面加载
-  onLoad() {},
-  // 页面周期函数--监听页面初次渲染完成
-  onReady() {},
-  // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
-  // 页面周期函数--监听页面隐藏
-  onHide() {},
-  // 页面周期函数--监听页面卸载
-  onUnload() {},
-  // 页面处理函数--监听用户下拉动作
-  onPullDownRefresh() {
-    uni.stopPullDownRefresh();
-  },
-  // 页面处理函数--监听用户上拉触底
-  onReachBottom() {},
-  // 页面处理函数--监听页面滚动(not-nvue)
-  /* onPageScroll(event) {}, */
-  // 页面处理函数--用户点击右上角分享
-  /* onShareAppMessage(options) {}, */
-};
+  useDrawPoster.use(table)
+  export default {
+    data: () => ({
+      imgUrl: '',
+      height: 10
+    }),
+    async onReady() {
+      // 创建绘制工具
+      const dp = await useDrawPoster({
+        selector: 'canvas',
+        debugging: true,
+        width: 300
+      })
+      dp.createLayer({ background: '#fff', line: false }, [
+        { text: '字体与颜色', font: '35px sans-serif', color: 'red' },
+        { text: '字体与颜色', font: '35px sans-serif', color: 'red' }
+      ])
+      dp.createLayer({ background: '#fff' }, [
+        { text: '普通字体' },
+        { text: '居中字体', center: true }
+      ])
+      dp.createLayer({ background: '#fff', border: false }, [
+        { text: '自动换行，，计算高度' },
+        { text: '普通字体' }
+      ])
+      dp.createLayer({ background: '#fff', line: false }, [
+        { text: '去内边框' },
+        { text: '去内边框' }
+      ])
+      dp.createLayer({ background: '#fff' }, [{ text: '普通字体' }, { text: '普通字体' }])
+      dp.createLayer({ background: '#fff' }, [{ text: '普通字体' }, { text: '普通字体' }])
+      dp.createLayer({ background: '#fff' }, [{ text: '普通字体' }, { text: '普通字体' }])
+      this.height = dp.canvas.height = dp.table.height + 1
+      setTimeout(() => {
+        dp.createImagePath()
+      }, 20)
+    }
+  }
 </script>
 
-<style></style>
+<style lang="scss">
+  page,
+  .index {
+    height: 100%;
+  }
+  .index {
+    position: relative;
+    text-align: center;
+    background: rgba($color: grey, $alpha: 0.2);
+  }
+  image {
+    margin-top: 30rpx;
+  }
+  canvas {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>

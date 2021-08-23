@@ -14,8 +14,8 @@ export interface DrawPosterOptions {
   componentThis?: string
   /** 绘制类型, 微信小程序自动切换为 '2d' */
   type?: '2d' | 'context' | 'webgl'
-  /** 是否在绘制与创建时提示文字信息 */
-  tips?: boolean
+  /** 是否在绘制与创建时显示加载提示 */
+  loading?: boolean
   /** 是否开启调试模式 */
   debugging?: boolean
   /** 加载提示文字 */
@@ -86,7 +86,7 @@ async function useDrawPoster(...args: any[]) {
       selector: '',
       componentThis: undefined,
       type: UNI_PLATFORM === 'mp-weixin' ? '2d' : 'context',
-      tips: false,
+      loading: false,
       debugging: false,
       loadingText: '绘制海报中...',
       createText: '生成图片中...',
@@ -141,7 +141,7 @@ async function useDrawPoster(...args: any[]) {
   }
 
   dp.render = async () => {
-    if ($options.tips) uni.showLoading({ title: $options.loadingText })
+    if ($options.loading) uni.showLoading({ title: $options.loadingText })
 
     consola.log('绘制海报中...')
     const tips: boolean[] = []
@@ -157,7 +157,7 @@ async function useDrawPoster(...args: any[]) {
       })
     }
 
-    if ($options.tips) uni.hideLoading()
+    if ($options.loading) uni.hideLoading()
 
     return tips
   }
@@ -168,7 +168,7 @@ async function useDrawPoster(...args: any[]) {
       isStop = false
       return Promise.reject()
     }
-    if ($options.tips) uni.showLoading({ title: $options.createText })
+    if ($options.loading) uni.showLoading({ title: $options.createText })
 
     const options: UniApp.CanvasToTempFilePathOptions = <any>_options_
 
@@ -181,12 +181,12 @@ async function useDrawPoster(...args: any[]) {
     return new Promise<string>((resolve, reject) => {
       options.success = (res) => {
         resolve(res.tempFilePath)
-        $options.tips && uni.hideLoading()
+        $options.loading && uni.hideLoading()
         consola.success('绘制成功', res)
       }
       options.fail = (err) => {
         reject(err)
-        $options.tips && uni.hideLoading()
+        $options.loading && uni.hideLoading()
         consola.success('绘制失败', err)
       }
       uni.canvasToTempFilePath(<any>options)
@@ -202,7 +202,7 @@ async function useDrawPoster(...args: any[]) {
         dp.ctx!.restore()
         return true
       } catch (error) {
-        if (error?.message.includes?.(`'nodeId' of undefined`))
+        if (!error?.message?.includes?.(`'nodeId' of undefined`))
           consola.error(`绘画栈(${length})，绘制错误：`, error)
         return false
       }
@@ -227,15 +227,12 @@ async function useDrawPoster(...args: any[]) {
 
   page[`__dp_${dp._id}`] = dp
 
-  if (!page?.onUnload?.__dp_unmount) {
-    const _onUnload = page.onUnload
-    page.onUnload = function () {
-      ps.run('beforeUnmount')
-      dp.stop!()
-      _onUnload()
-      ps.run('unmounted')
-    }
-    page.onUnload.__dp_unmount = true
+  const _onUnload = page.onUnload
+  page.onUnload = function () {
+    ps.run('beforeUnmount')
+    dp.stop!()
+    _onUnload()
+    ps.run('unmounted')
   }
 
   return dp

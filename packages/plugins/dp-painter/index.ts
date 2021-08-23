@@ -62,7 +62,6 @@ interface PainterTextInfo extends PainterItemSite {
 }
 /** 绘制多行文字信息 */
 interface PainterLineFeedTextInfo extends PainterItemSite {
-  /** 绘制换行文本元素 */
   type: 'line-feed-text'
   /** 文本颜色; 默认: "#000" */
   color?: string
@@ -121,7 +120,6 @@ const plugin: DrawPosterPlugin = {
       dp.canvas.height = option.height
       dp.draw(async (ctx) => {
         for (let i = 0; i < option.contents.length; i++) {
-          ctx.save()
           const info = option.contents[i]
           const left = info.left ?? 0
           const top = info.top ?? 0
@@ -184,7 +182,6 @@ const plugin: DrawPosterPlugin = {
               foregroundColor: info.foregroundColor || '#000000'
             })
           }
-          ctx.restore()
         }
       })
     }

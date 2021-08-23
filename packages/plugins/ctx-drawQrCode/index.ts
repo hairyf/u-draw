@@ -30,8 +30,10 @@ export interface DrawQrCodeOptions {
 
 const plugin: DrawPosterQrCodePlugin = {
   name: '__name__',
-  mounted: ({ ctx }) => {
-    ctx.drawQrCode = uQRCode.make.bind(uQRCode)
+  mounted: ({ ctx, canvas }) => {
+    ctx.drawQrCode = (options) => {
+      uQRCode.make.call(uQRCode, canvas, ctx, options)
+    }
   },
   errorCorrectLevel: uQRCode.errorCorrectLevel
 }

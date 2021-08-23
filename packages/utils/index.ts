@@ -48,7 +48,7 @@ type GetSuccessReult<T extends UniApiValue> = Parameters<Parameters<T>[0]['succe
  */
 export const promisify = <V extends UniApiValue>(api: V) => {
   return async (...args: Parameters<V>): Promise<GetSuccessReult<V>> => {
-    const [error, result] = (api as any)(...args)
+    const [error, result] = await (api as any)(...args)
     return error ? Promise.reject(error) : Promise.resolve(result)
   }
 }

@@ -51,6 +51,7 @@ const usePluginOptions = (plugins: DrawPosterPlugin[], ...args: any[]) => {
     _options = <any>args[0]
   }
   plugins.push(_options)
+  return _options
 }
 
 const globalPlugins: DrawPosterPlugin[] = []
@@ -66,8 +67,8 @@ export class Plugins {
   constructor(public dp: Partial<DrawPosterResult>) {}
 
   use = (...args: any[]) => {
-    usePluginOptions(this.$plugins, ...args)
-    if (this.dp['canvas']) this.run('mounted')
+    const plugin = usePluginOptions(this.$plugins, ...args)
+    if (this.dp['canvas']) plugin.mounted!(<any>this.dp)
   }
 
   run = (lifeCycleName: keyof DrawPosterLifeCycles) => {

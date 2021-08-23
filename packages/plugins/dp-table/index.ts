@@ -177,7 +177,7 @@ const plugin: DrawPosterPlugin = {
       }
 
       // 叠加高度
-      dp.from.height += maxRowHeight
+      dp.table.height += maxRowHeight
       return maxRowHeight
     }
   },

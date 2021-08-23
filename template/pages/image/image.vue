@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-  import Vue from 'vue'
   import { useDrawPoster } from '@/js_sdk/u-draw-poster'
   export default {
     data: () => ({

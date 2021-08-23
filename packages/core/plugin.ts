@@ -50,8 +50,11 @@ const usePluginOptions = (plugins: DrawPosterPlugin[], ...args: any[]) => {
   if (isObject(args[0])) {
     _options = <any>args[0]
   }
-  plugins.push(_options)
-  return _options
+  if (![...globalPlugins, ...plugins].some((v) => _options.name === v.name)) {
+    plugins.push(_options)
+    return _options
+  }
+  console.warn(`该扩展已存在: ${_options.name}`)
 }
 
 const globalPlugins: DrawPosterPlugin[] = []
@@ -68,7 +71,7 @@ export class Plugins {
 
   use = (...args: any[]) => {
     const plugin = usePluginOptions(this.$plugins, ...args)
-    if (this.dp['canvas']) plugin.mounted!(<any>this.dp)
+    if (this.dp['canvas']) plugin?.mounted?.(<any>this.dp)
   }
 
   run = (lifeCycleName: keyof DrawPosterLifeCycles) => {

@@ -29,7 +29,7 @@ export interface DrawQrCodeOptions {
 }
 
 const plugin: DrawPosterQrCodePlugin = {
-  name: '__name__',
+  name: '__ctx-drawQrCode__',
   mounted: ({ ctx, canvas }) => {
     ctx.drawQrCode = (options) => {
       uQRCode.make.call(uQRCode, canvas, ctx, options)

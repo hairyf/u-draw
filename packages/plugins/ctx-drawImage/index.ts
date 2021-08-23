@@ -22,7 +22,7 @@ declare module '../../core' {
 }
 
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__ctx-drawImage__',
   mounted: ({ ctx, $options, canvas }) => {
     ctx.drawImageProto = ctx.drawImage
     ctx.drawImage = async (url, sx, sy, sh, sw, dx, dy, dh, dw) => {

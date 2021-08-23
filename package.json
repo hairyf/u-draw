@@ -8,7 +8,7 @@
     "build": "esno scripts/build.ts",
     "publish": "esno scripts/publish.ts",
     "compress": "esno scripts/compress.ts",
-    "clean": "rimraf dcloud dist template/unpackage"
+    "clean": "rimraf dcloud dist"
   },
   "files": [
     "dist",

@@ -19,7 +19,7 @@ export interface ImageFitOption {
   specifiedPosition?: [number, number]
 }
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__ctx-drawImageFit__',
   mounted: ({ ctx }) => {
     ctx.drawImageFit = async (url, options) => {
       const imageInfo = await promisify(uni.getImageInfo)({ src: url })

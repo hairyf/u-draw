@@ -16,7 +16,7 @@ declare module '../../core' {
   }
 }
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__ctx-roundRect__',
   mounted: ({ ctx }) => {
     ctx.roundRect = (x, y, w, h, r = 15, fill = false, stroke = false) => {
       if (r === 0) {

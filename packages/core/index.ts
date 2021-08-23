@@ -222,6 +222,8 @@ async function useDrawPoster(...args: any[]) {
 
   await build()
 
+  $options.debugging && consola.success('构建成功!', dp)
+
   dp.canvas!.width = $options.width ?? 0
   dp.canvas!.height = $options.height ?? 0
 

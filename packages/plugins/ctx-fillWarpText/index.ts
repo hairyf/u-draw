@@ -21,7 +21,7 @@ export interface FillWarpTextOptions {
 }
 
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__ctx-fillWarpText__',
   mounted: ({ ctx }) => {
     ctx.fillWarpText = (config) => {
       const _config = (config = {

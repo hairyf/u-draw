@@ -31,7 +31,7 @@ export interface DrawRowOpt {
 }
 
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__dp-table__',
   beforeMount: (dp) => {
     dp.table = {
       height: dp.$options?.table?.height ?? 0,

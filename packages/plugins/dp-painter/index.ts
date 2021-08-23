@@ -113,7 +113,7 @@ export interface PainterContainerOption extends PainterItemSize {
   >
 }
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__dp-painter__',
   mounted: (dp) => {
     dp.painter = (option) => {
       dp.canvas.width = option.width

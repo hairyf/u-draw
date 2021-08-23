@@ -16,7 +16,7 @@ declare module '../../core' {
   }
 }
 const plugin: DrawPosterPlugin = {
-  name: '__name__',
+  name: '__ctx-drawRoundImage__',
   mounted: ({ ctx }) => {
     ctx.drawRoundImage = async (url, x, y, w, h, r = 15) => {
       ctx.save()

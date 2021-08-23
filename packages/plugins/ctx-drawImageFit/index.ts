@@ -1,6 +1,6 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import { concreteRect, ObjectFit, ObjectPosition, Size } from './object-sizing'
-import { promisify } from '@tuimao/uni-utils'
+import { promisify } from '../../utils'
 declare module '../../core' {
   interface CanvasCtx {
     /** 绘制 Object-Fit 模式图片

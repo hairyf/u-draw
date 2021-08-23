@@ -1,6 +1,5 @@
-import { UNI_PLATFORM } from '@tuimao/uni-utils'
 import { isObject } from 'lodash'
-import { queryFields } from '../utils'
+import { queryFields, UNI_PLATFORM } from '../utils'
 import { DebuggingLog } from './debugginglog'
 import { Plugins, globalUse, DrawPosterPlugin, DrawPosterUse } from './plugin'
 
@@ -97,9 +96,10 @@ async function useDrawPoster(...args: any[]) {
     if (isObject(args[0])) {
       _overrides = args[0] as any
     } else if (isObject(args[1])) {
-      _overrides = <any>args[0]
+      _overrides = <any>args[1]
+      _overrides.selector = args[0]
     } else {
-      _overrides = { selector: '' }
+      _overrides = { selector: args[0] }
     }
     const options = { ..._default, ..._overrides }
     options.selector = options.selector.replace('#', '')
@@ -162,7 +162,7 @@ async function useDrawPoster(...args: any[]) {
     return tips
   }
 
-  dp.createImagePath = async (_options_) => {
+  dp.createImagePath = async (_options_ = {}) => {
     if (stacks.length > 0) await dp.render!()
     if (isStop) {
       isStop = false

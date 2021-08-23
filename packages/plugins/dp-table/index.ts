@@ -102,7 +102,7 @@ const plugin: DrawPosterPlugin = {
         }
         dp.ctx.font = rowOptions.font
         const fonts = dp.ctx.fillWarpText({
-          text: rowOptions.text,
+          content: rowOptions.text,
           maxWidth: fontMaxWidth,
           lineHeight: options.lineHeight,
           x: fontOffsetX,

@@ -166,7 +166,7 @@ const plugin: DrawPosterPlugin = {
               layer: info.lineClamp,
               lineHeight: info.lineHeight,
               maxWidth: info.width,
-              text: info.content
+              content: info.content
             })
           }
           if (info.type === 'qr-code') {

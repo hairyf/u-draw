@@ -10,7 +10,7 @@ declare module '../../core' {
 }
 /** 绘制换行配置 */
 export interface FillWarpTextOptions {
-  text: string
+  content: string
   maxWidth?: number
   lineHeight?: number
   layer?: number
@@ -34,13 +34,13 @@ const plugin: DrawPosterPlugin = {
         draw: true,
         ...config
       })
-      const { text, separator, maxWidth, layer, lineHeight, draw, x, y } = _config
+      const { content, separator, maxWidth, layer, lineHeight, draw, x, y } = _config
       // 当字符串为空时, 抛出错误
-      if (!text) {
+      if (!content) {
         throw new Error('warpFillText Error: text is empty string')
       }
       // 分割所有单个字符串
-      const chr = text.split(separator)
+      const chr = content.split(separator)
       // 存入的每行字体的容器
       let row: string[] = []
       // 判断字符串

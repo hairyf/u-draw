@@ -315,8 +315,8 @@
 
 "@tuimao/uni-utils@^0.3.0":
   version "0.3.0"
-  resolved "https://registry.nlark.com/@tuimao/uni-utils/download/@tuimao/uni-utils-0.3.0.tgz#828aa69863749377ff55b6a3dff3606ab0eadddd"
-  integrity sha1-goqmmGN0k3f/Vbaj3/NgarDq3d0=
+  resolved "https://registry.yarnpkg.com/@tuimao/uni-utils/-/uni-utils-0.3.0.tgz#828aa69863749377ff55b6a3dff3606ab0eadddd"
+  integrity sha512-TtdfKKhF/0zTBFjjoidPA/8qafnF8LxlwxBdHcWKVxNABAQh8VWcdKSxrz0Xv+5gs8tp4GwwbNKWABICrvmWxw==
   dependencies:
     "@tuimao/browser" "^0.3.0"
     "@tuimao/core" "^0.3.0"

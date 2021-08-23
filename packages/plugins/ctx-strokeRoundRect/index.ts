@@ -10,7 +10,9 @@ declare module '../../core' {
 }
 const plugin: DrawPosterPlugin = {
   name: '__name__',
-  mounted: () => {}
+  mounted: ({ ctx }) => {
+    ctx.strokeRoundRect = (x, y, w, h, r) => ctx.roundRect(x, y, w, h, r, false, true)
+  }
 }
 
 export default plugin

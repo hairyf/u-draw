@@ -28,7 +28,7 @@ export interface Size {
  *
  * ### default object size
  */
-export function calculateConcreteRect(
+export function concreteRect(
   style: {
     /** @see https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit */
     objectFit?: ObjectFit

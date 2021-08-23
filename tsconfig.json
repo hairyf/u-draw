@@ -6,6 +6,7 @@
     "strict": true,
     "declaration": true,
     "sourceMap": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": "./packages",
@@ -20,6 +21,7 @@
   ],
   "include": [
     "./packages/**/*.ts",
+    "./packages/**/*.js",
     "./packages/**/*.d.ts",
   ]
 }

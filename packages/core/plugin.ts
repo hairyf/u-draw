@@ -21,6 +21,7 @@ export interface DrawPosterLifeCycles {
 export interface DrawPosterPlugin extends DrawPosterLifeCycles {
   /** 扩展名称 */
   name: string
+  [key: string]: any
 }
 
 export interface DrawPosterUse {

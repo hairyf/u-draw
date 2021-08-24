@@ -1,12 +1,12 @@
 {
   "name": "u-draw-poster",
-  "version": "1.1.5",
+  "version": "2.1.0-bate.1",
   "description": "绘制uniapp海报工具类",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "esno scripts/build.ts",
-    "publish": "esno scripts/publish.ts",
+    "publish:cli": "esno scripts/publish.ts",
     "compress": "esno scripts/compress.ts",
     "clean": "rimraf dcloud dist template/js_sdk"
   },

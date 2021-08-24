@@ -67,7 +67,9 @@ export class Plugins {
     return [...globalPlugins, ...this.$plugins]
   }
 
-  constructor(public dp: Partial<DrawPosterResult>) {}
+  constructor(public dp: Partial<DrawPosterResult>) {
+    if (dp.$options?.plugins) this.$plugins.push(...dp.$options?.plugins)
+  }
 
   use = (...args: any[]) => {
     const plugin = usePluginOptions(this.$plugins, ...args)

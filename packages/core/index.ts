@@ -12,7 +12,7 @@ export interface DrawPosterOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */
   selector: string
   /** 选取组件范围 */
-  componentThis?: string
+  componentThis?: any
   /** 绘制类型, 微信小程序自动切换为 '2d' */
   type?: '2d' | 'context' | 'webgl'
   /** 是否在绘制与创建时显示加载提示 */
@@ -30,6 +30,8 @@ export interface DrawPosterOptions {
   width?: number
   /** 画布高度 */
   height?: number
+  /** 绘制扩展 */
+  plugins?: DrawPosterPlugin[]
 }
 export interface DrawPosterResult {
   /** 绘制标识 */
@@ -42,7 +44,10 @@ export interface DrawPosterResult {
   readonly canvas: Canvas
   /** 画笔 */
   readonly ctx: CanvasCtx
-  /** 引入扩展 */
+  /**
+   * 引入扩展
+   * 建议: 在构建配置中传入 `plugins`, 该引入方式无法触发 beforeMount
+   */
   readonly use: DrawPosterUse
   /** 停止绘制(仅停止生成) */
   readonly stop: () => void
@@ -52,6 +57,8 @@ export interface DrawPosterResult {
   readonly render: () => Promise<boolean[]>
   /** 生成图片地址 */
   readonly createImagePath: (options?: CreateImagePathOptions) => Promise<string>
+  /** 绘图原型(用于在 beforeMount 时自定义绘制原型) */
+  $drawPrototype?: { canvas: Canvas; ctx: CanvasCtx }
   [key: string]: any
 }
 export interface CanvasCtx extends UniApp.CanvasContext {
@@ -132,13 +139,14 @@ async function useDrawPoster(...args: any[]) {
 
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
-  const dp: Partial<DrawPosterResult> = {}
+  const dp: Partial<DrawPosterResult> = { $options }
   const ps = new Plugins(dp)
-  const consola = new DebuggingLog(dp, $options)
+  const consola = new DebuggingLog(dp)
   let stacks: Stacks = []
   let isStop = false
 
   const build = async () => {
+    if (dp.$drawPrototype) return dp.$drawPrototype
     const _nodeInfo = await queryFields($options.selector, $options.componentThis, <any>{
       node: true
     })
@@ -228,7 +236,6 @@ async function useDrawPoster(...args: any[]) {
 
   if (page[`__dp_${dp.id}`]) return page[`__dp_${dp.id}`]
 
-  Object.defineProperty(dp, '$options', { get: () => $options })
   Object.defineProperty(dp, 'id', { get: () => $options.selector })
   Object.defineProperty(dp, 'plugins', { get: () => ps.plugins })
 
@@ -260,7 +267,6 @@ async function useDrawPoster(...args: any[]) {
     _onUnload()
     ps.run('unmounted')
   }
-
   return dp
 }
 

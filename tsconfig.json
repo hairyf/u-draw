@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./packages",
+    "types": [
+      "@dcloudio/types",
+      "node",
+    ]
+  },
+  "exclude": [
+    "**/__tests__/*.ts",
+    "**/__test__/*.ts"
+  ],
+  "include": [
+    "./packages/**/*.ts",
+    "./packages/**/*.js",
+    "./packages/**/*.d.ts",
+  ]
+}

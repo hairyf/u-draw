@@ -1,3 +1,5 @@
 node_modules
-test/template/unpackage
-
+dist
+dcloud
+template/js_sdk
+unpackage

@@ -1,10 +1,14 @@
 {
   "name": "u-draw-poster",
-  "version": "1.1.5",
+  "version": "2.1.0-bate.1",
   "description": "绘制uniapp海报工具类",
-  "main": "dist/index.js",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "ts-node scripts/build.ts"
+    "build": "esno scripts/build.ts",
+    "publish:cli": "esno scripts/publish.ts",
+    "compress": "esno scripts/compress.ts",
+    "clean": "rimraf dcloud dist template/js_sdk"
   },
   "files": [
     "dist",
@@ -13,18 +17,28 @@
   "author": "Mr.Mao",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/types": "^2.0.16",
-    "miniprogram-api-typings": "^3.1.3",
-    "vue": "^2.6.12"
+    "@dcloudio/types": "^2.5.1",
+    "@tuimao/uni-utils": "^0.3.0",
+    "@types/lodash-es": "^4.17.4",
+    "lodash": "^4.17.21",
+    "miniprogram-api-typings": "^3.1.3"
   },
+  "prettier": "@tuimao/eslint/prettier.js",
   "devDependencies": {
-    "@types/archiver": "^5.1.0",
+    "@tuimao/eslint": "^1.2.0-bata.3",
+    "@types/archiver": "^5.1.1",
+    "@types/fs-extra": "^9.0.12",
     "@types/node": "^14.14.9",
-    "archiver": "^5.1.0",
+    "archiver": "^5.3.0",
+    "assert": "^2.0.0",
+    "consola": "^2.15.3",
+    "eslint": "^7.32.0",
+    "esno": "^0.9.1",
+    "execa": "^5.1.1",
+    "fs-extra": "^10.0.0",
+    "rimraf": "^3.0.2",
     "tern": "^0.24.3",
-    "ts-loader": "^8.0.11",
     "typescript": "^4.0.5",
-    "webpack": "^5.4.0",
-    "webpack-cli": "^4.2.0"
+    "vue": "^2.6.14"
   }
 }

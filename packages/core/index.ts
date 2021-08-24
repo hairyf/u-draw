@@ -7,6 +7,7 @@ export type NonNullableCustom<T, N> = T extends N ? never : T
 export type NonPick<T, K extends keyof T> = {
   [P in NonNullableCustom<keyof T, K>]: T[P]
 }
+
 export interface DrawPosterOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */
   selector: string
@@ -15,13 +16,14 @@ export interface DrawPosterOptions {
   /** 绘制类型, 微信小程序自动切换为 '2d' */
   type?: '2d' | 'context' | 'webgl'
   /** 是否在绘制与创建时显示加载提示 */
-  loading?: boolean
+  loading?:
+    | boolean
+    | {
+        render?: string
+        create?: string
+      }
   /** 是否开启调试模式 */
-  debugging?: boolean
-  /** 加载提示文字 */
-  loadingText?: string
-  /** 创建图片提示文字 */
-  createText?: string
+  debug?: boolean
   /** 是否启动gcanvas(nvue) */
   gcanvas?: boolean
   /** 画布宽度 */
@@ -30,16 +32,26 @@ export interface DrawPosterOptions {
   height?: number
 }
 export interface DrawPosterResult {
-  readonly _id: string
+  /** 绘制标识 */
+  readonly id: string
+  /** 当前绘画插件 */
   readonly plugins: DrawPosterPlugin[]
-  canvas: Canvas
-  ctx: CanvasCtx
-  use: DrawPosterUse
-  stop(): void
-  draw(func: (ctx: CanvasCtx) => Promise<void> | void): void
-  render(): Promise<boolean[]>
-  createImagePath(options?: CreateImagePathOptions): Promise<string>
-  $options: DrawPosterOptions
+  /** 源数据 */
+  readonly $options: DrawPosterOptions
+  /** 画布(仅 2d 生效) */
+  readonly canvas: Canvas
+  /** 画笔 */
+  readonly ctx: CanvasCtx
+  /** 引入扩展 */
+  readonly use: DrawPosterUse
+  /** 停止绘制(仅停止生成) */
+  readonly stop: () => void
+  /** 创建一个绘制作用域 */
+  readonly draw: (func: (ctx: CanvasCtx) => Promise<void> | void) => void
+  /** 将所有作用域渲染 */
+  readonly render: () => Promise<boolean[]>
+  /** 生成图片地址 */
+  readonly createImagePath: (options?: CreateImagePathOptions) => Promise<string>
   [key: string]: any
 }
 export interface CanvasCtx extends UniApp.CanvasContext {
@@ -48,8 +60,6 @@ export interface CanvasCtx extends UniApp.CanvasContext {
   textAlign: CanvasTextDrawingStyles['textAlign']
   textBaseline: CanvasTextDrawingStyles['textBaseline']
   transform: CanvasTransform['transform']
-  /** 绘制图片原型 */
-  drawImageProto: UniApp.CanvasContext['drawImage']
 }
 export interface Canvas {
   width: number
@@ -87,9 +97,7 @@ async function useDrawPoster(...args: any[]) {
       componentThis: undefined,
       type: UNI_PLATFORM === 'mp-weixin' ? '2d' : 'context',
       loading: false,
-      debugging: false,
-      loadingText: '绘制海报中...',
-      createText: '生成图片中...',
+      debug: false,
       gcanvas: false
     }
     let _overrides: DrawPosterOptions
@@ -106,6 +114,13 @@ async function useDrawPoster(...args: any[]) {
     if (options.type === '2d') {
       options.selector = `#${options.selector}`
     }
+    if (options.loading === true) {
+      options.loading = { render: '绘制海报中...', create: '生成图片中...' }
+    }
+    if (isObject(options.loading)) {
+      options.loading!.render = options.loading?.render ?? '绘制海报中...'
+      options.loading!.create = options.loading?.create ?? '绘制海报中...'
+    }
     if (!UNI_PLATFORM) {
       console.warn(
         '注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type=2d模式'
@@ -117,14 +132,13 @@ async function useDrawPoster(...args: any[]) {
 
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
-  const dp: Partial<DrawPosterResult> = { $options }
+  const dp: Partial<DrawPosterResult> = {}
   const ps = new Plugins(dp)
   const consola = new DebuggingLog(dp, $options)
   let stacks: Stacks = []
   let isStop = false
 
   const build = async () => {
-    ps.run('beforeMount')
     const _nodeInfo = await queryFields($options.selector, $options.componentThis, <any>{
       node: true
     })
@@ -135,13 +149,11 @@ async function useDrawPoster(...args: any[]) {
     if (!canvas || !ctx || !$options.selector) {
       throw new Error('DrawPoster Error: useDrawPoster to build drawPoster instance')
     }
-    dp.canvas = canvas
-    dp.ctx = ctx
-    ps.run('mounted')
+    return { canvas, ctx }
   }
 
-  dp.render = async () => {
-    if ($options.loading) uni.showLoading({ title: $options.loadingText })
+  const render = async () => {
+    if ($options.loading) uni.showLoading({ title: ($options.loading as any).render })
 
     consola.log('绘制海报中...')
     const tips: boolean[] = []
@@ -162,13 +174,13 @@ async function useDrawPoster(...args: any[]) {
     return tips
   }
 
-  dp.createImagePath = async (_options_ = {}) => {
+  const createImagePath = async (_options_ = {}) => {
     if (stacks.length > 0) await dp.render!()
     if (isStop) {
       isStop = false
       return Promise.reject()
     }
-    if ($options.loading) uni.showLoading({ title: $options.createText })
+    if ($options.loading) uni.showLoading({ title: ($options.loading as any).create })
 
     const options: UniApp.CanvasToTempFilePathOptions = <any>_options_
 
@@ -176,7 +188,7 @@ async function useDrawPoster(...args: any[]) {
       ;(<any>options).canvas = dp.canvas
     }
     if ($options.type === 'context') {
-      ;(<any>options).canvasId = dp._id
+      ;(<any>options).canvasId = dp.id
     }
     return new Promise<string>((resolve, reject) => {
       options.success = (res) => {
@@ -193,7 +205,7 @@ async function useDrawPoster(...args: any[]) {
     })
   }
 
-  dp.draw = async (func) => {
+  const draw = async (func: Function) => {
     const length = stacks.length
     stacks.push(async () => {
       try {
@@ -209,25 +221,37 @@ async function useDrawPoster(...args: any[]) {
     })
   }
 
-  dp.stop = () => {
+  const stop = () => {
     stacks = []
     isStop = true
   }
 
-  Object.defineProperty(dp, '_id', { get: () => $options.selector })
+  if (page[`__dp_${dp.id}`]) return page[`__dp_${dp.id}`]
+
+  Object.defineProperty(dp, '$options', { get: () => $options })
+  Object.defineProperty(dp, 'id', { get: () => $options.selector })
   Object.defineProperty(dp, 'plugins', { get: () => ps.plugins })
+
+  ps.run('beforeMount')
+
+  const { canvas, ctx } = await build()
+
+  Object.defineProperty(dp, 'canvas', { get: () => canvas })
+  Object.defineProperty(dp, 'ctx', { get: () => ctx })
+  Object.defineProperty(dp, 'render', { get: () => render })
+  Object.defineProperty(dp, 'createImagePath', { get: () => createImagePath })
+  Object.defineProperty(dp, 'draw', { get: () => draw })
+  Object.defineProperty(dp, 'stop', { get: () => stop })
   Object.defineProperty(dp, 'use', { get: () => ps.use })
-
-  if (page[`__dp_${dp._id}`]) return page[`__dp_${dp._id}`]
-
-  await build()
-
-  $options.debugging && consola.success('构建成功!', dp)
 
   dp.canvas!.width = $options.width ?? 0
   dp.canvas!.height = $options.height ?? 0
 
-  page[`__dp_${dp._id}`] = dp
+  ps.run('mounted')
+
+  $options.debug && consola.success('构建成功!', dp)
+
+  page[`__dp_${dp.id}`] = dp
 
   const _onUnload = page.onUnload
   page.onUnload = function () {

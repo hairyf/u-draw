@@ -18,6 +18,10 @@ declare module '../../core' {
       sWidth?: number | undefined,
       sHeight?: number | undefined
     ): Promise<boolean>
+    /**
+     * 绘制图片原型
+     */
+    drawImageProto: UniApp.CanvasContext['drawImage']
   }
 }
 

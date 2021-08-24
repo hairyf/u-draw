@@ -6,8 +6,8 @@ export class DebuggingLog {
 
   constructor(private dp: Partial<DrawPosterResult>, private $options: DrawPosterOptions) {}
   log = (message: string, color = this.$color, ...args: any[]) => {
-    if (!this.$options.debugging) return
-    console.log(`%c${this.dp._id} -> ${message}`, `color: ${color}`, ...args)
+    if (!this.$options.debug) return
+    console.log(`%c${this.dp.id} -> ${message}`, `color: ${color}`, ...args)
   }
   success = (message: string, ...args: any[]) => {
     this.log(`🎉 ${message}`, '#19be6b', ...args)

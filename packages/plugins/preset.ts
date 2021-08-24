@@ -1,13 +1,13 @@
-export { default as drawImage } from './ctx-drawImage'
+export { default as drawImage } from './drawImage'
 
-export { default as roundRect } from './ctx-roundRect'
+export { default as roundRect } from './roundRect'
 
-export { default as fillRoundRect } from './ctx-fillRoundRect'
+export { default as fillRoundRect } from './fillRoundRect'
 
-export { default as strokeRoundRect } from './ctx-strokeRoundRect'
+export { default as strokeRoundRect } from './strokeRoundRect'
 
-export { default as fillWarpText } from './ctx-fillWarpText'
+export { default as fillWarpText } from './fillWarpText'
 
-export { default as drawRoundImage } from './ctx-drawRoundImage'
+export { default as drawRoundImage } from './drawRoundImage'
 
-export { default as drawImageFit } from './ctx-drawImageFit'
+export { default as drawImageFit } from './drawImageFit'

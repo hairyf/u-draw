@@ -25,9 +25,7 @@
 <script>
   import { setTimeout } from 'timers'
   import { useDrawPoster } from '../../js_sdk/u-draw-poster'
-  import table from '../../js_sdk/u-draw-poster/plugins/dp-table'
-
-  useDrawPoster.use(table)
+  import table from '../../js_sdk/u-draw-poster/plugins/table'
   export default {
     data: () => ({
       imgUrl: '',
@@ -38,7 +36,8 @@
       const dp = await useDrawPoster({
         selector: 'canvas',
         debugging: true,
-        width: 300
+        width: 300,
+        plugins: [table()]
       })
       dp.createLayer({ background: '#fff', line: false }, [
         { text: '字体与颜色', font: '35px sans-serif', color: 'red' },

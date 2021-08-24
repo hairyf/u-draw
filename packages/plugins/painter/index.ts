@@ -1,5 +1,5 @@
 import { DrawPosterPlugin } from '../../core/plugin'
-import { ImageFitOption } from '../ctx-drawImageFit'
+import { ImageFitOption } from '../drawImageFit'
 declare module '../../core' {
   interface DrawPosterResult {
     painter: (option: PainterContainerOption) => void
@@ -188,4 +188,4 @@ const plugin: DrawPosterPlugin = {
   }
 }
 
-export default plugin
+export default () => plugin

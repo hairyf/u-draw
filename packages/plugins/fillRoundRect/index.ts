@@ -15,4 +15,4 @@ const plugin: DrawPosterPlugin = {
   }
 }
 
-export default plugin
+export default () => plugin

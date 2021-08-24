@@ -450,7 +450,7 @@ export default class CanvasRenderingContext2D {
 		this._drawCommands = this._drawCommands.concat("i" + x.toFixed(2) + "," + y.toFixed(2) + ";");
 	}
 
-	quadraticCurveTo = function(cpx, cpy, x, y) {
+	quadraticCurveTo(cpx, cpy, x, y) {
 		this._drawCommands = this._drawCommands.concat("u" + cpx + "," + cpy + "," + x + "," + y + ";");
 	}
 
@@ -507,7 +507,7 @@ export default class CanvasRenderingContext2D {
 		this._drawCommands = this._drawCommands.concat("T" + tmptext + "," + x + "," + y + ",0.0;");
 	}
 
-	strokeText = function(text, x, y) {
+	strokeText(text, x, y) {
 		let tmptext = text.replace(/!/g, "!!");
 		tmptext = tmptext.replace(/,/g, "!,");
 		tmptext = tmptext.replace(/;/g, "!;");

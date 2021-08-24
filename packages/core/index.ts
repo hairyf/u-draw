@@ -19,7 +19,9 @@ export interface DrawPosterOptions {
   loading?:
     | boolean
     | {
+        /** 生成时加载文字 @default '绘制海报中...' */
         render?: string
+        /** 创建图片时加载文字 @default '生成图片中...' */
         create?: string
       }
   /** 是否开启调试模式 */
@@ -126,7 +128,7 @@ async function useDrawPoster(...args: any[]) {
     }
     if (isObject(options.loading)) {
       options.loading!.render = options.loading?.render ?? '绘制海报中...'
-      options.loading!.create = options.loading?.create ?? '绘制海报中...'
+      options.loading!.create = options.loading?.create ?? '生成图片中...'
     }
     if (!UNI_PLATFORM) {
       console.warn(

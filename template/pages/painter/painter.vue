@@ -19,8 +19,8 @@
 </template>
 <script>
   import { useDrawPoster } from '@/js_sdk/u-draw-poster'
-  import drawPainter from '@/js_sdk/u-draw-poster/plugins/dp-painter'
-  import drawQrCode from '@/js_sdk/u-draw-poster/plugins/ctx-drawQrCode'
+  import drawPainter from '@/js_sdk/u-draw-poster/plugins/painter'
+  import drawQrCode from '@/js_sdk/u-draw-poster/plugins/drawQrCode'
   export default {
     data: () => ({
       imgUrl: '',
@@ -33,10 +33,9 @@
         selector: 'canvas',
         debugging: true,
         width: 200,
-        height: 380
+        height: 380,
+        plugins: [drawQrCode(), drawPainter()]
       })
-      dp.use(drawQrCode)
-      dp.use(drawPainter)
       // 插入绘制描述信息
       dp.painter({
         width: 200,

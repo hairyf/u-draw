@@ -19,7 +19,7 @@
 </template>
 <script>
   import { useDrawPoster } from '@/js_sdk/u-draw-poster'
-  import drawQrCode from '@/js_sdk/u-draw-poster/plugins/ctx-drawQrCode'
+  import drawQrCode from '@/js_sdk/u-draw-poster/plugins/drawQrCode'
   export default {
     data: () => ({
       imgUrl: ''
@@ -28,9 +28,9 @@
       // 创建绘制工具
       const dp = await useDrawPoster('canvas', {
         width: 300,
-        height: 300
+        height: 300,
+        plugins: [drawQrCode()]
       })
-      dp.use(drawQrCode)
       const w = dp.canvas.width
       const h = dp.canvas.height
       // 创建一个绘制任务

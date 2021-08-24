@@ -1,13 +1,5 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import uQRCode from './uQRCode'
-interface DrawPosterQrCodePlugin extends DrawPosterPlugin {
-  errorCorrectLevel: {
-    L: number
-    M: number
-    Q: number
-    H: number
-  }
-}
 declare module '../../core' {
   interface CanvasCtx {
     /** 绘制二维码
@@ -28,14 +20,20 @@ export interface DrawQrCodeOptions {
   foregroundColor?: string
 }
 
-const plugin: DrawPosterQrCodePlugin = {
+const plugin: DrawPosterPlugin = {
   name: '__ctx-drawQrCode__',
   mounted: ({ ctx, canvas }) => {
     ctx.drawQrCode = (options) => {
       uQRCode.make.call(uQRCode, canvas, ctx, options)
     }
-  },
-  errorCorrectLevel: uQRCode.errorCorrectLevel
+  }
 }
 
-export default plugin
+export const errorCorrectLevel: {
+  L: number
+  M: number
+  Q: number
+  H: number
+} = uQRCode.errorCorrectLevel
+
+export default () => plugin

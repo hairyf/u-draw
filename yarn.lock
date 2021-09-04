@@ -217,10 +217,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@dcloudio/types@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@dcloudio/types/-/types-2.5.1.tgz#1aacead4158e2d7448e2585db1a68af28fccac1a"
-  integrity sha512-tw+ELDxWJFG2/GoVlQuUuA8YATtXMmCP7AzRvb1syrdf1rVgrzCGJr3GVlGE8qLEl/lhhRKuufgcOp3h9VSEzA==
+"@dcloudio/types@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@dcloudio/types/-/types-2.5.6.tgz#fba90cc0420e123eab09e895d5baceb0b73ebb21"
+  integrity sha512-SvJ2aRViG7aMn/Sf44FnKXcuqAnuYeG2X0NvU6iFiOnC/NKo1n8lWxGy88VnNINic0M1jRaeFKLOhosuAsTndQ==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"

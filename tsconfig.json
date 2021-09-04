@@ -13,7 +13,8 @@
     "types": [
       "@dcloudio/types",
       "node",
-    ]
+    ],
+    "skipLibCheck": true
   },
   "exclude": [
     "**/__tests__/*.ts",

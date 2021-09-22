@@ -5,8 +5,7 @@
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
-- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
-- 更加强大的图片绘制与裁剪方法（object-fit）
+- 支持`typescript`，支持`vue3`模板
 - 支持声明式绘制扩展，自定义海报必备 具体使用参考 [draw-painter](https://tuimao233.gitee.io/mao-blog/wo-de-kuo-zhan/u-draw-poster/01-base-desc.html)
 
 api文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/wo-de-kuo-zhan/u-draw-poster/01-base-desc.html)

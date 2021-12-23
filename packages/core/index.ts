@@ -223,7 +223,7 @@ async function useDrawPoster(...args: any[]) {
         await func(dp.ctx!)
         dp.ctx!.restore()
         return true
-      } catch (error) {
+      } catch (error: any) {
         if (!error?.message?.includes?.(`'nodeId' of undefined`))
           consola.error(`绘画栈(${length})，绘制错误：`, error)
         return false

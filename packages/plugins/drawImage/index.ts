@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-add-event-listener */
 import { DrawPosterPlugin } from '../../core/plugin'
 import { downloadImgUrl } from './utils'
 
@@ -53,11 +55,11 @@ const plugin: DrawPosterPlugin = {
         result = await new Promise((resolve) => {
           const image = canvas.createImage()
           image.src = path
-          ;(<any>image).addEventListener('load', () => {
+          image.onload = () => {
             baseDrawImage(<any>image)
             resolve(true)
-          })
-          ;(<any>image).addEventListener('error', () => resolve(false))
+          }
+          image.onerror = () => resolve(false)
         })
       }
       return result

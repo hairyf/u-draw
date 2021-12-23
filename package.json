@@ -13,14 +13,13 @@
   "author": "Mr.Mao",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/types": "^2.5.6",
-    "@tuimao/uni-utils": "^0.3.0",
-    "@types/lodash-es": "^4.17.4",
-    "lodash": "^4.17.21",
-    "miniprogram-api-typings": "^3.1.3"
+    "@types/lodash": "^4.14.178",
+    "lodash": "^4.17.21"
   },
   "prettier": "@tuimao/eslint/prettier.js",
   "devDependencies": {
+    "miniprogram-api-typings": "^3.1.3",
+    "@dcloudio/types": "^2.5.6",
     "@tuimao/eslint": "^1.2.0-bata.3",
     "@types/archiver": "^5.1.1",
     "@types/fs-extra": "^9.0.12",

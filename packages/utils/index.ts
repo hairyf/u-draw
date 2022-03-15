@@ -32,11 +32,16 @@ type UniPlatforms =
   | 'quickapp-webview-union'
   | 'quickapp-webview-huawei'
   | undefined
+
 /**
  * 当前环境信息
  */
-export const UNI_PLATFORM =
-  typeof process !== 'undefined' ? (process?.env?.VUE_APP_PLATFORM as UniPlatforms) : undefined
+export const UNI_PLATFORM = ((): UniPlatforms => {
+  if (typeof process !== 'undefined') return process?.env?.VUE_APP_PLATFORM as UniPlatforms
+  // #ifdef MP-WEIXIN
+  return 'mp-weixin'
+  // #endif
+})()
 
 type UniApiKey = keyof UniApp.Uni
 type UniApiValue = UniApp.Uni[UniApiKey]

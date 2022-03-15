@@ -1,6 +1,6 @@
-import { isObject } from 'lodash'
-import { queryFields, UNI_PLATFORM } from '../utils'
+import { queryFields } from '../utils'
 import { DebuggingLog } from './debugginglog'
+import { helperParams } from './helper'
 import { Plugins, globalUse, DrawPosterPlugin, DrawPosterUse } from './plugin'
 
 export type NonNullableCustom<T, N> = T extends N ? never : T
@@ -99,54 +99,28 @@ function useDrawPoster(
   options?: Partial<NonPick<DrawPosterOptions, 'selector'>>
 ): Promise<DrawPosterResult>
 function useDrawPoster(options: DrawPosterOptions): Promise<DrawPosterResult>
-async function useDrawPoster(...args: any[]) {
-  const $options = (() => {
-    const _default: DrawPosterOptions = {
-      selector: '',
-      componentThis: undefined,
-      type: UNI_PLATFORM === 'mp-weixin' ? '2d' : 'context',
-      loading: false,
-      debug: false,
-      gcanvas: false
-    }
-    let _overrides: DrawPosterOptions
-    if (isObject(args[0])) {
-      _overrides = args[0] as any
-    } else if (isObject(args[1])) {
-      _overrides = <any>args[1]
-      _overrides.selector = args[0]
-    } else {
-      _overrides = { selector: args[0] }
-    }
-    const options = { ..._default, ..._overrides }
-    options.selector = options.selector.replace('#', '')
-    if (options.type === '2d') {
-      options.selector = `#${options.selector}`
-    }
-    if (options.loading === true) {
-      options.loading = { render: '绘制海报中...', create: '生成图片中...' }
-    }
-    if (isObject(options.loading)) {
-      options.loading!.render = options.loading?.render ?? '绘制海报中...'
-      options.loading!.create = options.loading?.create ?? '生成图片中...'
-    }
-    if (!UNI_PLATFORM) {
-      console.warn(
-        '注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type=2d模式'
-      )
-      console.warn(`请在vue.config.js中的'transpileDependencies'中添加 'u-draw-poster' `)
-    }
-    return options
-  })()
 
+async function useDrawPoster(...args: any[]) {
+  // 处理 args 传参
+  const $options = helperParams(...args)
+
+  // #region 假如当前页面已存在实例, 则直接返回
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
+  if (page[`__dp_${$options.selector}`]) return page[`__dp_${$options.selector}`]
+  // #endregion
+
+  // #region 初始化参数定义, 初始化插件系统, 初始化 debug 系统
   const dp: Partial<DrawPosterResult> = { $options }
+
   const ps = new Plugins(dp)
   const consola = new DebuggingLog(dp)
+
   let stacks: Stacks = []
   let isStop = false
+  // #endregion
 
+  // #region 基础方法定义
   const build = async () => {
     if (dp.$drawPrototype) return dp.$drawPrototype
     const _nodeInfo = await queryFields($options.selector, $options.componentThis, <any>{
@@ -166,17 +140,17 @@ async function useDrawPoster(...args: any[]) {
     if ($options.loading) uni.showLoading({ title: ($options.loading as any).render })
 
     consola.log('绘制海报中...')
+
     const tips: boolean[] = []
-    for (const next of stacks) {
-      tips.push(await next())
-    }
+
+    for (const next of stacks) tips.push(await next())
+
     stacks = []
+
     consola.log('绘制状况: ', undefined, tips)
 
     if ($options.type === 'context') {
-      await new Promise((resolve) => {
-        dp.ctx!.draw(true, resolve)
-      })
+      await new Promise((resolve) => dp.ctx!.draw(true, resolve))
     }
 
     if ($options.loading) uni.hideLoading()
@@ -185,34 +159,37 @@ async function useDrawPoster(...args: any[]) {
   }
 
   const createImagePath = async (_options_ = {}) => {
+    ps.run('beforeCreate')
     if (stacks.length > 0) await dp.render!()
     if (isStop) {
       isStop = false
       return Promise.reject()
     }
+
     if ($options.loading) uni.showLoading({ title: ($options.loading as any).create })
 
     const options: UniApp.CanvasToTempFilePathOptions = <any>_options_
 
-    if ($options.type === '2d') {
-      ;(<any>options).canvas = dp.canvas
-    }
-    if ($options.type === 'context') {
-      ;(<any>options).canvasId = dp.id
-    }
-    return new Promise<string>((resolve, reject) => {
+    if ($options.type === '2d') (<any>options).canvas = dp.canvas
+    if ($options.type === 'context') (<any>options).canvasId = dp.id
+
+    const promised = new Promise<string>((resolve, reject) => {
       options.success = (res) => {
         resolve(res.tempFilePath)
         $options.loading && uni.hideLoading()
         consola.success('绘制成功', res)
+        ps.run('created')
       }
       options.fail = (err) => {
         reject(err)
         $options.loading && uni.hideLoading()
         consola.success('绘制失败', err)
+        ps.run('created')
       }
       uni.canvasToTempFilePath(<any>options)
     })
+
+    return promised
   }
 
   const draw = async (func: Function) => {
@@ -235,9 +212,9 @@ async function useDrawPoster(...args: any[]) {
     stacks = []
     isStop = true
   }
+  // #endregion
 
-  if (page[`__dp_${dp.id}`]) return page[`__dp_${dp.id}`]
-
+  // #region 挂载数据与方法
   Object.defineProperty(dp, 'id', { get: () => $options.selector })
   Object.defineProperty(dp, 'plugins', { get: () => ps.plugins })
 
@@ -259,16 +236,19 @@ async function useDrawPoster(...args: any[]) {
   ps.run('mounted')
 
   $options.debug && consola.success('构建成功!', dp)
+  // #endregion
 
+  // #region 保存实例, 实现单页面同个实例
   page[`__dp_${dp.id}`] = dp
-
-  const _onUnload = page.onUnload
+  const onUnload = page.onUnload
   page.onUnload = function () {
     ps.run('beforeUnmount')
     dp.stop!()
-    _onUnload()
+    onUnload()
     ps.run('unmounted')
   }
+  // #endregion
+
   return dp
 }
 

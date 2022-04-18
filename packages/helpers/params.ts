@@ -1,5 +1,6 @@
 import { isFunction, isObject, isString } from 'lodash'
-import { DrawPosterOptions, DrawPosterPlugin } from '../core'
+import { DrawPosterPlugin } from '../core'
+import { DrawPosterOptions } from '../core/typed'
 import { UNI_PLATFORM } from '../utils'
 import { globalPlugins } from './internal'
 

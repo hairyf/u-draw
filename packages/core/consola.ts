@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 
-import { DrawPosterResult } from '.'
+import { DrawPosterResult } from './typed'
 
 export class Consola {
   private $color = '#3489fd'

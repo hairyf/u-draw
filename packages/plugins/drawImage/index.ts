@@ -3,7 +3,7 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import { downloadImgUrl } from './utils'
 
-declare module '../../core' {
+declare module '../../core/typed' {
   export interface CanvasCtx {
     /** 等待绘制图片
      *

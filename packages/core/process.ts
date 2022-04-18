@@ -1,5 +1,5 @@
-import { DrawPosterResult } from '.'
 import { Consola } from './consola'
+import { DrawPosterResult } from './typed'
 
 class DrawProcess {
   /** 进程堆栈 */

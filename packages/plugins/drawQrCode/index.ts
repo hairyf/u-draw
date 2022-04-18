@@ -1,6 +1,6 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import uQRCode from './uQRCode'
-declare module '../../core' {
+declare module '../../core/typed' {
   interface CanvasCtx {
     /** 绘制二维码
      *

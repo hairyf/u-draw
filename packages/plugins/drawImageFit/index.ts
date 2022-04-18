@@ -1,7 +1,7 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import { concreteRect, ObjectFit, ObjectPosition, Size } from './object-sizing'
 import { promisify } from '../../utils'
-declare module '../../core' {
+declare module '../../core/typed' {
   interface CanvasCtx {
     /** 绘制 Object-Fit 模式图片
      *

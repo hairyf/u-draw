@@ -1,5 +1,5 @@
-import { DrawPosterResult } from '../core'
 import { DrawPosterPlugin, Plugins } from '../core/plugin'
+import { DrawPosterResult } from '../core/typed'
 
 export const globalPlugins: DrawPosterPlugin[] = []
 

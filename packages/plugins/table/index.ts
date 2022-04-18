@@ -1,5 +1,5 @@
 import { DrawPosterPlugin } from '../../core/plugin'
-declare module '../../core' {
+declare module '../../core/typed' {
   interface DrawPosterResult {
     createLayer: (afferOptions: CreateLayerOptions, rowList: DrawRowOpt[]) => number
     table: {

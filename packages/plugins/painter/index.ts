@@ -1,6 +1,6 @@
 import { DrawPosterPlugin } from '../../core/plugin'
 import { ImageFitOption } from '../drawImageFit'
-declare module '../../core' {
+declare module '../../core/typed' {
   interface DrawPosterResult {
     painter: (option: PainterContainerOption) => void
   }

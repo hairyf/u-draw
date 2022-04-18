@@ -1,12 +1,12 @@
-import { useDrawPoster } from './core'
+import { Plugins } from './core'
 import * as plugins from './plugins/preset'
 
-useDrawPoster.use(plugins.drawImage())
-useDrawPoster.use(plugins.drawImageFit())
-useDrawPoster.use(plugins.drawRoundImage())
-useDrawPoster.use(plugins.fillRoundRect())
-useDrawPoster.use(plugins.roundRect())
-useDrawPoster.use(plugins.strokeRoundRect())
-useDrawPoster.use(plugins.fillWarpText())
+Plugins.use(plugins.drawImage())
+Plugins.use(plugins.drawImageFit())
+Plugins.use(plugins.drawRoundImage())
+Plugins.use(plugins.fillRoundRect())
+Plugins.use(plugins.roundRect())
+Plugins.use(plugins.strokeRoundRect())
+Plugins.use(plugins.fillWarpText())
 
 export * from './core'

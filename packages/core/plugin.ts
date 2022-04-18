@@ -1,6 +1,6 @@
-import { DrawPosterResult } from '.'
 import { globalPlugins } from '../helpers/internal'
 import { helperPluginParams } from '../helpers/params'
+import { DrawPosterResult } from './typed'
 
 export interface DrawPosterLifeCycle<I = DrawPosterResult, O = Record<string, any>> {
   (instance: I, options?: O): void

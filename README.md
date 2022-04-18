@@ -84,20 +84,20 @@ console.log("draw绘制状况:", await dp.render()); // draw绘制状况: [true]
 
 ## 4. 生成图片本地地址
 
-如需要保存为图片时，可以使用`dp.createImagePath` 进行创建图片本地地址，在由`wx`或`uni`的`api`进行保存。
+如需要保存为图片时，可以使用`dp.create` 进行创建图片本地地址，在由`wx`或`uni`的`api`进行保存。
 ~~~js
 dp.draw(async (ctx) => {/* ... */})
 const result = await dp.render();
-const posterImgUrl = await dp.createImagePath();
+const posterImgUrl = await dp.create();
 console.log("draw绘制状况:", result); // [true]
 console.log("绘制生成本地地址:", posterImgUrl); // ...tmp...
 ~~~
-你也可以不使用`dp.render`方法，当调用`dp.createImagePath`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
+你也可以不使用`dp.render`方法，当调用`dp.create`时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
 
 ~~~js
 dp.draw(async (ctx) => {/* ... */})
 // 跳过drawPoster.awaitCreate直接生成地址
-const posterImgUrl = await dp.createImagePath();
+const posterImgUrl = await dp.create();
 console.log("绘制生成本地地址:", posterImgUrl);
 ~~~
 

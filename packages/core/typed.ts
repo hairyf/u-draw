@@ -28,6 +28,6 @@ export interface Canvas {
 
 export type Stacks = Array<() => Promise<boolean>>
 
-export type CreateImagePathOptions = Partial<
+export type CreatePathOptions = Partial<
   Omit<UniApp.CanvasToTempFilePathOptions, 'canvasId' | 'complete' | 'success' | 'fail'>
 >

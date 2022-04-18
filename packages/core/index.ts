@@ -4,7 +4,7 @@ import { queryFields } from '../utils'
 import { Consola } from './consola'
 import { Plugins, DrawPosterPlugin, DrawPosterUse } from './plugin'
 import DrawProcess from './process'
-import { Canvas, CanvasCtx, CreateImagePathOptions } from './typed'
+import { Canvas, CanvasCtx, CreatePathOptions } from './typed'
 
 export interface DrawPosterOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */
@@ -56,7 +56,7 @@ export interface DrawPosterResult {
   /** 将所有作用域渲染 */
   readonly render: () => Promise<boolean[]>
   /** 生成图片地址, 当进程存在则调用所有进程 */
-  readonly create: (options?: CreateImagePathOptions) => Promise<string>
+  readonly create: (options?: CreatePathOptions) => Promise<string>
   /** 绘图原型(用于在 beforeMount 时自定义绘制原型) */
   $drawPrototype?: { canvas: Canvas; ctx: CanvasCtx }
   [key: string]: any

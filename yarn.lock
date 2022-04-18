@@ -295,31 +295,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@tuimao/eslint@^1.2.0-bata.3":
-  version "1.2.0-bata.3"
-  resolved "https://registry.nlark.com/@tuimao/eslint/download/@tuimao/eslint-1.2.0-bata.3.tgz#296503f82cbb4ad40e2e9a219a05b185ee1ed294"
-  integrity sha1-KWUD+Cy7StQOLpohmgWxhe4e0pQ=
-  dependencies:
-    "@types/eslint" "^7.28.0"
-    "@typescript-eslint/eslint-plugin" "^4.29.1"
-    "@typescript-eslint/parser" "^4.29.1"
-    eslint "^7.32.0"
-    eslint-config-prettier "^8.3.0"
-    eslint-plugin-eslint-comments "^3.2.0"
-    eslint-plugin-html "^6.1.2"
-    eslint-plugin-import "^2.24.0"
-    eslint-plugin-jsonc "^1.4.0"
-    eslint-plugin-prettier "^3.4.0"
-    eslint-plugin-react "^7.24.0"
-    eslint-plugin-unicorn "^35.0.0"
-    eslint-plugin-vue "^7.16.0"
-    eslint-plugin-yml "^0.10.0"
-    lodash "^4.17.21"
-    prettier "^2.3.2"
-    react "^17.0.2"
-    typescript "^4.3.5"
-    vue-eslint-parser "^7.10.0"
-
 "@types/archiver@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@types/archiver/-/archiver-5.1.1.tgz#d6d7610de4386b293abd5c1cb1875e0a4f4e1c30"
@@ -1938,7 +1913,7 @@ lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21:
   resolved "https://registry.nlark.com/lodash/download/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha1-Z5WRxWTDv/quhFTPCz3zcMPWkRw=
 
-loose-envify@^1.1.0, loose-envify@^1.4.0:
+loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.nlark.com/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
@@ -2328,14 +2303,6 @@ react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.nlark.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
-
-react@^17.0.2:
-  version "17.0.2"
-  resolved "https://registry.nlark.com/react/download/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
-  integrity sha1-0LXMUW0p6z7uOD91tihkz7aAADc=
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 read-pkg-up@^3.0.0:
   version "3.0.0"

@@ -1,5 +1,7 @@
-import { isFunction, isObject, isString } from 'lodash'
-import { DrawPosterResult, NonPick } from '.'
+import { DrawPosterResult } from '.'
+import { globalPlugins } from '../helpers/internal'
+import { helperPluginParams } from '../helpers/params'
+
 export interface DrawPosterLifeCycle<I = DrawPosterResult, O = Record<string, any>> {
   (instance: I, options?: O): void
 }
@@ -21,48 +23,19 @@ export interface DrawPosterLifeCycles {
 export interface DrawPosterPlugin extends DrawPosterLifeCycles {
   /** 扩展名称 */
   name: string
-  [key: string]: any
 }
 
 export interface DrawPosterUse {
   (name: string, lifeCycle: DrawPosterLifeCycle): void
-  (name: string, options: NonPick<DrawPosterPlugin, 'name'>): void
+  (name: string, options: DrawPosterLifeCycles): void
   (options: DrawPosterPlugin): void
 }
 
-/**
- * 对插件参数进行处理并引入
- * @param plugins 插件列表
- * @param args 参数
- */
-const usePluginOptions = (plugins: DrawPosterPlugin[], ...args: any[]) => {
-  if (!args[0]) {
-    throw new Error('DrawPoster Error: plugins arguments required')
-  }
-  let _options: DrawPosterPlugin = { name: '' }
-  if (isString(args[0]) && isFunction(args[1])) {
-    _options.name = args[0]
-    _options.mounted = args[1]
-  }
-  if (isString(args[0]) && isObject(args[1])) {
-    _options = { name: args[0], ...args[1] }
-  }
-  if (isObject(args[0])) {
-    _options = <any>args[0]
-  }
-  if (![...globalPlugins, ...plugins].some((v) => _options.name === v.name)) {
-    plugins.push(_options)
-    return _options
-  }
-  console.warn(`该扩展已存在: ${_options.name}`)
-}
-
-const globalPlugins: DrawPosterPlugin[] = []
-
-export const globalUse: DrawPosterUse = (...args: any[]) => usePluginOptions(globalPlugins, ...args)
-
 export class Plugins {
-  $plugins: DrawPosterPlugin[] = []
+  /** 当前示例中挂在的所有 plugins （不包含 global plugins） */
+  private $plugins: DrawPosterPlugin[] = []
+
+  /** 当前示例中挂在的所有 plugins（包含 global plugins） */
   get plugins(): DrawPosterPlugin[] {
     return [...globalPlugins, ...this.$plugins]
   }
@@ -71,14 +44,22 @@ export class Plugins {
     if (dp.$options?.plugins) this.$plugins.push(...dp.$options?.plugins)
   }
 
+  /**
+   * 全局插件挂载
+   * @param args
+   */
+  static use = (...args: any[]) => helperPluginParams(globalPlugins, ...args)
+
+  /**
+   * 局部插件挂载
+   * @param args
+   */
   use = (...args: any[]) => {
-    const plugin = usePluginOptions(this.$plugins, ...args)
+    const plugin = helperPluginParams(this.$plugins, ...args)
     if (this.dp['canvas']) plugin?.mounted?.(<any>this.dp)
   }
 
   run = (lifeCycleName: keyof DrawPosterLifeCycles) => {
-    this.plugins.forEach((lifeCycle) => {
-      lifeCycle[lifeCycleName]?.(<any>this.dp)
-    })
+    this.plugins.forEach((lifeCycle) => lifeCycle[lifeCycleName]?.(<any>this.dp))
   }
 }

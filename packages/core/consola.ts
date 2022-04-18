@@ -1,9 +1,10 @@
-import { DrawPosterResult } from '.'
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
-export class DebuggingLog {
-  private $color = '#3489fd'
 
+import { DrawPosterResult } from '.'
+
+export class Consola {
+  private $color = '#3489fd'
   constructor(private dp: Partial<DrawPosterResult>) {}
   log = (message: string, color = this.$color, ...args: any[]) => {
     if (!this.dp?.$options?.debug) return
@@ -14,5 +15,10 @@ export class DebuggingLog {
   }
   error = (message: string, ...args: any[]) => {
     this.log(`🎉 ${message}`, '#fa3534', ...args)
+  }
+  loading = (type: 'render' | 'create') => {
+    if (this.dp?.$options?.loading)
+      uni.showLoading({ title: (this.dp?.$options?.loading as any)[type] })
+    return () => uni.hideLoading()
   }
 }

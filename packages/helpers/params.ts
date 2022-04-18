@@ -1,8 +1,14 @@
-import { isObject } from 'lodash'
-import { DrawPosterOptions } from '.'
+import { isFunction, isObject, isString } from 'lodash'
+import { DrawPosterOptions, DrawPosterPlugin } from '../core'
 import { UNI_PLATFORM } from '../utils'
+import { globalPlugins } from './internal'
 
-export const helperParams = (...args: any[]) => {
+/**
+ * 处理 drawPoster 参数
+ * @param args
+ * @returns options
+ */
+export const helperDrawPosterParams = (...args: any[]) => {
   const _default: DrawPosterOptions = {
     selector: '',
     componentThis: undefined,
@@ -39,4 +45,31 @@ export const helperParams = (...args: any[]) => {
     console.warn(`请在vue.config.js中的'transpileDependencies'中添加 'u-draw-poster' `)
   }
   return options
+}
+
+/**
+ * 对插件参数进行处理并引入
+ * @param plugins 插件列表
+ * @param args 参数
+ */
+export const helperPluginParams = (plugins: DrawPosterPlugin[], ...args: any[]) => {
+  if (!args[0]) {
+    throw new Error('DrawPoster Error: plugins arguments required')
+  }
+  let _options: DrawPosterPlugin = { name: '' }
+  if (isString(args[0]) && isFunction(args[1])) {
+    _options.name = args[0]
+    _options.mounted = args[1]
+  }
+  if (isString(args[0]) && isObject(args[1])) {
+    _options = { name: args[0], ...args[1] }
+  }
+  if (isObject(args[0])) {
+    _options = <any>args[0]
+  }
+  if (![...globalPlugins, ...plugins].some((v) => _options.name === v.name)) {
+    plugins.push(_options)
+    return _options
+  }
+  console.warn(`该扩展已存在: ${_options.name}`)
 }

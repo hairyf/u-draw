@@ -48,7 +48,10 @@ export class Plugins {
    * 全局插件挂载
    * @param args
    */
-  static use = (...args: any[]) => helperPluginParams(globalPlugins, ...args)
+  static use = (...args: any[]) => {
+    helperPluginParams(globalPlugins, ...args)
+    return this
+  }
 
   /**
    * 局部插件挂载

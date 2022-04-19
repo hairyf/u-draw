@@ -35,9 +35,9 @@ export interface DrawPosterResult {
   /** 源数据 */
   readonly $options: DrawPosterOptions
   /** 画布(仅 2d 生效) */
-  readonly canvas: Canvas
+  readonly canvas?: Canvas
   /** 画笔 */
-  readonly ctx: CanvasCtx
+  readonly ctx?: CanvasCtx
   /**
    * 引入扩展
    * 建议: 在构建配置中传入 `plugins`, 该引入方式无法触发 beforeMount
@@ -51,6 +51,10 @@ export interface DrawPosterResult {
   readonly render: () => Promise<boolean[]>
   /** 生成图片地址, 当进程存在则调用所有进程 */
   readonly create: (options?: CreatePathOptions) => Promise<string>
+  /** canvas 和 ctx 都已经准备就绪 */
+  readonly ready: () => Promise<void>
+  /** 装载 canvas 和 ctx */
+  readonly mount: () => Promise<void>
   /** 绘图原型(用于在 beforeMount 时自定义绘制原型) */
   $drawPrototype?: { canvas: Canvas; ctx: CanvasCtx }
   [key: string]: any
@@ -69,9 +73,7 @@ export interface CanvasCtx extends UniApp.CanvasContext {
 export interface Canvas {
   width: number
   height: number
-  getContext<K extends '2d' | 'webgl'>(
-    contextType: K
-  ): K extends '2d' ? CanvasCtx : WebGLRenderingContext
+  getContext<K extends '2d' | 'webgl'>(contextType: K): K extends '2d' ? CanvasCtx : WebGLRenderingContext
   createImage(): {
     src: string
     width: number
@@ -86,6 +88,4 @@ export interface Canvas {
   toDataURL(type: string, encoderOptions: number): string
 }
 
-export type CreatePathOptions = Partial<
-  Omit<UniApp.CanvasToTempFilePathOptions, 'canvasId' | 'complete' | 'success' | 'fail'>
->
+export type CreatePathOptions = Partial<Omit<UniApp.CanvasToTempFilePathOptions, 'canvasId' | 'complete' | 'success' | 'fail'>>

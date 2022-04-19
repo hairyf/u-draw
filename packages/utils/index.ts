@@ -6,9 +6,7 @@
  * @returns
  */
 export const queryFields = (selector: string, componentThis?: any, options?: UniApp.NodeField) => {
-  const query = componentThis
-    ? uni.createSelectorQuery().in(componentThis)
-    : uni.createSelectorQuery()
+  const query = componentThis ? uni.createSelectorQuery().in(componentThis) : uni.createSelectorQuery()
   return new Promise<UniApp.NodeInfo>((resolve) => {
     query
       .select(selector)

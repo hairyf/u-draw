@@ -4,21 +4,13 @@ import archiver from 'archiver'
 
 const FILES_ARCHIVE_ALL = [
   // ARCHIVE_TEMPLATE
-  ['template', 'dcloud/template.zip'],
+  ['.test/vue2-cli-js', 'dcloud/Example.zip'],
   // ARCHIVE_DIST
-  ['dist', 'dcloud/u-draw-poster.zip']
+  ['dist', 'dcloud/Plugin.zip']
 ]
 
-const FILES_COPY_ALL = [
-  // COPY_README
-  ['README.md', 'dcloud/README.md'],
-  ['dist', 'template/js_sdk/u-draw-poster']
-]
 
 async function cli() {
-  for (const [source, target] of FILES_COPY_ALL) {
-    await fs.copy(source, target)
-  }
   for (const [source, target] of FILES_ARCHIVE_ALL) {
     // 创建文件输出流
     const output = fs.createWriteStream(target)

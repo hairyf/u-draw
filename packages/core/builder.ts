@@ -1,10 +1,15 @@
-import { queryFields } from '../utils'
+import { getCurrentDrawPoster, setCurrentDrawPoster } from '../helpers/internal'
+import { promisify, queryFields } from '../utils'
 import { Consola } from './consola'
 import { Plugins } from './plugin'
 import DrawProcess from './process'
 import { Canvas, DrawPosterOptions, DrawPosterResult } from './typed'
 
 export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) => {
+  // 假如当前页面已存在实例, 则直接返回
+  const currentDrawPoster = getCurrentDrawPoster(options.selector)
+  if (currentDrawPoster) return currentDrawPoster
+
   // #region 初始化参数定义, 初始化插件系统 / debug 系统 / 进程系统
   const dp: DrawPosterResult = { $options: options } as any
 
@@ -21,7 +26,7 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
     const { $drawPrototype, $options } = dp
     const { selector = '', componentThis } = $options || {}
 
-    if ($drawPrototype) return $drawPrototype
+    if ($drawPrototype) return await $drawPrototype
 
     const nodeInfo = await queryFields(selector, componentThis, <any>{ node: true })
     const canvas: Canvas = (<any>nodeInfo)?.node || {}
@@ -55,7 +60,7 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
 
     consola.success('挂载成功!', dp)
   }
-  const ready = async () => promised
+  const ready = async () => promised.then(() => dp)
   // #endregion
 
   // #region public
@@ -64,10 +69,7 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
 
     const hideLoading = consola.loading('create')
 
-    consola.log('绘制海报中...')
-
     const tips: boolean[] = await pcs.walk()
-
     consola.log('绘制状况: ', undefined, tips)
 
     if (options.type === 'context') {
@@ -80,8 +82,9 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
   }
   const create = async (_options_ = {}) => {
     await ready()
-
     ps.run('beforeCreate')
+
+    consola.log('beforeCreate')
 
     if (pcs.stacks.length > 0) await dp.render!()
     if (pcs.prevent) return Promise.reject()
@@ -93,24 +96,20 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
     if (options.type === '2d') (<any>toPathOptions).canvas = dp.canvas
     if (options.type === 'context') (<any>toPathOptions).canvasId = dp.id
 
-    return new Promise<string>((resolve, reject) => {
-      toPathOptions.success = (res) => {
-        resolve(res.tempFilePath)
-        hideLoading()
-        consola.success('绘制成功', res)
-        ps.run('created')
-      }
-      toPathOptions.fail = (err) => {
-        reject(err)
-        hideLoading()
-        consola.error('绘制失败', err)
-      }
-      uni.canvasToTempFilePath(<any>options)
-    })
+    try {
+      const { tempFilePath } = await promisify(uni.canvasToTempFilePath)(toPathOptions)
+      consola.success('绘制成功', {tempFilePath})
+      return tempFilePath
+    } catch (error) {
+      consola.error('绘制失败', error)
+    } finally { hideLoading() }
   }
   // #endregion
 
   const promised = mount()
 
-  return { dp, ps, consola, pcs, mount }
+  // 保存实例, 实现单页面同个实例
+  setCurrentDrawPoster(dp, ps)
+
+  return dp
 }

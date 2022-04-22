@@ -18,8 +18,7 @@ class DrawProcess {
         this.dp.ctx!.restore()
         return true
       } catch (error: any) {
-        if (!error?.message?.includes?.(`'nodeId' of undefined`))
-          this.consola.error(`绘画栈(${length})，绘制错误：`, error)
+        if (!error?.message?.includes?.(`'nodeId' of undefined`)) this.consola.error(`绘画栈(${length})，绘制错误：`, error)
         return false
       }
     })
@@ -32,11 +31,10 @@ class DrawProcess {
   walk = async () => {
     const results: any[] = []
     for (const next of this.stacks) {
-      if (this.prevent) {
-        return results
-      }
+      if (this.prevent) return results
       results.push(await next())
     }
+    this.stacks = []
     return results
   }
 }

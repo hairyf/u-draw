@@ -52,7 +52,7 @@ export interface DrawPosterResult {
   /** 生成图片地址, 当进程存在则调用所有进程 */
   readonly create: (options?: CreatePathOptions) => Promise<string>
   /** canvas 和 ctx 都已经准备就绪 */
-  readonly ready: () => Promise<void>
+  readonly ready: () => Promise<DrawPosterResult>
   /** 装载 canvas 和 ctx */
   readonly mount: () => Promise<void>
   /** 绘图原型(用于在 beforeMount 时自定义绘制原型) */

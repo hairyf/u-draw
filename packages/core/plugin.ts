@@ -2,7 +2,7 @@ import { globalPlugins } from '../helpers/internal'
 import { helperPluginParams } from '../helpers/params'
 import { DrawPosterResult } from './typed'
 
-export interface DrawPosterLifeCycle<I = DrawPosterResult, O = Record<string, any>> {
+export interface DrawPosterLifeCycle<I = Required<DrawPosterResult>, O = Record<string, any>> {
   (instance: I, options?: O): void
 }
 
@@ -48,18 +48,19 @@ export class Plugins {
    * 全局插件挂载
    * @param args
    */
-  static use = (...args: any[]) => {
+  static use: DrawPosterUse = (...args: any[]) => {
     helperPluginParams(globalPlugins, ...args)
-    return this
+    return Plugins
   }
 
   /**
    * 局部插件挂载
    * @param args
    */
-  use = (...args: any[]) => {
+  use: DrawPosterUse = (...args: any[]) => {
     const plugin = helperPluginParams(this.$plugins, ...args)
     if (this.dp['canvas']) plugin?.mounted?.(<any>this.dp)
+    return this
   }
 
   run = (lifeCycleName: keyof DrawPosterLifeCycles) => {

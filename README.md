@@ -21,12 +21,7 @@ npm i --save-dev u-draw-poster
 ## 1. 创建海报绘制工具
 
 ~~~html
-<!-- #ifdef MP-WEIXIN -->
-<canvas id="canvas" type="2d" style="width:100px; height:100px" />
-<!-- #endif -->
-<!-- #ifndef MP-WEIXIN -->
-<canvas canvas-id="canvas" id="canvas" style="width:100px; height:100px" />
-<!-- #endif -->
+<canvas canvas-id="canvas" id="canvas" type="2d" style="width:100px; height:100px" />
 ~~~
 
 ~~~js

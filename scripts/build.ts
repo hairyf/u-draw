@@ -26,13 +26,15 @@ export const build = async () => {
 
   fs.mkdirpSync('dist')
   fs.mkdirpSync('dcloud')
-  fs.mkdirpSync('template/js_sdk/u-draw-poster')
 
   consola.info('Tsc build')
   execa.sync('tsc', { stdio: 'inherit', cwd: rootDir })
 
   consola.info('Generate Metas')
   await buildMetaFiles()
+
+  consola.info('Copy build')
+  execa.sync('yarn', ['copy'], { stdio: 'inherit' })
 
   consola.info('Compress package')
   execa.sync('yarn', ['compress'], { stdio: 'inherit' })

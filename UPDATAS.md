@@ -1,3 +1,27 @@
+- 2.5.0
+  - 逻辑优化，分离模块（builder/process/mount/helpers）
+  - 部分 API 调整（createImagePath -> create）
+  - 新增 vite/vue3 测试用例（小程序/H5全部通过）
+  - 调整 cli/vue2  测试用例（小程序/H5全部通过）
+  - 源码编译 copy 逻辑优化，项目目录调整
+  - 源码依赖升级（@dcloudio/types｜@hairy/eslint）
+- 2.2.1
+  - 修复 vite 无法动态切换 type2d
+  - 更新 vite 文档，vue 3 使用方式
+- 2.2.0
+  - 修复真机调试图片无法显示
+  - 修复在 iso 机上无法得到返回值
+- 2.1.0-bate.1
+  - 废除 class 类模式（DrawPoster.build）；
+  - useDrawPoster 重构；
+  - 优化插件与配置传参；
+  - 提供插件类型的修改入口；
+  - 重构插件架构与引入方式；
+  - 部分 API 调整（awaitCreate -> render）；
+  - 部分配置项调整（debugging -> debug，loading）;
+  - 调整 API 文档；
+  - 重构打包与压缩逻辑；
+  - 调整测试用例；
 - 2.0.0
   - 重构主逻辑
   - 重构插件逻辑

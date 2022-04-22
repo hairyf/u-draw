@@ -9,7 +9,7 @@ import { globalPlugins } from './internal'
  * @param args
  * @returns options
  */
-export const helperDrawPosterParams = (...args: any[]) => {
+export const helper = (...args: any[]) => {
   const _default: DrawPosterOptions = {
     selector: '',
     componentThis: undefined,
@@ -38,12 +38,6 @@ export const helperDrawPosterParams = (...args: any[]) => {
   if (isObject(options.loading)) {
     options.loading!.render = options.loading?.render ?? '绘制海报中...'
     options.loading!.create = options.loading?.create ?? '生成图片中...'
-  }
-  if (!UNI_PLATFORM) {
-    console.warn(
-      '注意! draw-poster未开启uni条件编译! 当环境是微信小程序将不会动态切换为type=2d模式'
-    )
-    console.warn(`请在vue.config.js中的'transpileDependencies'中添加 'u-draw-poster' `)
   }
   return options
 }

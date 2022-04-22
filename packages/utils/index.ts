@@ -29,16 +29,16 @@ type UniPlatforms =
   | 'quickapp-webview'
   | 'quickapp-webview-union'
   | 'quickapp-webview-huawei'
+  | 'other'
   | undefined
 
 /**
  * 当前环境信息
  */
 export const UNI_PLATFORM = ((): UniPlatforms => {
-  if (typeof process !== 'undefined') return process?.env?.VUE_APP_PLATFORM as UniPlatforms
-  // #ifdef MP-WEIXIN
-  return 'mp-weixin'
-  // #endif
+  // @ts-ignore
+  if (typeof requirePlugin !== 'undefined') return 'mp-weixin'
+  return 'other'
 })()
 
 type UniApiKey = keyof UniApp.Uni
@@ -51,7 +51,9 @@ type GetSuccessReult<T extends UniApiValue> = Parameters<Parameters<T>[0]['succe
  */
 export const promisify = <V extends UniApiValue>(api: V) => {
   return async (...args: Parameters<V>): Promise<GetSuccessReult<V>> => {
-    const [error, result] = await (api as any)(...args)
-    return error ? Promise.reject(error) : Promise.resolve(result)
+    return new Promise(async (resolve, reject) => {
+      const [options, ...other] = args;
+      (api as any)({ ...options, success: resolve, fail: reject }, ...other)
+    })
   }
 }

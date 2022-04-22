@@ -4,15 +4,7 @@ declare module '../../core/typed' {
     /**
      * 绘制圆角矩形（原型）
      */
-    roundRect(
-      x: number,
-      y: number,
-      w: number,
-      h: number,
-      r: number,
-      fill?: boolean,
-      stroke?: boolean
-    ): void
+    roundRect(x: number, y: number, w: number, h: number, r: number, fill?: boolean, stroke?: boolean): void
   }
 }
 const plugin: DrawPosterPlugin = {

@@ -17,8 +17,7 @@ export class Consola {
     this.log(`🎉 ${message}`, '#fa3534', ...args)
   }
   loading = (type: 'render' | 'create') => {
-    if (this.dp?.$options?.loading)
-      uni.showLoading({ title: (this.dp?.$options?.loading as any)[type] })
+    if (this.dp?.$options?.loading) uni.showLoading({ title: (this.dp?.$options?.loading as any)[type] })
     return () => uni.hideLoading()
   }
 }

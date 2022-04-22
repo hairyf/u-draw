@@ -6,7 +6,7 @@ export const globalPlugins: DrawPosterPlugin[] = []
 export const getCurrentDrawPoster = (selector: string) => {
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
-  if (page[`__dp_${selector}`]) return page[`__dp_${selector}`]
+  if (page[`__dp_${selector}`]) return page[`__dp_${selector}`] as DrawPosterResult
 }
 
 export const setCurrentDrawPoster = (dp: Partial<DrawPosterResult>, ps: Plugins) => {

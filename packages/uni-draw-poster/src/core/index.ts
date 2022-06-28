@@ -1,6 +1,6 @@
 import { helper } from '../helpers/params'
 import { builder } from './builder'
-import { DrawPosterPlugin, Plugins } from './plugin'
+import { Plugin, Plugins } from './plugin'
 import type { DrawPosterOptions, DrawPosterResult } from './typed'
 
 /**
@@ -14,4 +14,4 @@ function useDrawPoster(...args: any[]) {
   return builder(helper(...args)).ready()
 }
 
-export { useDrawPoster, DrawPosterPlugin, Plugins }
+export { useDrawPoster, Plugin, Plugins }

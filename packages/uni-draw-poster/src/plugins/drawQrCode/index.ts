@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-call */
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 import uQRCode from './uQRCode'
 
 declare module '../../core/typed' {
@@ -22,7 +22,7 @@ export interface DrawQrCodeOptions {
   foregroundColor?: string
 }
 
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-drawQrCode__',
   mounted: ({ ctx, canvas }) => {
     ctx.drawQrCode = (options) => {

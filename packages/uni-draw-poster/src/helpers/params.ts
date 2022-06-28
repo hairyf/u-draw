@@ -1,5 +1,5 @@
 import { isFunction, isObject, isString } from 'lodash'
-import type { DrawPosterPlugin } from '../core'
+import type { Plugin } from '../core'
 import type { DrawPosterOptions } from '../core/typed'
 import { UNI_PLATFORM } from '../utils'
 import { globalPlugins } from './internal'
@@ -50,11 +50,11 @@ export const helper = (...args: any[]) => {
  * @param plugins 插件列表
  * @param args 参数
  */
-export const helperPluginParams = (plugins: DrawPosterPlugin[], ...args: any[]) => {
+export const helperPluginParams = (plugins: Plugin[], ...args: any[]) => {
   if (!args[0])
     throw new Error('DrawPoster Error: plugins arguments required')
 
-  let _options: DrawPosterPlugin = { name: '' }
+  let _options: Plugin = { name: '' }
   if (isString(args[0]) && isFunction(args[1])) {
     _options.name = args[0]
     _options.mounted = args[1]

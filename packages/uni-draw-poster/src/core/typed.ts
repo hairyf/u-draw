@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin, DrawPosterUse } from './plugin'
+import type { Plugin, DrawPosterUse } from './plugin'
 
 export interface DrawPosterOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */
@@ -25,13 +25,13 @@ export interface DrawPosterOptions {
   /** 画布高度 */
   height?: number
   /** 绘制扩展 */
-  plugins?: DrawPosterPlugin[]
+  plugins?: Plugin[]
 }
 export interface DrawPosterResult {
   /** 绘制标识 */
   readonly id: string
   /** 当前绘画插件 */
-  readonly plugins: DrawPosterPlugin[]
+  readonly plugins: Plugin[]
   /** 源数据 */
   readonly $options: DrawPosterOptions
   /** 画布(仅 2d 生效) */

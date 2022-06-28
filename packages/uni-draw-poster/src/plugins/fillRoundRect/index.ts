@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface CanvasCtx {
     /** 绘制圆角矩形（填充）
@@ -8,7 +8,7 @@ declare module '../../core/typed' {
     fillRoundRect(x: number, y: number, w: number, h: number, r: number): void
   }
 }
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-fillRoundRect__',
   mounted: ({ ctx }) => {
     ctx.fillRoundRect = (x, y, w, h, r) => ctx.roundRect(x, y, w, h, r, true)

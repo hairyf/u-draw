@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 import type { ImageFitOption } from '../drawImageFit'
 declare module '../../core/typed' {
   interface DrawPosterResult {
@@ -112,7 +112,7 @@ export interface PainterContainerOption extends PainterItemSize {
     | PainterQrCodeInfo
   >
 }
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__dp-painter__',
   mounted: (dp) => {
     dp.painter = (option) => {

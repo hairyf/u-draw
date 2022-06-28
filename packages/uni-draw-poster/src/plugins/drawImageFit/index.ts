@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 import { promisify } from '../../utils'
 import type { ObjectFit, ObjectPosition, Size } from './object-sizing'
 import { concreteRect } from './object-sizing'
@@ -19,7 +19,7 @@ export interface ImageFitOption {
   intrinsicPosition?: ObjectPosition
   specifiedPosition?: [number, number]
 }
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-drawImageFit__',
   mounted: ({ ctx }) => {
     ctx.drawImageFit = async (url, options) => {

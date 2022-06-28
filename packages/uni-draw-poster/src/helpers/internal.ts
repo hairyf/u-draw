@@ -1,7 +1,7 @@
-import type { DrawPosterPlugin, Plugins } from '../core/plugin'
+import type { Plugin, Plugins } from '../core/plugin'
 import type { DrawPosterResult } from '../core/typed'
 
-export const globalPlugins: DrawPosterPlugin[] = []
+export const globalPlugins: Plugin[] = []
 
 export const getCurrentDrawPoster = (selector: string) => {
   const pages = getCurrentPages()

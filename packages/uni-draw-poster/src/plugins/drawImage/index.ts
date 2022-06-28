@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 import { downloadImgUrl } from './utils'
 
 declare module '../../core/typed' {
@@ -25,7 +25,7 @@ declare module '../../core/typed' {
   }
 }
 
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-drawImage__',
   mounted: ({ ctx, $options, canvas }) => {
     ctx.drawImageProto = ctx.drawImage

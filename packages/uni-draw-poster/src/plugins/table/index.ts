@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface DrawPosterResult {
     createLayer: (afferOptions: CreateLayerOptions, rowList: DrawRowOpt[]) => number
@@ -24,7 +24,7 @@ export interface DrawRowOpt {
 }
 
 export default (options?: { height?: number; padding?: number; margin?: number }) => {
-  const plugin: DrawPosterPlugin = {
+  const plugin: Plugin = {
     name: '__dp-table__',
     beforeMount: (dp) => {
       dp.table = {

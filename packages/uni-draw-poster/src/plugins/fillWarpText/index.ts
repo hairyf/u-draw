@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface CanvasCtx {
     /** 绘制二维码
@@ -20,7 +20,7 @@ export interface FillWarpTextOptions {
   draw?: boolean
 }
 
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-fillWarpText__',
   mounted: ({ ctx }) => {
     ctx.fillWarpText = (config) => {

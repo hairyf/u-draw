@@ -1,4 +1,4 @@
-import type { DrawPosterPlugin } from '../../core/plugin'
+import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface CanvasCtx {
     /** 绘制圆角图片
@@ -15,7 +15,7 @@ declare module '../../core/typed' {
     ): Promise<boolean>
   }
 }
-const plugin: DrawPosterPlugin = {
+const plugin: Plugin = {
   name: '__ctx-drawRoundImage__',
   mounted: ({ ctx }) => {
     ctx.drawRoundImage = async (url, x, y, w, h, r = 15) => {

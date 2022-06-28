@@ -20,7 +20,7 @@ export interface DrawPosterLifeCycles {
   /** 创建绘图后 */
   created?: DrawPosterLifeCycle
 }
-export interface DrawPosterPlugin extends DrawPosterLifeCycles {
+export interface Plugin extends DrawPosterLifeCycles {
   /** 扩展名称 */
   name: string
 }
@@ -28,15 +28,15 @@ export interface DrawPosterPlugin extends DrawPosterLifeCycles {
 export interface DrawPosterUse {
   (name: string, lifeCycle: DrawPosterLifeCycle): void
   (name: string, options: DrawPosterLifeCycles): void
-  (options: DrawPosterPlugin): void
+  (options: Plugin): void
 }
 
 export class Plugins {
   /** 当前示例中挂在的所有 plugins （不包含 global plugins） */
-  private $plugins: DrawPosterPlugin[] = []
+  private $plugins: Plugin[] = []
 
   /** 当前示例中挂在的所有 plugins（包含 global plugins） */
-  get plugins(): DrawPosterPlugin[] {
+  get plugins(): Plugin[] {
     return [...globalPlugins, ...this.$plugins]
   }
 

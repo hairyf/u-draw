@@ -23,6 +23,7 @@ export const helper = (...args: any[]) => {
     _overrides = args[0] as any
   }
   else if (isObject(args[1])) {
+    // @ts-expect-error
     _overrides = args[1]
     _overrides.selector = args[0]
   }
@@ -38,9 +39,7 @@ export const helper = (...args: any[]) => {
     options.loading = { render: '绘制海报中...', create: '生成图片中...' }
 
   if (isObject(options.loading)) {
-    // @ts-expect-error
     options.loading!.render = options.loading?.render ?? '绘制海报中...'
-    // @ts-expect-error
     options.loading!.create = options.loading?.create ?? '生成图片中...'
   }
   return options
@@ -64,7 +63,7 @@ export const helperPluginParams = (plugins: DrawPosterPlugin[], ...args: any[]) 
     _options = { name: args[0], ...args[1] }
 
   if (isObject(args[0]))
-    _options = <any>args[0]
+    _options = args[0] as any
 
   if (![...globalPlugins, ...plugins].some(v => _options.name === v.name)) {
     plugins.push(_options)

@@ -9,7 +9,7 @@
     "draw",
     "poster"
   ],
-  "main": "index.ts",
+  "main": "src/index.ts",
   "publishConfig": {
     "main": "index.js",
     "types": "./index.d.ts",

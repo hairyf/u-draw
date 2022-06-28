@@ -1,5 +1,5 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 
 // 测试案例一：添加一个绘制个人海报的扩展实现
 useDrawPoster.use({
@@ -36,10 +36,12 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await useDrawPoster('canvas', {
+    const dp = createDrawPoster('canvas', {
       width: 300,
       height: 300,
     })
+    dp.mount()
+
     // 使用自定义扩展
     const url = await dp.createMyCardImagePath({
       name: '12111',

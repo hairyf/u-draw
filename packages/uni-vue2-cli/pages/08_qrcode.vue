@@ -1,5 +1,5 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 import drawQrCode from '@/js_sdk/u-draw-poster/plugins/drawQrCode'
 export default {
   data: () => ({
@@ -7,11 +7,13 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await useDrawPoster('canvas', {
+    const dp = createDrawPoster('canvas', {
       width: 300,
       height: 300,
       plugins: [drawQrCode()],
     })
+    dp.mount()
+
     const w = dp.canvas.width
     const h = dp.canvas.height
     // 创建一个绘制任务

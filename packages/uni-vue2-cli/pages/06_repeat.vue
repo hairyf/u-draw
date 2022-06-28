@@ -1,5 +1,5 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 export default {
   data: () => ({
     imgUrl: '',
@@ -9,11 +9,13 @@ export default {
   methods: {
     async repeatDraw() {
       // 创建绘制工具
-      const dp = await useDrawPoster({
+      const dp = createDrawPoster({
         selector: 'canvas',
         tip: true,
         debug: true,
       })
+      dp.mount()
+
       const w = (dp.canvas.width = 300)
       const h = (dp.canvas.height = 300)
       // 创建一个绘制任务
@@ -51,22 +53,25 @@ export default {
 </template>
 
 <style lang="scss">
-  page,
-  .index {
-    height: 100%;
-  }
-  .index {
-    position: relative;
-    text-align: center;
-    background: rgba($color: grey, $alpha: 0.2);
-  }
-  image {
-    margin-top: 30rpx;
-  }
-  canvas {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+page,
+.index {
+  height: 100%;
+}
+
+.index {
+  position: relative;
+  text-align: center;
+  background: rgba($color: grey, $alpha: 0.2);
+}
+
+image {
+  margin-top: 30rpx;
+}
+
+canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

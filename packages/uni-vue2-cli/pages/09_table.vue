@@ -9,12 +9,14 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await useDrawPoster({
+    const dp = createDrawPoster({
       selector: 'canvas',
       debug: true,
       width: 300,
       plugins: [table()],
     })
+    dp.mount()
+
     dp.createLayer({ background: '#fff', line: false }, [
       { text: '字体与颜色', font: '35px sans-serif', color: 'red' },
       { text: '字体与颜色', font: '35px sans-serif', color: 'red' },

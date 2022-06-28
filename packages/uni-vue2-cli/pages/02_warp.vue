@@ -1,15 +1,17 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = await useDrawPoster('canvas', {
+    const dp = createDrawPoster('canvas', {
       width: 300,
       height: 300,
     })
+    dp.mount()
+
     // 创建一个绘制任务
     dp.draw((ctx) => {
       ctx.fillStyle = '#fff'

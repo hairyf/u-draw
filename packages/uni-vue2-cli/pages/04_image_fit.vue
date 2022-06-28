@@ -1,14 +1,16 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
-    const dp = await useDrawPoster({
+    const dp = createDrawPoster({
       selector: 'canvas',
       debug: true,
     })
+    dp.mount()
+
     dp.canvas.width = 300
     dp.canvas.height = 300
     dp.draw((ctx) => {

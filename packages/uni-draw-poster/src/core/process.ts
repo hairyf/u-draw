@@ -14,7 +14,7 @@ class DrawProcess {
     this.stacks.push(async () => {
       try {
         this.dp.ctx!.save()
-        await callback(this.dp.ctx!)
+        await callback(this.dp.ctx!, this.dp.canvas!)
         this.dp.ctx!.restore()
         return true
       }

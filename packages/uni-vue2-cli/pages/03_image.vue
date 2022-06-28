@@ -1,19 +1,23 @@
 <script>
-import { useDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDrawPoster } from '@/js_sdk/u-draw-poster'
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
-    const dp = await useDrawPoster({
+    const dp = createDrawPoster({
       selector: 'canvas',
     })
+    dp.mount()
+
     dp.canvas.width = 300
     dp.canvas.height = 300
+
     dp.draw((ctx) => {
       ctx.fillStyle = '#F4F4F4'
       ctx.fillRect(0, 0, 300, 300)
     })
+
     // 测试本地/网络地址
     const url = '/static/logo.jpg' /* 网络图片 */
     // 测试案例一：绘制图片(矩形)

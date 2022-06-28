@@ -20,9 +20,9 @@ export interface DrawPosterOptions {
   debug?: boolean
   /** 是否启动gcanvas(nvue) */
   gcanvas?: boolean
-  /** 画布宽度 */
+  /** @deprecated 画布宽度 */
   width?: number
-  /** 画布高度 */
+  /** @deprecated 画布高度 */
   height?: number
   /** 绘制扩展 */
   plugins?: Plugin[]
@@ -48,7 +48,7 @@ export interface DrawPosterInstance {
   /** 停止绘制(仅停止生成) */
   readonly stop: () => void
   /** 创建一个绘制作用域 */
-  readonly draw: (func: (ctx: CanvasCtx) => Promise<void> | void) => void
+  readonly draw: (func: (ctx: CanvasCtx, canvas: Canvas) => Promise<void> | void) => void
   /** 将所有作用域渲染 */
   readonly render: () => Promise<boolean[]>
   /** 生成图片地址, 当进程存在则调用所有进程 */

@@ -1,3 +1,8 @@
 node_modules
-dist/**
 dist
+dcloud
+template/js_sdk
+unpackage
+js_sdk
+dist-core
+dist-uniapp

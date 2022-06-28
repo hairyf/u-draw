@@ -30,8 +30,8 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
     if ($drawPrototype)
       return await $drawPrototype
 
-    const nodeInfo = await queryFields(selector, componentThis, <any>{ node: true })
-    const canvas: Canvas = (<any>nodeInfo)?.node || {}
+    const nodeInfo = await queryFields(selector, componentThis, { node: true } as any)
+    const canvas: Canvas = (nodeInfo as any)?.node || {}
     const ctx = canvas.getContext?.('2d') || uni.createCanvasContext(selector, componentThis)
     if (!canvas || !ctx || !selector)
       throw new Error('DrawPoster Error: useDrawPoster to build drawPoster instance')
@@ -94,12 +94,12 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
 
     const hideLoading = consola.loading('create')
 
-    const toPathOptions: UniApp.CanvasToTempFilePathOptions = <any>_options_
+    const toPathOptions: UniApp.CanvasToTempFilePathOptions = _options_ as any
 
     if (options.type === '2d')
-      (<any>toPathOptions).canvas = dp.canvas
+      (toPathOptions as any).canvas = dp.canvas
     if (options.type === 'context')
-      (<any>toPathOptions).canvasId = dp.id
+      (toPathOptions as any).canvasId = dp.id
 
     try {
       const { tempFilePath } = await promisify(uni.canvasToTempFilePath)(toPathOptions)

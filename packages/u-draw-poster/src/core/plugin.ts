@@ -61,11 +61,11 @@ export class Plugins {
   use: DrawPosterUse = (...args: any[]) => {
     const plugin = helperPluginParams(this.$plugins, ...args)
     if (this.dp.canvas)
-      plugin?.mounted?.(<any> this.dp)
+      plugin?.mounted?.(this.dp as any)
     return this
   }
 
   run = (lifeCycleName: keyof DrawPosterLifeCycles) => {
-    this.plugins.forEach(lifeCycle => lifeCycle[lifeCycleName]?.(<any> this.dp))
+    this.plugins.forEach(lifeCycle => lifeCycle[lifeCycleName]?.(this.dp as any))
   }
 }

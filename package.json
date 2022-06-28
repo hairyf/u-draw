@@ -1,13 +1,10 @@
 {
-  "name": "dp-monorepo",
+  "name": "@uni-draw-poster/monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
   "main": "index.js",
   "scripts": {
+    "build": "pnpm -r build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -18,5 +15,8 @@
     "@types/node": "^18.0.0",
     "eslint": "^8.18.0",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "ptsup": "^0.0.8"
   }
 }

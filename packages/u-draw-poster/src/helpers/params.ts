@@ -23,7 +23,7 @@ export const helper = (...args: any[]) => {
     _overrides = args[0] as any
   }
   else if (isObject(args[1])) {
-    _overrides = <any>args[1]
+    _overrides = args[1]
     _overrides.selector = args[0]
   }
   else {
@@ -38,7 +38,9 @@ export const helper = (...args: any[]) => {
     options.loading = { render: '绘制海报中...', create: '生成图片中...' }
 
   if (isObject(options.loading)) {
+    // @ts-expect-error
     options.loading!.render = options.loading?.render ?? '绘制海报中...'
+    // @ts-expect-error
     options.loading!.create = options.loading?.create ?? '生成图片中...'
   }
   return options

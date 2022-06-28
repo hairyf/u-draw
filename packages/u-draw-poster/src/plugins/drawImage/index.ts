@@ -12,7 +12,7 @@ declare module '../../core/typed' {
       dx?: number | undefined,
       dy?: number | undefined,
       dWidth?: number | undefined,
-      dHeigt?: number | undefined,
+      dHeight?: number | undefined,
       sx?: number | undefined,
       sy?: number | undefined,
       sWidth?: number | undefined,
@@ -54,7 +54,7 @@ const plugin: DrawPosterPlugin = {
           const image = canvas.createImage()
           image.src = path
           image.onload = () => {
-            baseDrawImage(<any>image)
+            baseDrawImage(image as any)
             resolve(true)
           }
           image.onerror = () => resolve(false)

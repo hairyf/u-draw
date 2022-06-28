@@ -15,7 +15,13 @@
     "types": "./index.d.ts",
     "directory": "dist"
   },
+  "dependencies": {
+    "lodash": "^4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4"
+  },
   "scripts": {
-    "build": "ptsup index.ts --dts --meta"
+    "build": "ptsup src --dts --meta"
   }
 }

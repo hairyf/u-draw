@@ -12,7 +12,7 @@
     "rootDir": "./packages",
     "types": [
       "@dcloudio/types",
-      "node",
+      "node"
     ],
     "skipLibCheck": true
   },
@@ -23,6 +23,6 @@
   "include": [
     "./packages/**/*.ts",
     "./packages/**/*.js",
-    "./packages/**/*.d.ts",
+    "./packages/**/*.d.ts"
   ]
 }

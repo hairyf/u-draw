@@ -1,17 +1,12 @@
-import { helper } from '../helpers/params'
-import { builder } from './builder'
-import { Plugins, DrawPosterPlugin } from './plugin'
-import { DrawPosterOptions, DrawPosterResult } from './typed'
+import { Plugins } from './core'
+import * as plugins from './plugins/preset'
 
-/**
- * 创建 dp 绘制（仅支持 vue3 setup 中使用）
- * @param selector
- * @param options
- */
-function useDrawPoster(selector: string, options?: Partial<Omit<DrawPosterOptions, 'selector'>>): Promise<DrawPosterResult>
-function useDrawPoster(options: DrawPosterOptions): Promise<DrawPosterResult>
-function useDrawPoster(...args: any[]) {
-  return builder(helper(...args)).ready()
-}
+Plugins.use(plugins.drawImage())
+Plugins.use(plugins.drawImageFit())
+Plugins.use(plugins.drawRoundImage())
+Plugins.use(plugins.fillRoundRect())
+Plugins.use(plugins.roundRect())
+Plugins.use(plugins.strokeRoundRect())
+Plugins.use(plugins.fillWarpText())
 
-export { useDrawPoster, DrawPosterPlugin, Plugins }
+export * from './core'

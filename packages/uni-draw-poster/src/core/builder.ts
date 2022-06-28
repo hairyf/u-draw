@@ -5,7 +5,7 @@ import { Plugins } from './plugin'
 import DrawProcess from './process'
 import type { Canvas, DrawPosterOptions, DrawPosterInstance } from './typed'
 
-export const builder = (options: DrawPosterOptions) => {
+export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) => {
   // 假如当前页面已存在实例, 则直接返回
   const currentDrawPoster = getCurrentDrawPoster(options.selector)
   if (currentDrawPoster)
@@ -41,9 +41,11 @@ export const builder = (options: DrawPosterOptions) => {
     canvas!.height = $options?.height ?? 0
     return { canvas, ctx }
   }
+  let locked = false
   const mount = async () => {
+    if (locked) return ready()
+    locked = true
     ps.run('beforeMount')
-
     Object.defineProperty(dp, 'render', { get: () => render })
     Object.defineProperty(dp, 'create', { get: () => create })
     Object.defineProperty(dp, 'ready', { get: () => ready })
@@ -51,6 +53,8 @@ export const builder = (options: DrawPosterOptions) => {
     Object.defineProperty(dp, 'draw', { get: () => pcs.push })
     Object.defineProperty(dp, 'stop', { get: () => pcs.stop })
     Object.defineProperty(dp, 'use', { get: () => ps.use })
+
+    await wait?.()
 
     const { canvas, ctx } = await build()
 

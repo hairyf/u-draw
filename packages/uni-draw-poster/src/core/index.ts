@@ -12,10 +12,8 @@ import type { DrawPosterOptions, DrawPosterInstance } from './typed'
 function useDrawPoster(selector: string, options?: Partial<Omit<DrawPosterOptions, 'selector'>>): DrawPosterInstance
 function useDrawPoster(options: DrawPosterOptions): DrawPosterInstance
 function useDrawPoster(...args: any[]) {
-  const dp = builder(helper(...args))
-
-  onReady(dp.mount)
-
+  const dp = builder(helper(...args), onReady)
+  dp.mount()
   return dp
 }
 

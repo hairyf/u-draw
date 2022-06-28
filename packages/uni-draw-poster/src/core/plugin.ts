@@ -1,14 +1,14 @@
 import { globalPlugins } from '../helpers/internal'
 import { helperPluginParams } from '../helpers/params'
-import type { DrawPosterResult } from './typed'
+import type { DrawPosterInstance } from './typed'
 
-export interface DrawPosterLifeCycle<I = Required<DrawPosterResult>, O = Record<string, any>> {
+export interface DrawPosterLifeCycle<I = Required<DrawPosterInstance>, O = Record<string, any>> {
   (instance: I, options?: O): void
 }
 
 export interface DrawPosterLifeCycles {
   /** 创建实例前 */
-  beforeMount?: DrawPosterLifeCycle<Partial<DrawPosterResult>>
+  beforeMount?: DrawPosterLifeCycle<Partial<DrawPosterInstance>>
   /** 创建实例后 */
   mounted?: DrawPosterLifeCycle
   /** 卸载实例前 */
@@ -40,7 +40,7 @@ export class Plugins {
     return [...globalPlugins, ...this.$plugins]
   }
 
-  constructor(public dp: Partial<DrawPosterResult>) {
+  constructor(public dp: Partial<DrawPosterInstance>) {
     if (dp.$options?.plugins)
       this.$plugins.push(...dp.$options?.plugins)
   }

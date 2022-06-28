@@ -1,6 +1,6 @@
 import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
-  interface DrawPosterResult {
+  interface DrawPosterInstance {
     createLayer: (afferOptions: CreateLayerOptions, rowList: DrawRowOpt[]) => number
     table: {
       height: number

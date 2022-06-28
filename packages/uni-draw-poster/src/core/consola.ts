@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
-import type { DrawPosterResult } from './typed'
+import type { DrawPosterInstance } from './typed'
 
 export class Consola {
   private $color = '#3489fd'
-  constructor(private dp: Partial<DrawPosterResult>) {}
+  constructor(private dp: Partial<DrawPosterInstance>) {}
   log = (message: string, color = this.$color, ...args: any[]) => {
     if (!this.dp?.$options?.debug)
       return

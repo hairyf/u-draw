@@ -26,8 +26,10 @@ export interface DrawPosterOptions {
   height?: number
   /** 绘制扩展 */
   plugins?: Plugin[]
+  /** 是否初始化就执行挂载 */
+  immediate?: boolean
 }
-export interface DrawPosterResult {
+export interface DrawPosterInstance {
   /** 绘制标识 */
   readonly id: string
   /** 当前绘画插件 */
@@ -52,9 +54,9 @@ export interface DrawPosterResult {
   /** 生成图片地址, 当进程存在则调用所有进程 */
   readonly create: (options?: CreatePathOptions) => Promise<string>
   /** canvas 和 ctx 都已经准备就绪 */
-  readonly ready: () => Promise<DrawPosterResult>
+  readonly ready: () => Promise<DrawPosterInstance>
   /** 装载 canvas 和 ctx */
-  readonly mount: () => Promise<void>
+  readonly mount: () => Promise<DrawPosterInstance>
   /** 绘图原型(用于在 beforeMount 时自定义绘制原型) */
   $drawPrototype?: { canvas: Canvas; ctx: CanvasCtx }
   [key: string]: any

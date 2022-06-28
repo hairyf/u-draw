@@ -1,5 +1,5 @@
 import type { Plugin, Plugins } from '../core/plugin'
-import type { DrawPosterResult } from '../core/typed'
+import type { DrawPosterInstance } from '../core/typed'
 
 export const globalPlugins: Plugin[] = []
 
@@ -7,10 +7,10 @@ export const getCurrentDrawPoster = (selector: string) => {
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
   if (page[`__dp_${selector}`])
-    return page[`__dp_${selector}`] as DrawPosterResult
+    return page[`__dp_${selector}`] as DrawPosterInstance
 }
 
-export const setCurrentDrawPoster = (dp: Partial<DrawPosterResult>, ps: Plugins) => {
+export const setCurrentDrawPoster = (dp: Partial<DrawPosterInstance>, ps: Plugins) => {
   const pages = getCurrentPages()
   const page = pages[pages.length - 1] as Record<any, any>
   page[`__dp_${dp.id}`] = dp
@@ -32,7 +32,7 @@ export const onReady = async (callback?: Function) => {
     page.onReady = function () {
       callback?.()
       resolve()
-      onReady?.()
+      onReady?.call(page)
     }
   })
 }

@@ -1,5 +1,5 @@
 import type { Consola } from './consola'
-import type { DrawPosterResult } from './typed'
+import type { DrawPosterInstance } from './typed'
 
 class DrawProcess {
   /** 进程堆栈 */
@@ -7,7 +7,7 @@ class DrawProcess {
   /** 是否阻止运行 */
   prevent = false
 
-  constructor(public dp: Partial<DrawPosterResult>, public consola: Consola) {}
+  constructor(public dp: Partial<DrawPosterInstance>, public consola: Consola) {}
 
   push = (callback: Function) => {
     const length = this.stacks.length

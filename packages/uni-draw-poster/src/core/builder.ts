@@ -3,16 +3,16 @@ import { promisify, queryFields } from '../utils'
 import { Consola } from './consola'
 import { Plugins } from './plugin'
 import DrawProcess from './process'
-import type { Canvas, DrawPosterOptions, DrawPosterResult } from './typed'
+import type { Canvas, DrawPosterOptions, DrawPosterInstance } from './typed'
 
-export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) => {
+export const builder = (options: DrawPosterOptions) => {
   // 假如当前页面已存在实例, 则直接返回
   const currentDrawPoster = getCurrentDrawPoster(options.selector)
   if (currentDrawPoster)
     return currentDrawPoster
 
   // #region 初始化参数定义, 初始化插件系统 / debug 系统 / 进程系统
-  const dp: DrawPosterResult = { $options: options } as any
+  const dp: DrawPosterInstance = { $options: options } as any
 
   const ps = new Plugins(dp)
   const consola = new Consola(dp)
@@ -20,6 +20,7 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
 
   Object.defineProperty(dp, 'id', { get: () => options.selector })
   Object.defineProperty(dp, 'plugins', { get: () => ps.plugins })
+  Object.defineProperty(dp, 'mount', { get: () => mount })
   // #endregion
 
   // #region private
@@ -51,8 +52,6 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
     Object.defineProperty(dp, 'stop', { get: () => pcs.stop })
     Object.defineProperty(dp, 'use', { get: () => ps.use })
 
-    await wait?.()
-
     const { canvas, ctx } = await build()
 
     Object.defineProperty(dp, 'canvas', { get: () => canvas })
@@ -60,7 +59,10 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
 
     ps.run('mounted')
 
+    resolved()
+
     consola.success('挂载成功!', dp)
+    return dp
   }
   const ready = async () => promised.then(() => dp)
   // #endregion
@@ -113,7 +115,8 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
   }
   // #endregion
 
-  const promised = mount()
+  let resolved: Function
+  let promised: Promise<void> = new Promise(resolve => resolved = resolve)
 
   // 保存实例, 实现单页面同个实例
   setCurrentDrawPoster(dp, ps)

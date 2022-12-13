@@ -1,7 +1,11 @@
 import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface TextInfo {
-    text: string; y: number; x: number, w: number, h: number
+    text: string
+    y: number
+    x: number
+    w: number
+    h: number
   }
   interface CanvasCtx {
     /** 绘制二维码
@@ -102,7 +106,7 @@ const plugin: Plugin = {
           y: y + index * lineHeight,
           x,
           h: lineHeight,
-          w: width
+          w: width,
         }
         // 默认执行绘制信息
         if (draw)

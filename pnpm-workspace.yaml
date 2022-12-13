@@ -3,3 +3,5 @@ packages:
   - '!**/test/**'
   - '!**/dist/**'
   - '!**dist'
+  - '!**uni-vue2-cli'
+  - '!**uni-vue3-vite'

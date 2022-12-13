@@ -11,11 +11,11 @@
   ],
   "main": "src/index.ts",
   "publishConfig": {
-    "main": "index.js",
+    "main": "index.esm.js",
     "types": "./index.d.ts",
     "directory": "dist"
   },
   "scripts": {
-    "build": "ptsup src --dts --meta"
+    "build": "ptsup ./src --dts --meta --splitting"
   }
 }

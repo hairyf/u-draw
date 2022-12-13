@@ -1,4 +1,4 @@
-import { isFunction, isObject, isString } from 'lodash'
+import { isFunction, isObject, isString } from '../utils/is'
 import type { Plugin } from '../core'
 import type { DrawPosterOptions } from '../core/typed'
 import { UNI_PLATFORM } from '../utils'

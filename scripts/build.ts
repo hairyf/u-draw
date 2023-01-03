@@ -17,7 +17,7 @@ async function cli() {
   fs.mkdirpSync('dist-core')
 
   consola.info('build:core')
-  execa.sync('pnpm -r --filter uni-draw-poster build', { stdio: 'inherit' })
+  execa.sync('pnpm -r --filter u-draw-poster build', { stdio: 'inherit' })
 
   consola.info('build:copy')
   await copy('packages/uni-draw-poster/dist', 'dist-core')

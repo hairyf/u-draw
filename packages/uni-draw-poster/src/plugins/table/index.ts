@@ -1,7 +1,7 @@
 import type { Plugin } from '../../core/plugin'
 declare module '../../core/typed' {
   interface DrawPosterInstance {
-    createLayer: (afferOptions: CreateLayerOptions, rowList: DrawRowOpt[]) => number
+    createLayer: (afterOptions: CreateLayerOptions, rowList: DrawRowOpt[]) => number
     table: {
       height: number
       padding: number
@@ -19,7 +19,7 @@ export interface DrawRowOpt {
   text?: string
   font?: string
   color?: string
-  center?: boolean
+  align?: 'left' | 'center' | 'right'
   width?: number
 }
 
@@ -34,7 +34,7 @@ export default (options?: { height?: number; padding?: number; margin?: number }
       }
     },
     mounted: (dp) => {
-      dp.createLayer = (afferOptions, rowList) => {
+      dp.createLayer = (afterOptions, rowList) => {
         // 当前配置(头部偏移量, 列内边距, 表单外边距)
         const height = dp.table.height
         const margin = dp.table.margin
@@ -49,25 +49,25 @@ export default (options?: { height?: number; padding?: number; margin?: number }
           line: true,
           lineHeight: 0,
           border: true,
-          ...afferOptions,
+          ...afterOptions,
         }
         // 基本列配置
         const baseRowOptions = {
           text: '',
           font: '24px sans-serif',
           color: '#333',
-          center: false,
           width: 0,
+          align: 'left',
         }
         // 累计最高的列为标准定义为层高度
         let maxRowHeight = 0
         // 累计固定栅格列偏移量
         let columnOffsetX = margin
         // 创建行绘制任务
-        const layers = rowList.map((afferRowOptions = {}, index) => {
+        const layers = rowList.map((afterRowOptions = {}, index) => {
           const rowOptions = {
             ...baseRowOptions,
-            ...afferRowOptions,
+            ...afterRowOptions,
           }
           let columnX = 0 // 每列的X轴
           let columnW = 0 // 每列的宽度
@@ -81,7 +81,13 @@ export default (options?: { height?: number; padding?: number; margin?: number }
             if (columnX > 0 && columnX < containerWidth - columnW)
               columnX = columnW * index + margin
 
-            fontOffsetX = rowOptions.center ? columnX + columnW / 2 : columnX + padding
+            if (rowOptions.align === 'left')
+              fontOffsetX = columnX + padding
+            if (rowOptions.align === 'center')
+              fontOffsetX = columnX + columnW / 2
+            if (rowOptions.align === 'right')
+              fontOffsetX = columnX + columnW - padding
+
             fontMaxWidth = columnW - padding * 3
           }
           if (!options.self) {
@@ -89,9 +95,14 @@ export default (options?: { height?: number; padding?: number; margin?: number }
             columnW = rowOptions.width
             columnX = columnOffsetX
             fontMaxWidth = columnW - padding * 3
-            fontOffsetX = rowOptions.center
-              ? columnOffsetX + rowOptions.width / 2
-              : columnOffsetX + padding
+
+            if (rowOptions.align === 'left')
+              fontOffsetX = columnOffsetX + padding
+            if (rowOptions.align === 'center')
+              fontOffsetX = columnOffsetX + rowOptions.width / 2
+            if (rowOptions.align === 'right')
+              fontOffsetX = columnOffsetX + rowOptions.width - padding
+
             columnOffsetX += rowOptions.width
           }
           dp.ctx.font = rowOptions.font
@@ -112,8 +123,8 @@ export default (options?: { height?: number; padding?: number; margin?: number }
 
           return {
             font: rowOptions.font,
-            center: rowOptions.center,
             color: rowOptions.color,
+            align: rowOptions.align,
             border: options.border,
             background: options.background,
             lineHeight: options.lineHeight,
@@ -135,9 +146,7 @@ export default (options?: { height?: number; padding?: number; margin?: number }
             ctx.fillStyle = rowOptions.background
             ctx.strokeStyle = '#333'
             ctx.textBaseline = 'middle'
-            ctx.textAlign = 'left'
-            if (rowOptions.center)
-              ctx.textAlign = 'center'
+            ctx.textAlign = rowOptions.align as 'left'
 
             ctx.fillRect(
               rowOptions.columnX,

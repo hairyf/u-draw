@@ -81,17 +81,17 @@ export default {
 ~~~js
 interface BaseOpts {
   // 当前行背景色 默认 "#fff"
-  background?: string,
+  background?: string
   // 当前行 Y 轴偏移量, 默认 dp.from.height || dp.from.margin
-  columnY?: number,
+  columnY?: number
   // 当前行是否开启自适应栅格宽度, 默认 true
-  self?: boolean,
+  self?: boolean
   // 当前行是否开启内边框显示, 默认 true
-  line?: boolean,
+  line?: boolean
   // 当前行高度, 默认当前字体行高
-  lineHeight?: number,
+  lineHeight?: number
   // 当前行是否开启外边框显示, 默认 true
-  border?: boolean,
+  border?: boolean
 }
 ~~~
 
@@ -100,14 +100,14 @@ interface BaseOpts {
 ~~~js
 interface BaseOpts {
   // 当前列文字
-  text: string,
+  text: string
   // 当前列文字样式, 默认 "24px sans-serif"
-  font?: string,
+  font?: string
   // 当前列文字颜色, 默认 "#333"
-  color?: string,
+  color?: string
   // 当前列文字是否居中, 默认 false
-  center?: boolean,
+  center?: boolean
   // 当前列自定义宽度, 只有 self 为 false 才起效果
-  width?: number,
+  width?: number
 }
 ~~~

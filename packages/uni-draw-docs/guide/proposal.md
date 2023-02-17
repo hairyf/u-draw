@@ -18,37 +18,41 @@ canvas在海报生成中请当做一个生成工具来看待，它的作用仅�
 
 需要注意的是，创建绘制工具支持重复调用，当构建第一次的绘制工具后，重复构建将自动获取第一次的实例。不需要存入`this`中，其实`vue3`也不提倡使用`this`这个黑盒，甚至抛弃了使用`this`。
 ~~~js
-data: () => ({})
-// 不存入实例(推荐)
-method: {
-  draw() {
-    const dp = await useDrawPoster("canvas")
-    //...
+export default {
+  data: () => ({}),
+  // 不存入实例(推荐)
+  method: {
+    draw() {
+      const dp = await useDrawPoster('canvas')
+    // ...
+    }
+  },
+  async onReady() {
+    this.draw()
+    // 重复调用....
+    this.draw()
   }
-}
-async onReady() {
- this.draw()
- // 重复调用....
- this.draw()
 }
 ~~~
 ~~~js
-// 存入实例(不推荐)
-data: () => ({
-  dp: null
-})
-method: {
-  draw() {
-    if (!this.dp) {
-      const dp = await useDrawPoster("canvas")
-      this.dp = dp
+export default {
+  // 存入实例(不推荐)
+  data: () => ({
+    dp: null
+  }),
+  method: {
+    draw() {
+      if (!this.dp) {
+        const dp = await useDrawPoster('canvas')
+        this.dp = dp
+      }
+    // ...
     }
-    //...
+  },
+  async onReady() {
+    this.draw()
+    // 重复调用....
+    this.draw()
   }
-}
-async onReady() {
- this.draw()
- // 重复调用....
- this.draw()
 }
 ~~~

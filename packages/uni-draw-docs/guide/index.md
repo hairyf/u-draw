@@ -32,12 +32,15 @@ yarn add ptsup --dev
 ~~~js
 // 注意：如果使用 HBuilder 引入, 需要引入 '@/js_sdk/u-draw-poster'
 import { useDrawPoster } from 'u-draw-poster'
-async onReady() {
- // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制
- const dp = await useDrawPoster("canvas", {
-  width: 100,
-  height: 100
- })
+
+export default {
+  async onReady() {
+    // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制
+    const dp = await useDrawPoster('canvas', {
+      width: 100,
+      height: 100
+    })
+  }
 }
 ~~~
 
@@ -46,24 +49,24 @@ async onReady() {
 ~~~js
 // 绘制背景与文字
 dp.draw((ctx) => {
-    ctx.fillStyle = "#F4F4F4";
-    ctx.fillRect(0, 0, dp.canvas.width, dp.canvas.height);
-    ctx.textBaseline = "top";
-    ctx.textAlign = "start";
-    ctx.fillStyle = "white";
-    ctx.font = `bold ${22}px sans-serif`;
-    ctx.fillText('周先生', dp.canvas.width/2, 38.5);
+  ctx.fillStyle = '#F4F4F4'
+  ctx.fillRect(0, 0, dp.canvas.width, dp.canvas.height)
+  ctx.textBaseline = 'top'
+  ctx.textAlign = 'start'
+  ctx.fillStyle = 'white'
+  ctx.font = `bold ${22}px sans-serif`
+  ctx.fillText('周先生', dp.canvas.width / 2, 38.5)
 })
 // 绘制图片内容
 dp.draw(async (ctx) => {
-    //.......
+  // .......
 })
 ~~~
 
 > 值得注意的是, `draw`方法会自动的执行 `ctx.save/ctx.restore`, 不需要人为操纵绘画栈。
 
 ~~~js
-dp.draw((ctx) => {/* ... */})
+dp.draw((ctx) => { /* ... */ })
 // 相当于
 ctx.save()
 /* ... */
@@ -77,12 +80,12 @@ ctx.restore()
 `dp.render` 在非 `2d` 绘画中，执行绘画任务完毕后，将自动执行 `ctx.draw` 方法，并在 draw 绘画才算异步结束。
 
 ~~~js
-dp.draw((ctx) => {/* ... */})
-dp.draw(async (ctx) => {/* ... */})
+dp.draw((ctx) => { /* ... */ })
+dp.draw(async (ctx) => { /* ... */ })
 // 由于每个任务都有可能会有异步的绘制任务, 所以得需要使用await等待绘制
-const result = await dp.render();
+const result = await dp.render()
 // 绘制成功将返回每个任务的绘制状况组成的数组
-console.log("draw绘制状况:", result); // draw绘制状况: [true]
+console.log('draw绘制状况:', result) // draw绘制状况: [true]
 ~~~
 
 > 当全部同步绘制时，将会出现绘制时间保持不一致的情况。这样就会导致一个问题，绘制图层覆盖导致显示未达到预期效果，之所以设计为异步等待，也是为了绘制图层能保持一致顺序。
@@ -92,21 +95,21 @@ console.log("draw绘制状况:", result); // draw绘制状况: [true]
 如需要保存为图片时，可以使用 `dp.create` 进行创建图片本地地址，在由 `wx` 或 `uni` 的 `api` 进行保存。
 
 ~~~js
-dp.draw(async (ctx) => {/* ... */})
-const result = await dp.render();
-const posterImgUrl = await dp.create();
-console.log("draw绘制状况:", result); // [true]
-console.log("绘制生成本地地址:", posterImgUrl); // ...tmp...
+dp.draw(async (ctx) => { /* ... */ })
+const result = await dp.render()
+const posterImgUrl = await dp.create()
+console.log('draw绘制状况:', result) // [true]
+console.log('绘制生成本地地址:', posterImgUrl) // ...tmp...
 ~~~
 
 
 你也可以不使用 `dp.render` 方法，当调用 `dp.create` 时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
 
 ~~~js
-dp.draw(async (ctx) => {/* ... */})
+dp.draw(async (ctx) => { /* ... */ })
 // 跳过drawPoster.render直接生成地址
-const posterImgUrl = await dp.create();
-console.log("绘制生成本地地址:", posterImgUrl);
+const posterImgUrl = await dp.create()
+console.log('绘制生成本地地址:', posterImgUrl)
 ~~~
 
 - 博客：[Mr.Mao'blog](https://tuimao233.gitee.io/mao-blog/)

@@ -67,7 +67,7 @@ Plugins.use(drawQrCode)
 import drawQrCode from 'u-draw-poster/plugins/ctx-drawQrCode'
 // 1. 配置中传入(推荐), 只能传入对象 (drawQrCode 调用返回对象)
 const dp1 = await useDrawPoster('canvas', {
-  plugins: [ drawQrCode() ]
+  plugins: [drawQrCode()]
 })
 // 2. 构建完毕后使用 .use, 该方法无法享有 beforeMount 周期函数的调用
 const dp2 = await useDrawPoster('canvas')
@@ -82,8 +82,8 @@ dp.use(drawQrCode())
 Plugins.use({
   name: '__draw-my-qr-code__',
   mounted: (dp, $options) => {
-    dp.ctx.drawMyQrCode = (qrCodeOptions) => {/* 挂载绘制画笔: 自定义绘制方法 */}
-    dp.drawMyQrCode = (qrCodeOptions) => {/* 挂载实例方法: 自定义绘制内容 */}
+    dp.ctx.drawMyQrCode = (qrCodeOptions) => { /* 挂载绘制画笔: 自定义绘制方法 */ }
+    dp.drawMyQrCode = (qrCodeOptions) => { /* 挂载实例方法: 自定义绘制内容 */ }
   }
 })
 ~~~
@@ -95,7 +95,7 @@ Plugins.use({
 Plugins.use('name', {
   /* beforeMount, mounted, beforeUnmount, unmounted, beforeCreate, created */
 })
-Plugins.use('name', (dp) => {/* mounted */})
+Plugins.use('name', (dp) => { /* mounted */ })
 Plugins.use({
   name: 'name',
   /* beforeMount, mounted, beforeUnmount, unmounted, beforeCreate, created */
@@ -127,8 +127,8 @@ interface DrawPosterLifeCycles {
 
 ~~~js
 interface Canvas {
-  width: number;
-  height: number;
+  width: number
+  height: number
   // 剩余参数为微信小程序独享API，只有微信小程序才拥有的API
   // 具体参考微信小程序文档：https://developers.weixin.qq.com/miniprogram/dev/api/canvas/Canvas.html
 }
@@ -166,15 +166,15 @@ interface Canvas {
 `create` 会根据 `canvas.width` 与 `canvas.height` 进行创建图片。
 如果你想自定义参数，`render` 方法可以接受一个配置对象，以下为可配置项，与 uni.canvasToTempFilePath 配置相似。
 
-~~~js
+~~~ts
 interface CreatePathOptions {
-  x?: number | undefined;
-  y?: number | undefined;
-  width?: number | undefined;
-  height?: number | undefined;
-  destWidth?: number | undefined;
-  destHeight?: number | undefined;
-  fileType?: string | undefined;
-  quality?: number | undefined;
+  x?: number | undefined
+  y?: number | undefined
+  width?: number | undefined
+  height?: number | undefined
+  destWidth?: number | undefined
+  destHeight?: number | undefined
+  fileType?: string | undefined
+  quality?: number | undefined
 }
 ~~~

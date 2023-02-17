@@ -17,10 +17,10 @@ dp.draw(async (ctx) => {
 注意：当绘制环境为H5时，uniapp使用本地图片绘画时不要用尺寸较大的图片，不然会在创建图片时生成失败。
 
 ~~~js
-dp.draw(async (ctx)=>{
-    const url = "/static/logo.png"
-    // const url = "https://...."
-    await ctx.drawImage(url, 88, 174.94, 198.98, 36);
+dp.draw(async (ctx) => {
+  const url = '/static/logo.png'
+  // const url = "https://...."
+  await ctx.drawImage(url, 88, 174.94, 198.98, 36)
 })
 ~~~
 
@@ -39,10 +39,10 @@ dp.draw(async (ctx)=>{
 
 ~~~js
 dp.draw(async (ctx) => {
-  const url = "static/logo.png"
+  const url = 'static/logo.png'
   // const url = "https://...."
-  await ctx.drawRoundImage(url, 0, 0, 100, 100, 50);
-});
+  await ctx.drawRoundImage(url, 0, 0, 100, 100, 50)
+})
 ~~~
 
 ## 裁剪图片(ctx.drawImageFit)
@@ -51,7 +51,7 @@ dp.draw(async (ctx) => {
 
 ~~~js
 dp.draw(async (ctx) => {
-  const url = "static/logo.png"
+  const url = 'static/logo.png'
   // const url = "https://...."
   await ctx.drawImageFit(url, {
     round: 15,
@@ -60,7 +60,7 @@ dp.draw(async (ctx) => {
     intrinsicPosition: ['right', 'top'],
     specifiedPosition: [0, 0],
   })
-});
+})
 ~~~
 
 根据图片原有尺寸与展示尺寸的宽高比例，计算模拟类似[obejct-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)效果，以下为可配置项。
@@ -70,13 +70,13 @@ interface DrawImageFitOpts {
   // 图片圆角尺寸
   round?: number
   // 图片裁剪方式, 默认 "contain"
-  objectFit?: "contain" | "cover"
+  objectFit?: 'contain' | 'cover'
   // 图片原有尺寸, 默认使用图片原有尺寸(getImageInfo->success)
-  intrinsicSize?: { width: number, height: number }
+  intrinsicSize?: { width: number; height: number }
   // 图片展示尺寸, 默认 {width: 100, height: 100}
-  specifiedSize?: { width: number, height: number }
+  specifiedSize?: { width: number; height: number }
   // 图片裁剪定位[x, y], 默认 ["left", "top"]
-  intrinsicPosition?: ["left" | "center" | "right", "top" | "center" | "bottom"]
+  intrinsicPosition?: ['left' | 'center' | 'right', 'top' | 'center' | 'bottom']
   // 图片绘制定位[x, y], 默认 [0, 0]
   specifiedPosition?: [number, number]
 }
@@ -91,27 +91,27 @@ interface DrawImageFitOpts {
 ~~~ts
 interface FillWarpTextOpts {
   // 绘制字符串, 必传项
-  content: string;
+  content: string
   // 绘制最长高度, 默认100px
-  maxWidth?: number;
+  maxWidth?: number
   // 绘制行高, 默认取当前字体的默认宽度
-  lineHeight?: number;
+  lineHeight?: number
   // 绘制行数量, 默认限制为2层
-  layer?: number;
+  layer?: number
   // 绘制x轴, 默认0
-  x?: number;
+  x?: number
   // 绘制y轴, 默认0
-  y?: number;
+  y?: number
   // 设置换行字符, 默认为空, 如设置, maxWidth|layer 将会失效
-  splitText?: string;
+  splitText?: string
   // 是否不马上进行绘制
-  notFillText?: boolean;
+  notFillText?: boolean
 }
 // 当 `notFillText` 为 `true` 时，则不进行绘制，该函数将返回一个绘制信息队列
 // 用于代表每行字体所对应的绘制信息, 以下是返回的结构信息，你可以用于计算该
 // 换行字体的宽度，你也可以使用array.forEach与ctx.fillText进行绘制。
 [
-  { text: string, y: number, x: number}
+  { text: string, y: number, x: number }
   // ....
 ]
 ~~~
@@ -121,11 +121,11 @@ interface FillWarpTextOpts {
 `ctx.fillWarpText(x, y, w, h, r)`
 
 ~~~js
-dp.draw(async (ctx)=>{
-   // 设置矩形颜色
-   ctx.fillStyle = "#fff";
-   // 进行绘制
-   ctx.fillRoundRect(15, 179, 345, 365.5, 10);
+dp.draw(async (ctx) => {
+  // 设置矩形颜色
+  ctx.fillStyle = '#fff'
+  // 进行绘制
+  ctx.fillRoundRect(15, 179, 345, 365.5, 10)
 })
 ~~~
 
@@ -155,21 +155,23 @@ dp.draw(async (ctx)=>{
 import { useDrawPoster } from 'u-draw-poster'
 import drawQrCode, { errorCorrectLevel } from 'u-draw-poster/plugins/drawQrCode'
 
-async onReady() {
- const dp = await useDrawPoster("canvas", {
-   // 单独引入二维码插件
-   plugins: [ drawQrCode() ]
- })
- dp.canvas.width = 200; dp.canvas.height = 200
- dp.draw(ctx=>{
-   ctx.drawQrCode({
-    x: (dp.canvas.width / 2) - 50,
-    y: (dp.canvas.height / 2) - 50,
-    text: "http://www.baidu.com",
-    size: 100,
-    // errorCorrectLevel: errorCorrectLevel.L
-  });
- })
+export default {
+  async onReady() {
+    const dp = await useDrawPoster('canvas', {
+      // 单独引入二维码插件
+      plugins: [drawQrCode()]
+    })
+    dp.canvas.width = 200; dp.canvas.height = 200
+    dp.draw((ctx) => {
+      ctx.drawQrCode({
+        x: (dp.canvas.width / 2) - 50,
+        y: (dp.canvas.height / 2) - 50,
+        text: 'http://www.baidu.com',
+        size: 100,
+        // errorCorrectLevel: errorCorrectLevel.L
+      })
+    })
+  }
 }
 ~~~
 

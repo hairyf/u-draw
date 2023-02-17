@@ -3,22 +3,21 @@
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
-- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://github.com/TuiMao233/u-draw-poster/tree/master/docs/use.md)。
+- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://u-draw-poster.vercel.app/other/vite-vue3.html)。
 
-- API 文档：[u-draw-poster](https://tuimao233.gitee.io/mao-blog/my-extends/u-draw-poster.html)
 - 插件市场：[dcloud/u-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
 
 ## ⚙️ Install
 
-```sh
-pnpm add ptsup --dev
+~~~sh
+pnpm add u-draw-poster --dev
 # Or Yarn
-yarn add ptsup --dev
-```
+yarn add u-draw-poster --dev
+~~~
 
 ## 📖 Usage
 
-### Create Template
+### 1. Create Template
 
 ~~~html
 <!-- #ifdef MP-WEIXIN -->
@@ -44,7 +43,7 @@ export default {
 }
 ~~~
 
-### Draw Content
+### 2. Draw Content
 
 ~~~js
 // 绘制背景与文字
@@ -73,7 +72,7 @@ ctx.save()
 ctx.restore()
 ~~~
 
-### Draw Render
+### 3. Draw Render
 
 `dp.draw` 并不会马上绘制，只是将该任务添加到了任务栈，需要使用 `dp.render` 函数进行绘制，该函数在绘制完毕后将弹出所有任务。
 
@@ -90,7 +89,7 @@ console.log('draw绘制状况:', result) // draw绘制状况: [true]
 
 > 当全部同步绘制时，将会出现绘制时间保持不一致的情况。这样就会导致一个问题，绘制图层覆盖导致显示未达到预期效果，之所以设计为异步等待，也是为了绘制图层能保持一致顺序。
 
-### Create Image
+### 4. Create Image
 
 如需要保存为图片时，可以使用 `dp.create` 进行创建图片本地地址，在由 `wx` 或 `uni` 的 `api` 进行保存。
 
@@ -111,6 +110,3 @@ dp.draw(async (ctx) => { /* ... */ })
 const posterImgUrl = await dp.create()
 console.log('绘制生成本地地址:', posterImgUrl)
 ~~~
-
-- 博客：[Mr.Mao'blog](https://tuimao233.gitee.io/mao-blog/)
-- 邮箱：951416545@qq.com

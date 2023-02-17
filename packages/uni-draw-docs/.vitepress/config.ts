@@ -49,7 +49,7 @@ const nav: DefaultTheme.NavItem[] = [
 ]
 
 const config = defineConfig({
-  title: '绘制工具（Uni Draw Poster）',
+  title: '绘制（Uni Draw Poster）',
   lastUpdated: true,
   themeConfig: {
     sidebar,

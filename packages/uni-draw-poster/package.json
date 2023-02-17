@@ -11,7 +11,7 @@
   ],
   "main": "src/index.ts",
   "publishConfig": {
-    "main": "index.esm.js",
+    "main": "index.js",
     "types": "./index.d.ts",
     "directory": "dist"
   },

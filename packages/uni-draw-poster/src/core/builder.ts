@@ -3,7 +3,7 @@ import { promisify, queryFields } from '../utils'
 import { Consola } from './consola'
 import { Plugins } from './plugin'
 import DrawProcess from './process'
-import type { Canvas, DrawPosterOptions, DrawPosterInstance } from './typed'
+import type { Canvas, DrawPosterInstance, DrawPosterOptions } from './typed'
 
 export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) => {
   // 假如当前页面已存在实例, 则直接返回
@@ -43,7 +43,8 @@ export const builder = (options: DrawPosterOptions, wait?: () => Promise<void>) 
   }
   let locked = false
   const mount = async () => {
-    if (locked) return ready()
+    if (locked)
+      return ready()
     locked = true
     ps.run('beforeMount')
     Object.defineProperty(dp, 'render', { get: () => render })

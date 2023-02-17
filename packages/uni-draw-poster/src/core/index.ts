@@ -1,8 +1,9 @@
 import { onReady } from '../helpers/internal'
 import { helper } from '../helpers/params'
 import { builder } from './builder'
-import { Plugin, Plugins } from './plugin'
-import type { DrawPosterOptions, DrawPosterInstance } from './typed'
+import type { Plugin } from './plugin'
+import { Plugins } from './plugin'
+import type { Canvas, CanvasCtx, CreatePathOptions, DrawPosterInstance, DrawPosterOptions } from './typed'
 
 /**
  * 创建 dp 绘制（仅支持 vue3 setup 中使用）
@@ -23,4 +24,6 @@ function createDrawPoster(...args: any[]) {
   return builder(helper(...args))
 }
 
-export { useDrawPoster, createDrawPoster, Plugin, Plugins }
+export { useDrawPoster, createDrawPoster, Plugins }
+
+export type { Plugin, DrawPosterOptions, DrawPosterInstance, Canvas, CreatePathOptions, CanvasCtx }

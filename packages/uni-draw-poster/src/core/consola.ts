@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import type { DrawPosterInstance } from './typed'
 
 export class Consola {

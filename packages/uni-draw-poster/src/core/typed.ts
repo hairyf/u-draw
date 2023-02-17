@@ -1,4 +1,4 @@
-import type { Plugin, DrawPosterUse } from './plugin'
+import type { DrawPosterUse, Plugin } from './plugin'
 
 export interface DrawPosterOptions {
   /** 查询字符串(必须), 注意不要写错对应canvas id */

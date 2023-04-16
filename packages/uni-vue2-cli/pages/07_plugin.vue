@@ -1,8 +1,8 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
 
 // 测试案例一：添加一个绘制个人海报的扩展实现
-useDrawPoster.use({
+useDraw.use({
   name: 'createMyCardImagePath',
   mounted: (dp) => {
     dp.createMyCardImagePath = async (_options) => {
@@ -13,7 +13,7 @@ useDrawPoster.use({
 })
 
 // 测试案例二：添加一个绘制二维码的绘画扩展实现
-useDrawPoster.use({
+useDraw.use({
   name: 'drawMyQrCode',
   mounted: (dp) => {
     dp.ctx.drawMyQrCode = (url, x, y, w, h) => {
@@ -36,7 +36,7 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = createDrawPoster('canvas', {
+    const dp = createDraw('canvas', {
       width: 300,
       height: 300,
     })
@@ -67,7 +67,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

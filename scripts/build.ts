@@ -7,26 +7,26 @@ import { archiver, copy } from './utils'
 assert(process.cwd() !== __dirname)
 
 async function cli() {
-  consola.info('build:clean')
-  execa.sync('rimraf', ['dist-uniapp', 'dist-core'])
-  execa.sync('rimraf packages/**/dist', { stdio: 'inherit' })
-  execa.sync('rimraf packages/**/js_sdk', { stdio: 'inherit' })
-  execa.sync('rimraf packages/**/js_sdk', { stdio: 'inherit' })
+  // consola.info('build:clean')
+  // execa.sync('rimraf', ['dist-uniapp', 'dist-core'])
+  // execa.sync('rimraf packages/**/dist', { stdio: 'inherit' })
+  // execa.sync('rimraf packages/**/js_sdk', { stdio: 'inherit' })
+  // execa.sync('rimraf packages/**/js_sdk', { stdio: 'inherit' })
 
-  fs.mkdirpSync('dist-uniapp')
-  fs.mkdirpSync('dist-core')
+  // fs.mkdirpSync('dist-uniapp')
+  // fs.mkdirpSync('dist-core')
 
-  consola.info('build:core')
-  execa.sync('pnpm -r --filter u-draw-poster build', { stdio: 'inherit' })
+  // consola.info('build:core')
+  // execa.sync('pnpm -r --filter u-draw build', { stdio: 'inherit' })
+  // consola.info('build:copy')
 
-  consola.info('build:copy')
-  await copy('packages/uni-draw-poster/dist', 'dist-core')
-  await copy('packages/uni-draw-poster/dist', 'packages/uni-vue2-cli/js_sdk')
-  await copy('README.md', 'dist-uniapp/readme.md')
+  // await copy('packages/uni-draw/dist', 'dist-core')
+  // await copy('packages/uni-draw/dist', 'packages/uni-vue2-cli/js_sdk')
+  // await copy('README.md', 'dist-uniapp/readme.md')
 
   consola.info('build:zip')
-  archiver('packages/uni-vue2-cli', 'dist-uniapp/example.zip')
-  archiver('packages/uni-draw-poster/dist', 'dist-uniapp/plugin.zip')
+  archiver('packages/uni-vue3-vite', 'dist-uniapp/example.zip')
+  archiver('packages/uni-draw/dist', 'dist-uniapp/plugin.zip')
 }
 
 if (require.main === module)

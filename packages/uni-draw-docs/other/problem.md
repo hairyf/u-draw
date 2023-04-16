@@ -10,20 +10,20 @@
 
 注意`DrawPoster.build`无法检测你所选择`canvasId`的是否正确，所以一定要确保与`canvas-id`和`html`中的`canvas`相同，在小程序端，由于会自动切换为`type2d`，必须得加上动态编译。
 
-~~~html
+```html
 <!-- #ifdef MP-WEIXIN -->
 <canvas id="canvas" type="2d" style="width: 300px; height: 300px" />
 <!-- #endif -->
 <!-- #ifndef MP-WEIXIN -->
 <canvas canvas-id="canvas" id="canvas" style="width: 300px; height: 300px" />
 <!-- #endif -->
-~~~
+```
 
 ## 绘制多个图片加载慢
 
 如果觉得多个图片绘制`await`加载慢，可以使用`Promise.all`将一部分不需要处理图层覆盖的图片进行同步绘制。
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   // // 用户头像
   await ctx.drawRoundImage(headImgUrl, 39, 790, 90, 90, 100)
@@ -35,6 +35,6 @@ dp.draw(async (ctx) => {
     ctx.drawImage(codeImgUrl, 518, 780, 92, 92),
   ])
 })
-~~~
+```
 
 需要注意的是：`ctx.drawRoundImage`不可以放在`Promise.all`当中，由于`ctx.drawRoundImage`内部会调用`ctx.clip`方法，在`Promise.all`中会与其他图片绘制产生冲突。从而导致圆角失效。

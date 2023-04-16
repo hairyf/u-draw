@@ -1,17 +1,16 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
+
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
-    const dp = createDrawPoster({
+    const dp = createDraw({
       selector: 'canvas',
     })
-    dp.mount()
 
-    dp.canvas.width = 300
-    dp.canvas.height = 300
+    dp.mount()
 
     dp.draw((ctx) => {
       ctx.fillStyle = '#F4F4F4'
@@ -44,7 +43,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

@@ -12,7 +12,7 @@ export function archiver(src: string, disc: string) {
   const output = fs.createWriteStream(disc)
   const archive = ar('zip', {
     // 设置压缩级别
-    zlib: { level: 9 }
+    zlib: { level: 9 },
   })
   output.on('close', () => {
     consola.info(`总共 ${archive.pointer()} 字节`)
@@ -22,11 +22,10 @@ export function archiver(src: string, disc: string) {
     consola.warn('数据源已耗尽')
   })
   archive.on('warning', (err) => {
-    if (err.code === 'ENOENT') {
+    if (err.code === 'ENOENT')
       consola.warn('stat故障和其他非阻塞错误')
-    } else {
+    else
       throw err
-    }
   })
   archive.on('error', (err) => {
     throw err
@@ -42,5 +41,6 @@ export function archiver(src: string, disc: string) {
 export function copy(src: string, disc: string) {
   src = path.join(root, src)
   disc = path.join(root, disc)
-  return fs.copy(src, disc)
+  return fs.copy(src, disc, {
+  })
 }

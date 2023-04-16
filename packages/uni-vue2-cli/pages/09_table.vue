@@ -1,7 +1,6 @@
 <script>
-import { setTimeout } from 'timers'
-import { useDrawPoster } from '../../js_sdk/u-draw-poster'
-import table from '../../js_sdk/u-draw-poster/plugins/table'
+import table from '../js_sdk/plugins/table'
+
 export default {
   data: () => ({
     imgUrl: '',
@@ -9,7 +8,7 @@ export default {
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = createDrawPoster({
+    const dp = createDraw({
       selector: 'canvas',
       debug: true,
       width: 300,
@@ -37,7 +36,9 @@ export default {
     dp.createLayer({ background: '#fff' }, [{ text: '普通字体' }, { text: '普通字体' }])
     dp.createLayer({ background: '#fff' }, [{ text: '普通字体' }, { text: '普通字体' }])
     this.height = dp.canvas.height = dp.table.height + 1
-    setTimeout(() => { dp.create() }, 20)
+
+    const image = await dp.create()
+    console.log(image)
   },
 }
 </script>
@@ -55,7 +56,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

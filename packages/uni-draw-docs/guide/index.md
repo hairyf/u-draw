@@ -3,49 +3,46 @@
 - 拥有良好的语法架构，不会在绘制`uni/wx`矩形时陷入回调地狱。
 - 支持原生小程序，与`uniapp`多端应用。当是环境为原生小程序时，自动切换为性能更好的`type2d`绘制方式。
 - 将复杂的逻辑组合为简单的方法，扩展性强，可使用 `use|useCtx` 引入扩展。
-- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDrawPoster](https://u-draw-poster.vercel.app/other/vite-vue3.html)。
+- 支持`typescript`，支持`vue3`模板，具体使用参考 [useDraw](https://u-draw.vercel.app/other/vite-vue3.html)。
 
-- 插件市场：[dcloud/u-draw-poster](https://ext.dcloud.net.cn/plugin?id=3237)
+- 插件市场：[dcloud/u-draw](https://ext.dcloud.net.cn/plugin?id=3237)
 
 ## ⚙️ Install
 
-~~~sh
-pnpm add u-draw-poster --dev
+```sh
+pnpm add u-draw --dev
 # Or Yarn
-yarn add u-draw-poster --dev
-~~~
+yarn add u-draw --dev
+```
 
 ## 📖 Usage
 
 ### 1. Create Template
 
-~~~html
+```html
 <!-- #ifdef MP-WEIXIN -->
 <canvas id="canvas" type="2d" style="width:100px; height:100px" />
 <!-- #endif -->
 <!-- #ifndef MP-WEIXIN -->
 <canvas canvas-id="canvas" id="canvas" style="width:100px; height:100px" />
 <!-- #endif -->
-~~~
+```
 
-~~~js
-// 注意：如果使用 HBuilder 引入, 需要引入 '@/js_sdk/u-draw-poster'
-import { useDrawPoster } from 'u-draw-poster'
+```js
+// 注意：如果使用 HBuilder 引入, 需要引入 '@/js_sdk/u-draw'
+import { useDraw } from 'u-draw'
 
 export default {
   async onReady() {
     // 传入选择器, 初始化绘制工具(注意, 不需要传入#符号) 当微信小程序时, 将自动启用type2d绘制
-    const dp = await useDrawPoster('canvas', {
-      width: 100,
-      height: 100
-    })
+    const dp = useDraw('canvas')
   }
 }
-~~~
+```
 
 ### 2. Draw Content
 
-~~~js
+```js
 // 绘制背景与文字
 dp.draw((ctx) => {
   ctx.fillStyle = '#F4F4F4'
@@ -60,17 +57,17 @@ dp.draw((ctx) => {
 dp.draw(async (ctx) => {
   // .......
 })
-~~~
+```
 
 > 值得注意的是, `draw`方法会自动的执行 `ctx.save/ctx.restore`, 不需要人为操纵绘画栈。
 
-~~~js
+```js
 dp.draw((ctx) => { /* ... */ })
 // 相当于
 ctx.save()
 /* ... */
 ctx.restore()
-~~~
+```
 
 ### 3. Draw Render
 
@@ -78,14 +75,14 @@ ctx.restore()
 
 `dp.render` 在非 `2d` 绘画中，执行绘画任务完毕后，将自动执行 `ctx.draw` 方法，并在 draw 绘画才算异步结束。
 
-~~~js
+```js
 dp.draw((ctx) => { /* ... */ })
 dp.draw(async (ctx) => { /* ... */ })
 // 由于每个任务都有可能会有异步的绘制任务, 所以得需要使用await等待绘制
 const result = await dp.render()
 // 绘制成功将返回每个任务的绘制状况组成的数组
 console.log('draw绘制状况:', result) // draw绘制状况: [true]
-~~~
+```
 
 > 当全部同步绘制时，将会出现绘制时间保持不一致的情况。这样就会导致一个问题，绘制图层覆盖导致显示未达到预期效果，之所以设计为异步等待，也是为了绘制图层能保持一致顺序。
 
@@ -93,20 +90,20 @@ console.log('draw绘制状况:', result) // draw绘制状况: [true]
 
 如需要保存为图片时，可以使用 `dp.create` 进行创建图片本地地址，在由 `wx` 或 `uni` 的 `api` 进行保存。
 
-~~~js
+```js
 dp.draw(async (ctx) => { /* ... */ })
 const result = await dp.render()
 const posterImgUrl = await dp.create()
 console.log('draw绘制状况:', result) // [true]
 console.log('绘制生成本地地址:', posterImgUrl) // ...tmp...
-~~~
+```
 
 
 你也可以不使用 `dp.render` 方法，当调用 `dp.create` 时会自动检测任务列表，如果有则执行绘制任务后在创建地址。
 
-~~~js
+```js
 dp.draw(async (ctx) => { /* ... */ })
 // 跳过drawPoster.render直接生成地址
 const posterImgUrl = await dp.create()
 console.log('绘制生成本地地址:', posterImgUrl)
-~~~
+```

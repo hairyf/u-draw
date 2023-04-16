@@ -6,13 +6,11 @@
 ```vue
 <script setup lang="ts">
 import { onReady } from '@dcloudio/uni-app'
-import { useDrawPoster } from 'u-draw-poster'
+import { useDraw } from 'u-draw'
 
 onReady(async () => {
-  const dp = await useDrawPoster('canvas', {
+  const dp = useDraw('canvas', {
     debug: true,
-    width: 100,
-    height: 100
   })
   dp.draw(async (ctx) => {
     ctx.fillStyle = 'red'
@@ -33,19 +31,17 @@ onReady(async () => {
 ```vue
 <script setup lang="ts">
 import { onReady } from '@dcloudio/uni-app'
-import { useDrawPoster } from 'u-draw-poster'
+import { useDraw } from 'u-draw'
 
 const dPoster = ref()
 
 function withDrawPoster() {
-  dPoster.value = await useDrawPoster('canvas', {
+  dPoster.value = useDraw('canvas', {
     debug: true,
-    width: 100,
-    height: 100
   })
 }
 
-const onDrawPoster = async () => {
+async function onDrawPoster() {
   await withDrawPoster()
   dPoster.value.draw(async (ctx) => {
     ctx.fillStyle = 'red'

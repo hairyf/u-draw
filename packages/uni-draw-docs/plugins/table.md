@@ -1,6 +1,6 @@
 ## 基本使用流程
 
-~~~html
+```html
 <template>
   <div class="from-list">
     <image :src="imgUrl" style="width: 100px; height: 100px" />
@@ -13,14 +13,14 @@
   </div>
 </template>
 <script>
-import { useDrawPoster } from "u-draw-poster";
-import table from "u-draw-poster/plugins/table";
+import { createDraw } from "u-draw";
+import table from "u-draw/plugins/table";
 export default {
   data: () => ({
     height: 0
   }),
   async onReady() {
-    const dp = await DrawPoster.build({
+    const dp = await createDraw({
       selector: "canvas",
       loading: true,
       plugins: [ 
@@ -34,7 +34,6 @@ export default {
           height: 0,
         })
       ],
-      width: 750,
     });
     // 创建基本层, 每调用一次, 内部会累加 dp.from.height
     dp.createLayer({ background: "#ECECEC" }, [
@@ -70,7 +69,7 @@ export default {
   },
 }
 </script>
-~~~
+```
 
 ## 绘制层
 
@@ -78,7 +77,7 @@ export default {
 
 用于创建一行表单项, 自动计算行高边距, 调用自动累加 `dp.from.height`，`BaseOpts` 为当前行配置, `RowOpts[]` 为存放着多个列信息的数组, 以下为行可配置项
 
-~~~js
+```js
 interface BaseOpts {
   // 当前行背景色 默认 "#fff"
   background?: string
@@ -93,11 +92,11 @@ interface BaseOpts {
   // 当前行是否开启外边框显示, 默认 true
   border?: boolean
 }
-~~~
+```
 
 以下为列配置项
 
-~~~js
+```js
 interface BaseOpts {
   // 当前列文字
   text: string
@@ -110,4 +109,4 @@ interface BaseOpts {
   // 当前列自定义宽度, 只有 self 为 false 才起效果
   width?: number
 }
-~~~
+```

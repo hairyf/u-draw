@@ -1,5 +1,5 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
 export default {
   data: () => ({
     imgUrl: '',
@@ -9,10 +9,8 @@ export default {
   },
   async onReady() {
     // 1. 创建绘制工具挂载
-    const dp = createDrawPoster('canvas', {
-      width: 300,
-      height: 300,
-    })
+    const dp = createDraw('canvas')
+
     dp.mount()
 
     // 2. 创建一个绘制任务
@@ -23,7 +21,7 @@ export default {
 
     // 3. 执行绘制任务（可选）
     console.log('绘制情况:', await dp.render())
-    
+
     // 4. 创建本地图片
     this.imgUrl = await dp.create()
     console.log('创建地址:', { url: this.imgUrl })
@@ -38,7 +36,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

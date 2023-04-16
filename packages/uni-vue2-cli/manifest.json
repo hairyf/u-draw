@@ -1,5 +1,5 @@
 {
-    "name" : "w",
+    "name" : "12312312312",
     "appid" : "",
     "description" : "",
     "versionName" : "1.0.0",
@@ -52,8 +52,7 @@
     "mp-weixin" : {
         "appid" : "",
         "setting" : {
-            "urlCheck" : false,
-            "checkSiteMap": false
+            "urlCheck" : false
         },
         "usingComponents" : true
     },

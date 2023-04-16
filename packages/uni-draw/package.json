@@ -1,0 +1,24 @@
+{
+  "name": "u-draw",
+  "version": "4.0.2",
+  "description": "绘制 uniapp canvas 工具",
+  "author": "hairyf",
+  "license": "ISC",
+  "keywords": [
+    "uniapp",
+    "draw",
+    "poster"
+  ],
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "index.js",
+    "types": "./index.d.ts",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "ptsup ./src --dts --meta --splitting --external --internal @uni-helper/uni-env"
+  },
+  "dependencies": {
+    "@uni-helper/uni-env": "^0.0.2"
+  }
+}

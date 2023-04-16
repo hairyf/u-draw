@@ -14,7 +14,7 @@ hero:
       link: /guide/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/TuiMao233/u-draw-poster
+      link: https://github.com/TuiMao233/u-draw
 features:
   - title: 内置插件、扩展性强
     details: 内置了图片绘制，圆角矩形绘制，换行字体绘制等方法。

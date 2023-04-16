@@ -1,5 +1,6 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
+
 export default {
   data: () => ({
     imgUrl: '',
@@ -9,7 +10,7 @@ export default {
   methods: {
     async repeatDraw() {
       // 创建绘制工具
-      const dp = createDrawPoster({
+      const dp = createDraw({
         selector: 'canvas',
         tip: true,
         debug: true,
@@ -52,7 +53,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
 page,
 .index {
   height: 100%;

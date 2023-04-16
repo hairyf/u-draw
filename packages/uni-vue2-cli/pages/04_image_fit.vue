@@ -1,11 +1,12 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
+
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
-    const dp = createDrawPoster({
+    const dp = createDraw({
       selector: 'canvas',
       debug: true,
     })
@@ -67,7 +68,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

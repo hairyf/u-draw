@@ -1,10 +1,10 @@
 `drawPoster` 在创建时，会自动的向 `ctx(画笔)` 添加|覆盖扩展方法，以便构建海报矩形。
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   // ctx.drawImage | ctx.drawRoundImage | ctx.fillWarpText | ....
 })
-~~~
+```
 
 ## 绘制图片(ctx.drawImage)
 
@@ -16,13 +16,13 @@ dp.draw(async (ctx) => {
 
 注意：当绘制环境为H5时，uniapp使用本地图片绘画时不要用尺寸较大的图片，不然会在创建图片时生成失败。
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   const url = '/static/logo.png'
   // const url = "https://...."
   await ctx.drawImage(url, 88, 174.94, 198.98, 36)
 })
-~~~
+```
 
 > 小程序端需要添加域名才能绘制成功！
 
@@ -37,19 +37,19 @@ dp.draw(async (ctx) => {
 
 `ctx.drawRoundImage(url, x, y, w, h, r)`
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   const url = 'static/logo.png'
   // const url = "https://...."
   await ctx.drawRoundImage(url, 0, 0, 100, 100, 50)
 })
-~~~
+```
 
 ## 裁剪图片(ctx.drawImageFit)
 
 `ctx.drawRoundImage(url, DrawImageFitOpts)`
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   const url = 'static/logo.png'
   // const url = "https://...."
@@ -61,11 +61,11 @@ dp.draw(async (ctx) => {
     specifiedPosition: [0, 0],
   })
 })
-~~~
+```
 
 根据图片原有尺寸与展示尺寸的宽高比例，计算模拟类似[obejct-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)效果，以下为可配置项。
 
-~~~ts
+```ts
 interface DrawImageFitOpts {
   // 图片圆角尺寸
   round?: number
@@ -80,7 +80,7 @@ interface DrawImageFitOpts {
   // 图片绘制定位[x, y], 默认 [0, 0]
   specifiedPosition?: [number, number]
 }
-~~~
+```
 
 ## 换行字体(ctx.fillWarpText)
 
@@ -88,7 +88,7 @@ interface DrawImageFitOpts {
 
 传入配置对象，绘制换行字体，以下为可配置项。
 
-~~~ts
+```ts
 interface FillWarpTextOpts {
   // 绘制字符串, 必传项
   content: string
@@ -114,20 +114,20 @@ interface FillWarpTextOpts {
   { text: string, y: number, x: number }
   // ....
 ]
-~~~
+```
 
 ## 圆角矩形(ctx.fillRoundRect)
 
 `ctx.fillWarpText(x, y, w, h, r)`
 
-~~~js
+```js
 dp.draw(async (ctx) => {
   // 设置矩形颜色
   ctx.fillStyle = '#fff'
   // 进行绘制
   ctx.fillRoundRect(15, 179, 345, 365.5, 10)
 })
-~~~
+```
 
 | 参数          | 描述                 |
 | :------------ | :------------------- |
@@ -150,18 +150,17 @@ dp.draw(async (ctx) => {
 
 生成二维码扩展，源码使用了 [uQRCode](https://github.com/Sansnn/uQRCode) 并改动了一下，该文件比较大，所以作为扩展插件使用，使用时得先引入插件。
 
-~~~js
-// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw-poster'
-import { useDrawPoster } from 'u-draw-poster'
-import drawQrCode, { errorCorrectLevel } from 'u-draw-poster/plugins/drawQrCode'
+```js
+// 注意：如果使用HBuilder引入, 需要引入 '@/js_sdk/u-draw'
+import { useDraw } from 'u-draw'
+import drawQrCode, { errorCorrectLevel } from 'u-draw/plugins/drawQrCode'
 
 export default {
   async onReady() {
-    const dp = await useDrawPoster('canvas', {
+    const dp = useDraw('canvas', {
       // 单独引入二维码插件
       plugins: [drawQrCode()]
     })
-    dp.canvas.width = 200; dp.canvas.height = 200
     dp.draw((ctx) => {
       ctx.drawQrCode({
         x: (dp.canvas.width / 2) - 50,
@@ -173,7 +172,7 @@ export default {
     })
   }
 }
-~~~
+```
 
 |       参数        |  类型  | 必填 |                             说明                             |
 | :---------------: | :----: | :--: | :----------------------------------------------------------: |

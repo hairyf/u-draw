@@ -1,15 +1,14 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
+import { createDraw } from '../js_sdk'
+
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = createDrawPoster('canvas', {
-      width: 300,
-      height: 300,
-    })
+    const dp = createDraw('canvas')
+
     dp.mount()
 
     // 创建一个绘制任务
@@ -36,7 +35,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

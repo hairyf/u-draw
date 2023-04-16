@@ -1,13 +1,14 @@
 <script>
-import { createDrawPoster } from '@/js_sdk/u-draw-poster'
-import drawQrCode from '@/js_sdk/u-draw-poster/plugins/drawQrCode'
+import { createDraw } from '../js_sdk'
+import drawQrCode from '../js_sdk/plugins/drawQrCode'
+
 export default {
   data: () => ({
     imgUrl: '',
   }),
   async onReady() {
     // 创建绘制工具
-    const dp = createDrawPoster('canvas', {
+    const dp = createDraw('canvas', {
       width: 300,
       height: 300,
       plugins: [drawQrCode()],
@@ -57,7 +58,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style>
   page,
   .index {
     height: 100%;

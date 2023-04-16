@@ -8,8 +8,6 @@
 - API 文档：[u-draw](https://u-draw.vercel.app)
 - 插件市场：[dcloud/u-draw](https://ext.dcloud.net.cn/plugin?id=3237)
 
-> 4.0.0 TODO
-
 ## ⚙️ Install
 
 ```sh

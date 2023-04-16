@@ -61,6 +61,12 @@ importers:
         version: 0.0.2
     publishDirectory: dist
 
+  packages/uni-vue2-cli/js_sdk:
+    dependencies:
+      '@uni-helper/uni-env':
+        specifier: ^0.0.2
+        version: 0.0.2
+
   packages/uni-vue3-vite: {}
 
 packages:

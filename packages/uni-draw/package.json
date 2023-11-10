@@ -19,6 +19,6 @@
     "build": "ptsup ./src --dts --meta --splitting --external --internal @uni-helper/uni-env"
   },
   "dependencies": {
-    "@uni-helper/uni-env": "^0.0.2"
+    "@uni-helper/uni-env": "^0.1.0"
   }
 }

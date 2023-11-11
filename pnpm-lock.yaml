@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -39,8 +43,8 @@ importers:
         specifier: ^9.0.13
         version: 9.0.13
       '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
+        specifier: ^20.0.0
+        version: 20.9.0
       eslint:
         specifier: ^8.38.0
         version: 8.38.0
@@ -52,7 +56,7 @@ importers:
         version: 4.9.5
       vitepress:
         specifier: 1.0.0-alpha.46
-        version: 1.0.0-alpha.46(@algolia/client-search@4.17.0)(@types/node@18.15.11)
+        version: 1.0.0-alpha.46(@algolia/client-search@4.17.0)(@types/node@20.9.0)
 
   packages/uni-draw:
     dependencies:
@@ -60,12 +64,6 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2
     publishDirectory: dist
-
-  packages/uni-vue2-cli/js_sdk:
-    dependencies:
-      '@uni-helper/uni-env':
-        specifier: ^0.0.2
-        version: 0.0.2
 
   packages/uni-vue3-vite: {}
 
@@ -648,7 +646,7 @@ packages:
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 18.15.11
+      '@types/node': 20.9.0
     dev: true
 
   /@types/json-schema@7.0.11:
@@ -665,8 +663,10 @@ packages:
       '@types/unist': 2.0.6
     dev: true
 
-  /@types/node@18.15.11:
-    resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
+  /@types/node@20.9.0:
+    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
+    dependencies:
+      undici-types: 5.26.5
     dev: true
 
   /@types/normalize-package-data@2.4.1:
@@ -676,7 +676,7 @@ packages:
   /@types/readdir-glob@1.1.1:
     resolution: {integrity: sha512-ImM6TmoF8bgOwvehGviEj3tRdRBbQujr1N+0ypaln/GWjaerOB26jb93vsRHmdMtvVQZQebOlqt2HROark87mQ==}
     dependencies:
-      '@types/node': 18.15.11
+      '@types/node': 20.9.0
     dev: true
 
   /@types/semver@7.3.13:
@@ -832,7 +832,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.2.1(@types/node@18.15.11)
+      vite: 4.2.1(@types/node@20.9.0)
       vue: 3.2.47
     dev: true
 
@@ -3271,6 +3271,10 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: true
+
   /unist-util-stringify-position@2.0.3:
     resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
     dependencies:
@@ -3298,7 +3302,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@4.2.1(@types/node@18.15.11):
+  /vite@4.2.1(@types/node@20.9.0):
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -3323,7 +3327,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.15.11
+      '@types/node': 20.9.0
       esbuild: 0.17.16
       postcss: 8.4.21
       resolve: 1.22.3
@@ -3332,7 +3336,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress@1.0.0-alpha.46(@algolia/client-search@4.17.0)(@types/node@18.15.11):
+  /vitepress@1.0.0-alpha.46(@algolia/client-search@4.17.0)(@types/node@20.9.0):
     resolution: {integrity: sha512-HiKiHzC0iTPsRsKs8XcsMeMzCpcCt5LWcX9mpDr288Ju+nQf1G8A2+Wm44ZkBsVv4EHxFK4ChmWyZrL1OJUXpg==}
     hasBin: true
     dependencies:
@@ -3343,7 +3347,7 @@ packages:
       '@vueuse/core': 9.13.0(vue@3.2.47)
       body-scroll-lock: 4.0.0-beta.0
       shiki: 0.14.1
-      vite: 4.2.1(@types/node@18.15.11)
+      vite: 4.2.1(@types/node@20.9.0)
       vue: 3.2.47
     transitivePeerDependencies:
       - '@algolia/client-search'

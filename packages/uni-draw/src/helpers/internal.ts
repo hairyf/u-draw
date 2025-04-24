@@ -27,16 +27,14 @@ export function setCurrentInstance(dp: Partial<DrawInstance>, ps: Plugins) {
 export function onReady(callback?: Function) {
   const pages = getCurrentPages()
   const page = pages[pages.length - 1]
-
-  console.log(page.$vm)
-  // return new Promise<void>((resolve) => {
-  //   setTimeout(() => {
-  //     const onReady = page.onReady
-  //     page.onReady = function () {
-  //       callback?.()
-  //       resolve()
-  //       onReady?.call(page)
-  //     }
-  //   })
-  // })
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      const onReady = page.onReady
+      page.onReady = function () {
+        callback?.()
+        resolve()
+        onReady?.call(page)
+      }
+    })
+  })
 }

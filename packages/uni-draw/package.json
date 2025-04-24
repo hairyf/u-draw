@@ -11,14 +11,16 @@
   ],
   "main": "src/index.ts",
   "publishConfig": {
-    "main": "index.js",
-    "types": "./index.d.ts",
-    "directory": "dist"
+    "main": "dist/index.mjs",
+    "types": "dist/index.d.mts"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "ptsup ./src --dts --meta --splitting --external --internal @uni-helper/uni-env"
+    "build": "tsdown"
   },
   "dependencies": {
-    "@uni-helper/uni-env": "^0.0.2"
+    "@uni-helper/uni-env": "^0.1.7"
   }
 }

@@ -16,14 +16,14 @@ export function archiver(src: string, disc: string) {
   })
   output.on('close', () => {
     consola.info(`总共 ${archive.pointer()} 字节`)
-    consola.success('archiver完成文件的归档，文件输出流描述符已关闭')
+    consola.success('ARCHIVER 完成文件的归档，文件输出流描述符已关闭')
   })
   output.on('end', () => {
     consola.warn('数据源已耗尽')
   })
   archive.on('warning', (err) => {
     if (err.code === 'ENOENT')
-      consola.warn('stat故障和其他非阻塞错误')
+      consola.warn('STAT 故障和其他非阻塞错误')
     else
       throw err
   })

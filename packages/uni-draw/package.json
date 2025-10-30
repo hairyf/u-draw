@@ -1,6 +1,7 @@
 {
   "name": "u-draw",
-  "version": "4.0.2",
+  "type": "module",
+  "version": "4.0.3",
   "description": "绘制 uniapp canvas 工具",
   "author": "hairyf",
   "license": "ISC",
@@ -18,9 +19,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "prepublishOnly": "pnpm build"
   },
-  "dependencies": {
-    "@uni-helper/uni-env": "^0.1.7"
-  }
+  "dependencies": {}
 }

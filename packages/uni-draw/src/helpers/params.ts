@@ -1,8 +1,9 @@
-import { isMpWeixin } from '@uni-helper/uni-env'
 import { isFunction, isObject, isString } from '../utils/is'
 import type { Plugin } from '../core'
 import type { DrawOptions } from '../core/types'
 import { globalPlugins } from './internal'
+
+const isMpWeixin = process.env.UNI_PLATFORM as string === 'mp-weixin'
 
 /**
  * 处理 drawPoster 参数

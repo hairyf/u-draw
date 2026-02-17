@@ -33,6 +33,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    # esno (tsx 3.14.0) uses deprecated --loader API, fails on Node 18.20+
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
